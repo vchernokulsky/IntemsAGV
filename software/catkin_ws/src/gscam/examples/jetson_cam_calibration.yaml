@@ -1,0 +1,26 @@
+image_width: 1280
+image_height: 720
+camera_name: jetson_cam
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [ 1256.41046,     0.     ,   482.0857 ,
+             0.     ,  1227.6136 ,   400.77088,
+             0.     ,     0.     ,     1.     ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.020493, -0.053606, 0.009744, -0.037303, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [ 1.,  0.,  0.,
+          0.,  1.,  0.,
+          0.,  0.,  1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [ 1215.44165,     0.     ,   442.49255,     0.     ,
+             0.     ,  1260.79309,   405.23403,     0.     ,
+             0.     ,     0.     ,     1.     ,     0.     ]
