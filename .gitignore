@@ -2,3 +2,8 @@ software/catkin_ws/build/
 software/catkin_ws/devel/
 software/catkin_ws/.catkin_workspace
 software/catkin_ws/src/CMakeLists.txt
+
+software/Simulation/catkin_ws/build/
+software/Simulation/catkin_ws/devel/
+software/Simulation/catkin_ws/.catkin_workspace
+software/Simulation/catkin_ws/src/CMakeList.txt
