@@ -2,3 +2,20 @@
 
 //ARM Cross Compilation
 ARM_CROSS_COMPILATION:BOOL=ON
+===========================================
+на jetson nano для сборки пакета viso2 в файлах src/viso2/libviso2/libviso2/src/filter.h src/viso2/libviso2/libviso2/src/matcher.h необходимо явно подключить "sse_to_neon.hpp". заккоментировав условие:
+
+src/viso2/libviso2/libviso2/src/filter.h:
+//#if defined(__ARM_NEON__)
+#include "sse_to_neon.hpp"
+//#else
+//#include <emmintrin.h>
+//#include <pmmintrin.h>
+//#endif
+
+viso2/libviso2/libviso2/src/matcher.h:
+//#if defined(__ARM_NEON__)
+#include "sse_to_neon.hpp"
+//#else
+//#include <emmintrin.h>
+//#endif

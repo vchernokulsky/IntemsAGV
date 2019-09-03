@@ -11,7 +11,7 @@ include_directories("${LIBVISO2_SRC_DIR}")
 # use sse3 instruction set
 if(ARM_CROSS_COMPILATION)
   SET(CMAKE_SYSTEM_PROCESSOR arm)
-  SET(CMAKE_CXX_FLAGS -mfpu=neon)
+#  SET(CMAKE_CXX_FLAGS -mfpu=neon)
 else(ARM_CROSS_COMPILATION)
   add_definitions(-msse3)
 endif
