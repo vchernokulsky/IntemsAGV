@@ -1,0 +1,4 @@
+для сборки catkin_ws на jetson nano необходимо в файле catkin_ws/build/CMakeCache.txt выставить параметр ARM Cross Compilation в ON:
+
+//ARM Cross Compilation
+ARM_CROSS_COMPILATION:BOOL=ON
