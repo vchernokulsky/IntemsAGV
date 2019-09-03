@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">RobotController</string>
+    <string name="roboturl">RobotURL:</string>
+    <string name="url_string">http://192.168.55.110:8008</string>
+    <string name="choose_string">Выберите способ управления</string>
+    <string name="title_activity_device_controller">DeviceControllerActivity</string>
+    <string name="ble_not_supported">BLE не поддерживается устройством</string>
+    <string name="label_data">Данные:</string>
+    <string name="label_device_address">Адрес пульта:</string>
+    <string name="label_state">Состояние:</string>
+    <string name="no_data">Нет данных</string>
+    <string name="connected">Соединено</string>
+    <string name="disconnected">Отсоединино</string>
+    <string name="error_bluetooth_not_supported">Bluetooth не поддерживается</string>
+    <string name="menu_connect">Соединить</string>
+    <string name="menu_disconnect">Отсоединить</string>
+    <string name="adress">Aдрес неизвестен</string>
+    <string name="title_activity_speed_control">SpeedControlActivity</string>
+    <string name="title_activity_custom_message">CustomMessage</string>
+</resources>
