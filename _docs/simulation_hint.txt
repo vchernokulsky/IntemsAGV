@@ -1,0 +1,2 @@
+===CUBE_ROBOT_GAZEBO===
+в файле cube_world.launch переменной GAZEBO_RESOURCE_PATH необходимо установить значение до рабочего пространчтва(catkin_ws)
