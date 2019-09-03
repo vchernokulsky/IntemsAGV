@@ -5,12 +5,12 @@ find_package(catkin REQUIRED )
 
 option(ARM_CROSS_COMPILATION "ARM Cross Compilation" OFF)
 
-#if(ARM_CROSS_COMPILATION)
+if(ARM_CROSS_COMPILATION)
   SET(CMAKE_SYSTEM_PROCESSOR arm)
-#  SET(CMAKE_CXX_FLAGS -mfpu=neon)
-#else(ARM_CROSS_COMPILATION)
-#  add_definitions(-msse3)
-#endif(ARM_CROSS_COMPILATION)
+  SET(CMAKE_CXX_FLAGS -mfpu=neon)
+else(ARM_CROSS_COMPILATION)
+  add_definitions(-msse3)
+endif(ARM_CROSS_COMPILATION)
 
 catkin_package(
   INCLUDE_DIRS libviso2/src
