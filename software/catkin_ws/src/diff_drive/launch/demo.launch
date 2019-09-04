@@ -3,6 +3,8 @@
   <arg name="ticks_per_meter" value="10000" />
   <arg name="wheel_separation" value="0.225" />
   <arg name="max_motor_speed" value="3.82" />
+  <arg name="max_lin_vel" value="3.82" />
+  <arg name="max_ang_vel" value="3.82" />
 
   <!--<arg name="urdf_file" default="$(find diff_drive)/urdf/diff_drive_description.xacro" />-->
   <!--<param name="robot_description" command="$(find xacro)/xacro &#45;&#45;inorder $(arg urdf_file)" />-->
@@ -25,6 +27,8 @@
       ticks_per_meter: $(arg ticks_per_meter)
       wheel_separation: $(arg wheel_separation)
       max_motor_speed:  $(arg wheel_separation)
+      max_lin_vel:  $(arg max_lin_vel)
+      max_ang_vel:  $(arg max_ang_vel)
       timeout: 1.0
     </rosparam>
     <!--<remap from="cmd_vel" to="/robot/cmd_vel" />-->
