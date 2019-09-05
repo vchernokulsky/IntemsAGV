@@ -32,19 +32,19 @@ class SocketClient:
         rospy.loginfo(data_str)
 
     def send_speeds(self):
-        self.print_speeds()
+        # self.print_speeds()
         data = bytearray([self.left_dir, self.left_speed, self.right_dir, self.right_speed])
-        # try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        rospy.loginfo("socket set")
-        rospy.loginfo("socket: ip = %s; port = %s", self.IP, self.PORT)
-        s.connect((self.IP, self.PORT))
-        rospy.loginfo("socket connected")
-        s.sendall(data)
-        rospy.loginfo("data sent")
-        # except Exception as e:
-        #     rospy.loginfo("!!!")
-        #     rospy.loginfo(e)
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # rospy.loginfo("socket set")
+            # rospy.loginfo("socket: ip = %s; port = %s", self.IP, self.PORT)
+            s.connect((self.IP, self.PORT))
+            # rospy.loginfo("socket connected")
+            s.sendall(data)
+            # rospy.loginfo("data sent")
+        except Exception as e:
+            rospy.loginfo("!!!")
+            rospy.loginfo(e)
 
     def set_ip(self, ip):
         self.IP = ip

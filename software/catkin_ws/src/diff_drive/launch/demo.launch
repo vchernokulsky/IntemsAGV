@@ -42,7 +42,14 @@
     </rosparam>
   </node>
 
-  <node name="diff_drive_robot" pkg="diff_drive" type="diff_drive_robot" output="screen">
+  <node name="diff_drive_robot_send" pkg="diff_drive" type="diff_drive_robot_send" output="screen">
+    <rosparam subst_value="true">
+      ticks_per_meter: $(arg ticks_per_meter)
+      wheel_separation: $(arg wheel_separation)
+    </rosparam>
+  </node>
+
+    <node name="diff_drive_robot_get" pkg="diff_drive" type="diff_drive_robot_get" output="screen">
     <rosparam subst_value="true">
       ticks_per_meter: $(arg ticks_per_meter)
       wheel_separation: $(arg wheel_separation)
