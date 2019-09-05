@@ -3,78 +3,114 @@ from __future__ import division
 
 import rospy
 from math import pi, asin
+import socket
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Int32
 
 
-class MotorTicks:
-
+class SocketClient:
     def __init__(self):
-        self.left = 0
-        self.right = 0
+        self.IP = '192.168.22.177'
+        self.PORT = 23
+        self.BUFFER_SIZE = 1024
 
-class Robot:
-    """Implements a mock robot that dutifully executes its wheel
-    speed commands exactly.
-    """
+        self.MAX_VEL = 30
+        self.MIN_VEL = 220
 
-    def __init__(self):
-        self.leftSpeed = 0
-        self.newLeftSpeed = 0
-        self.rightSpeed = 0
-        self.newRightSpeed = 0
-        self.leftTicks = 0
-        self.rightTicks = 0
-        self.minTicks = -32768
-        self.maxTicks = 32767
+        self.STOP = 0
+        self.FORWARD = 1
+        self.BACKWARD = 2
 
-    def setSpeeds(self, left, right):
-        self.newLeftSpeed = left
-        self.newRightSpeed = right
+        self.left_dir = self.STOP
+        self.left_speed = 0
+        self.right_dir = self.STOP
+        self.right_speed = 0
 
-    def updateRobot(self, dTime):
-        self.leftTicks = self.addTicks(self.leftTicks, self.leftSpeed*dTime)
-        self.rightTicks = self.addTicks(self.rightTicks, self.rightSpeed*dTime)
-        self.leftSpeed = self.newLeftSpeed
-        self.rightSpeed = self.newRightSpeed
+    def print_speeds(self):
+        data_str = str(self.left_dir) + ";" + str(self.left_speed) + ";" + str(self.right_dir) + ";" + str(self.right_speed)
+        rospy.loginfo(data_str)
 
-    def getTicks(self):
-        ticks = MotorTicks()
-        ticks.left = self.leftTicks
-        ticks.right = self.rightTicks
-        return ticks
+    def send_speeds(self):
+        self.print_speeds()
+        data = bytearray([self.left_dir, self.left_speed, self.right_dir, self.right_speed])
+        # try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        rospy.loginfo("socket set")
+        rospy.loginfo("socket: ip = %s; port = %s", self.IP, self.PORT)
+        s.connect((self.IP, self.PORT))
+        rospy.loginfo("socket connected")
+        s.sendall(data)
+        rospy.loginfo("data sent")
+        # except Exception as e:
+        #     rospy.loginfo("!!!")
+        #     rospy.loginfo(e)
 
-    def addTicks(self, ticks, deltaTicks):
-        ticks += deltaTicks
-        if ticks > self.maxTicks:
-            return int(ticks - self.maxTicks + self.minTicks)
-        elif ticks < self.minTicks:
-            return int(ticks - self.minTicks + self.maxTicks)
-        else:
-            return int(ticks)
+    def set_ip(self, ip):
+        self.IP = ip
+
+    def set_port(self, port):
+        self.PORT = port
+
+    def set_max_vel(self, vel):
+        self.MAX_VEL = vel
+
+    def set_min_vel(self, vel):
+        self.MIN_VEL = vel
+
+    def set_speeds(self, left, right):
+        self.left_dir = self.get_direction(left)
+        self.right_dir = self.get_direction(right)
+        self.left_speed = self.clip(left)
+        self.right_speed = self.clip(right)
+
+    def set_stop(self):
+        self.left_dir = self.STOP
+        self.left_speed = 0
+        self.right_dir = self.STOP
+        self.right_speed = 0
+
+    def get_direction(self, value):
+        if value < 0:
+            return self.BACKWARD
+        if value > 0:
+            return self.FORWARD
+        return self.STOP
+
+    def clip(self, speed):
+        value = abs(speed)
+        if self.MIN_VEL > value > 0:
+            return self.MIN_VEL
+        elif value > self.MAX_VEL:
+            return self.MAX_VEL
+        return int(value)
 
 
 class RobotNode:
 
     def __init__(self):
-        self.robot = Robot()
         self.leftSpeed = 0
         self.rightSpeed = 0
+        self.socketClient = SocketClient()
+
+        self.rate = 10.0
+        self.timeout = 0.5
+        self.lastTime = 0
 
     def main(self):
-        rospy.init_node('diff_drive_robot')
-        self.leftPub = rospy.Publisher('lwheel_ticks', Int32, queue_size=10)
-        self.rightPub = rospy.Publisher('rwheel_ticks', Int32, queue_size=10)
+        rospy.init_node('diff_drive_robot_send')
+        rospy.loginfo("{0} started".format(rospy.get_name()))
 
-        self.nodeName = rospy.get_name()
-        rospy.loginfo("{0} started".format(self.nodeName))
+        rospy.Subscriber('lwheel_desired_rate', Int32, self.left_callback)
+        rospy.Subscriber('rwheel_desired_rate', Int32, self.right_callback)
 
-        rospy.Subscriber('lwheel_desired_rate', Int32, self.leftCallback)
-        rospy.Subscriber('rwheel_desired_rate', Int32, self.rightCallback)
+        self.rate = float(rospy.get_param('~rate', 5.0))
+        self.timeout = float(rospy.get_param('~timeout', 0.5))
 
-        self.rate = rospy.get_param('~rate', 10.0)
-        self.timeout = rospy.get_param('~timeout', 0.5)
+        self.socketClient.set_ip(str(rospy.get_param('~ip', '192.168.22.177')))
+        self.socketClient.set_port(int(rospy.get_param('~port', 23)))
+        self.socketClient.set_max_vel(int(rospy.get_param('~max_vel', 220)))
+        self.socketClient.set_min_vel(int(rospy.get_param('~min_vel', 30)))
 
         rate = rospy.Rate(self.rate)
         self.lastTime = rospy.get_time()
@@ -83,28 +119,22 @@ class RobotNode:
             rate.sleep()
 
     def publish(self):
-        newTime = rospy.get_time()
-        diffTime = newTime - self.lastTime
-        self.lastTime = newTime
+        new_time = rospy.get_time()
+        diff_time = new_time - self.lastTime
+        self.lastTime = new_time
+        if diff_time > self.timeout:
+            self.socketClient.set_stop()
+        self.socketClient.send_speeds()
 
-        if diffTime > self.timeout:
-            self.robot.setSpeeds(0, 0)
-    
-        try:
-            self.robot.updateRobot(diffTime)
-        except:
-            rospy.logerror("Got exception updating robot")
-        ticks = self.robot.getTicks()
-        self.leftPub.publish(ticks.left)
-        self.rightPub.publish(ticks.right)
+    def left_callback(self, left_speed):
+        self.leftSpeed = left_speed.data
+        self.socketClient.set_speeds(self.leftSpeed, self.rightSpeed)
+        # self.publish()
 
-    def leftCallback(self, leftSpeed):
-        self.leftSpeed = leftSpeed.data
-        self.robot.setSpeeds(self.leftSpeed, self.rightSpeed)
-
-    def rightCallback(self, rightSpeed):
-        self.rightSpeed = rightSpeed.data
-        self.robot.setSpeeds(self.leftSpeed, self.rightSpeed)
+    def right_callback(self, right_speed):
+        self.rightSpeed = right_speed.data
+        self.socketClient.set_speeds(self.leftSpeed, self.rightSpeed)
+        # self.publish()
 
 
 if __name__ == '__main__':

@@ -126,11 +126,11 @@ class ControllerNode:
             speeds = self.controller.get_speeds(self.linearVelocity, self.angularVelocity)
             self.leftPub.publish(int(speeds.left))
             self.rightPub.publish(int(speeds.right))
-            rospy.loginfo("voltage: left = %s; right = %s", int(speeds.left), int(speeds.right))
+            # rospy.loginfo("voltage: left = %s; right = %s", int(speeds.left), int(speeds.right))
         else:
             self.leftPub.publish(0)
             self.rightPub.publish(0)
-            rospy.loginfo("voltage: left = 0; right = 0")
+            # rospy.loginfo("voltage: left = 0; right = 0")
 
     def constrain(self, vel, low, high):
         if vel < low:
