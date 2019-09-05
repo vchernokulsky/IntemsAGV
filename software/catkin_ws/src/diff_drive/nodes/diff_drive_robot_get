@@ -6,7 +6,7 @@ from math import pi, asin
 import socket
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
-from std_msgs.msg import Float32
+from std_msgs.msg import Int32
 import json
 
 
@@ -53,8 +53,8 @@ class RobotNode:
 
         self.rate = 5.0
 
-        self.leftPub = rospy.Publisher('lwheel_speed', Float32, queue_size=1)
-        self.rightPub = rospy.Publisher('rwheel_speed', Float32, queue_size=1)
+        self.leftPub = rospy.Publisher('lwheel_ticks', Int32, queue_size=1)
+        self.rightPub = rospy.Publisher('rwheel_ticks', Int32, queue_size=1)
 
     def main(self):
         rospy.init_node('diff_drive_robot_get')
@@ -70,8 +70,8 @@ class RobotNode:
 
     def publish(self):
         self.leftSpeed, self.rightSpeed = self.socketClient.get_speeds()
-        self.leftPub.publish(float(self.leftSpeed))
-        self.rightPub.publish(float(self.rightSpeed))
+        self.leftPub.publish(int(self.leftSpeed))
+        self.rightPub.publish(int(self.rightSpeed))
 
 
 if __name__ == '__main__':

@@ -146,11 +146,11 @@ class ControllerNode:
         return self.constrain(vel, -self.maxAngVel, self.maxAngVel)
 
     def twist_callback(self, twist):
-        rospy.loginfo("twist: lin = %s; ang = %s", twist.linear.x, twist.angular.z)
+        # rospy.loginfo("twist: lin = %s; ang = %s", twist.linear.x, twist.angular.z)
         self.linearVelocity = self.check_linear_limit_velocity(twist.linear.x)
         self.angularVelocity = self.check_angular_limit_velocity(twist.angular.z)
-        rospy.loginfo("linear_speed_m/s=%s",  self.linearVelocity)
-        rospy.loginfo("angular_speed_r/s=%s", self.angularVelocity)
+        # rospy.loginfo("linear_speed_m/s=%s",  self.linearVelocity)
+        # rospy.loginfo("angular_speed_r/s=%s", self.angularVelocity)
         self.lastTwistTime = rospy.get_time()
 
 

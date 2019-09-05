@@ -46,20 +46,20 @@ class Encoder:
 
     def initCount(self, startCount):
         self.delta = 0
-        self.last = startCount
+        # self.last = startCount
 
-    def update(self, newCount):
-        if self.last > self.highThresh and newCount < self.lowThresh:
-            # Wrapped around the upper limit
-            increment = newCount + self.range - self.last
-        elif self.last < self.lowThresh and newCount > self.highThresh:
-            # Wrapped around the lower limit
-            increment = newCount - self.range - self.last
-        else:
-            increment = newCount - self.last
+    def update(self, increment):
+        # if self.last > self.highThresh and newCount < self.lowThresh:
+        #     # Wrapped around the upper limit
+        #     increment = newCount + self.range - self.last
+        # elif self.last < self.lowThresh and newCount > self.highThresh:
+        #     # Wrapped around the lower limit
+        #     increment = newCount - self.range - self.last
+        # else:
+        #     increment = newCount - self.last
 
-        self.delta += increment
-        self.last = newCount
+        self.delta = increment
+        # self.last += newCount
 
     def setReversed(self, isReversed):
         self.isReversed = isReversed
