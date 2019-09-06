@@ -14,26 +14,25 @@ class MotorCommand:
 
 class Controller:
     def __init__(self):
-        self.maxMotorSpeed = 3.82
-        self.wheelSeparation = 0.2
-        self.maxVoltage = 255
-        self.minVoltageValue = 30
-        self.maxVoltageValue = 200
+        self.maxMotorSpeed = 0
+        self.wheelSeparation = 0
+        self.maxVoltage = 0
+        self.minVoltageValue = 0
+        self.maxVoltageValue = 0
 
     def get_speeds(self, linear_speed, angular_speed):
-        rate = linear_speed
-        diff = angular_speed * self.wheelSeparation
-
         speeds = MotorCommand()
-        speeds.left = rate - diff
-        speeds.right = rate + diff
 
-        # speeds.right = (2 * linear_speed + self.wheelSeparation * angular_speed) / 2
-        # speeds.right = (2 * linear_speed - self.wheelSeparation * angular_speed) / 2
+        # rate = linear_speed
+        # diff = angular_speed * self.wheelSeparation
+        # speeds.left = rate - diff
+        # speeds.right = rate + diff
+
+        speeds.left = (2 * linear_speed + self.wheelSeparation * angular_speed) / 2
+        speeds.right = (2 * linear_speed - self.wheelSeparation * angular_speed) / 2
 
         speeds_adj = self.adjust_speeds(speeds)
         speeds_volt = self.speeds_to_voltage(speeds_adj)
-
         return speeds_volt
 
     def adjust_speeds(self, speeds):
@@ -55,7 +54,7 @@ class Controller:
         ret = value
         if self.minVoltageValue > value > 0:
             ret = self.minVoltageValue
-        elif value > self.maxVoltageValue:
+        if value > self.maxVoltageValue:
             ret = self.maxVoltageValue
         return int(ret * sign)
 
@@ -83,37 +82,39 @@ class Controller:
 class ControllerNode:
 
     def __init__(self):
+        self.maxLinVel = 0
+        self.maxAngVel = 0
+        self.rate = 0
+        self.timeout = 0
+        self.name = ''
+        self.needLogInfo = False
+
+        self.controller = Controller()
         self.linearVelocity = 0.0
         self.angularVelocity = 0.0
         self.lastTwistTime = 0
-
-        self.maxLinVel = 3.832
-        self.maxAngVel = 3.832
-
-        self.controller = Controller()
-
-        self.rate = 10
-        self.timeout = 0.2
 
         self.leftPub = rospy.Publisher('lwheel_desired_rate', Int32, queue_size=1)
         self.rightPub = rospy.Publisher('rwheel_desired_rate', Int32, queue_size=1)
 
     def main(self):
         rospy.init_node('diff_drive_controller')
-        rospy.loginfo("{0} started".format(rospy.get_name()))
+        self.name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.name))
 
         rospy.Subscriber("cmd_vel", Twist, self.twist_callback)
 
         self.maxLinVel = float(rospy.get_param('~max_lin_vel', 3.82))
         self.maxAngVel = float(rospy.get_param('~max_ang_vel', 3.82))
-        self.rate = float(rospy.get_param('~rate', 10.0))
-        self.timeout = float(rospy.get_param('~timeout', 0.2))
+        self.rate = float(rospy.get_param('~controller_rate', 2.0))
+        self.timeout = float(rospy.get_param('~controller_timeout', 2.0))
+        self.needLogInfo = float(rospy.get_param('~controller_need_log_info', False))
 
-        self.controller.set_wheel_separation(float(rospy.get_param('~wheel_separation', 0.225)))
+        self.controller.set_wheel_separation(float(rospy.get_param('~wheel_separation', 0.450)))
         self.controller.set_max_motor_speed(float(rospy.get_param('~max_lin_vel', 3.82)))
         self.controller.set_max_voltage(int(rospy.get_param('~max_voltage', 255)))
-        self.controller.set_max_voltage_value(int(rospy.get_param('~max_voltage_value', 200)))
-        self.controller.set_min_voltage_value(int(rospy.get_param('~min_voltage_value', 30)))
+        self.controller.set_max_voltage_value(int(rospy.get_param('~max_voltage_value', 255)))
+        self.controller.set_min_voltage_value(int(rospy.get_param('~min_voltage_value', 0)))
 
         rate = rospy.Rate(self.rate)
         self.lastTwistTime = rospy.get_time()
@@ -126,11 +127,13 @@ class ControllerNode:
             speeds = self.controller.get_speeds(self.linearVelocity, self.angularVelocity)
             self.leftPub.publish(int(speeds.left))
             self.rightPub.publish(int(speeds.right))
-            # rospy.loginfo("voltage: left = %s; right = %s", int(speeds.left), int(speeds.right))
+            if self.needLogInfo:
+                rospy.loginfo("[%s] voltage: left = %s; right = %s", self.name.upper(), int(speeds.left), int(speeds.right))
         else:
             self.leftPub.publish(0)
             self.rightPub.publish(0)
-            # rospy.loginfo("voltage: left = 0; right = 0")
+            if self.needLogInfo:
+                rospy.loginfo("[%s] voltage: left = 0; right = 0", self.name.upper())
 
     def constrain(self, vel, low, high):
         if vel < low:
@@ -146,11 +149,13 @@ class ControllerNode:
         return self.constrain(vel, -self.maxAngVel, self.maxAngVel)
 
     def twist_callback(self, twist):
-        # rospy.loginfo("twist: lin = %s; ang = %s", twist.linear.x, twist.angular.z)
+
         self.linearVelocity = self.check_linear_limit_velocity(twist.linear.x)
         self.angularVelocity = self.check_angular_limit_velocity(twist.angular.z)
-        # rospy.loginfo("linear_speed_m/s=%s",  self.linearVelocity)
-        # rospy.loginfo("angular_speed_r/s=%s", self.angularVelocity)
+        if self.needLogInfo:
+            rospy.loginfo("[%s] twist: lin = %s; ang = %s", self.name.upper(), twist.linear.x, twist.angular.z)
+            rospy.loginfo("[%s] linear_speed_m/s=%s", self.name.upper(),  self.linearVelocity)
+            rospy.loginfo("[%s] angular_speed_r/s=%s", self.name.upper(), self.angularVelocity)
         self.lastTwistTime = rospy.get_time()
 
 

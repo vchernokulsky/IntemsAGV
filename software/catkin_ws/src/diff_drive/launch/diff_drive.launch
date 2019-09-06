@@ -1,0 +1,26 @@
+<launch>
+
+  <node name="diff_drive_controller" pkg="diff_drive" type="diff_drive_controller"  output="screen">
+     <rosparam file="$(find diff_drive)/config/params.yaml"/>
+     <rosparam param="controller_need_log_info">False</rosparam>
+  </node>
+
+  <node name="diff_drive_robot_send" pkg="diff_drive" type="diff_drive_robot_send" output="screen">
+    <rosparam file="$(find diff_drive)/config/params.yaml"/>
+    <rosparam param="to_robot_need_log_info">False</rosparam>
+  </node>
+
+  <node name="diff_drive_robot_get" pkg="diff_drive" type="diff_drive_robot_get" output="screen">
+    <rosparam file="$(find diff_drive)/config/params.yaml"/>
+    <rosparam param="from_robot_need_log_info">False</rosparam>
+  </node>
+
+  <node name="diff_drive_odometry" pkg="diff_drive" type="diff_drive_odometry" output="screen">
+    <rosparam file="$(find diff_drive)/config/params.yaml"/>
+    <rosparam param="odom_need_log_info">False</rosparam>
+  </node>
+
+  <!--<node name="rviz" pkg="rviz" type="rviz"-->
+        <!--args="-d $(find diff_drive)/config/view.rviz" />-->
+
+</launch>

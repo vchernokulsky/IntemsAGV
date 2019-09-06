@@ -2,18 +2,19 @@
 from __future__ import division
 
 import rospy
-from math import pi, asin
 import socket
-from geometry_msgs.msg import Twist, Pose
-from nav_msgs.msg import Odometry
-from std_msgs.msg import Int32
 import json
+from std_msgs.msg import Int32
 
 
 class SocketClient:
     def __init__(self):
-        self.IP = '192.168.22.178'
-        self.PORT = 23
+        self.IP = '000.000.000.000'
+        self.PORT = 0
+
+        self.name = ''
+        self.need_log_info = False
+
         self.BUFFER_SIZE = 1024
 
     def get_speeds(self):
@@ -21,15 +22,17 @@ class SocketClient:
         r_vel = 0
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            rospy.loginfo("socket set")
+            if self.need_log_info:
+                rospy.loginfo("[%s] socket set", self.name.upper())
             s.connect((self.IP, self.PORT))
-            rospy.loginfo("socket connected")
+            if self.need_log_info:
+                rospy.loginfo("[%s] socket connected", self.name.upper())
             data = s.recv(self.BUFFER_SIZE)
-            rospy.loginfo("data received")
-            rospy.loginfo(data)
+            data = data.decode('utf-8')
+            if self.need_log_info:
+                rospy.loginfo("[%s] data received: %s", self.name.upper(), data)
             s.close()
-            json_dict = json.loads(data.decode('utf-8'))
-
+            json_dict = json.loads(data)
             l_vel = json_dict['l_vel']
             r_vel = json_dict['r_vel']
         except Exception as e:
@@ -43,26 +46,38 @@ class SocketClient:
     def set_port(self, port):
         self.PORT = port
 
+    def set_name(self, name):
+        self.name = name
+
+    def set_need_lo_info(self, need):
+        self.need_log_info = need
+
 
 class RobotNode:
-
     def __init__(self):
+        self.rate = 0.0
+        self.name = ''
+        self.need_log_info = False
+
         self.leftSpeed = 0
         self.rightSpeed = 0
         self.socketClient = SocketClient()
-
-        self.rate = 5.0
 
         self.leftPub = rospy.Publisher('lwheel_ticks', Int32, queue_size=1)
         self.rightPub = rospy.Publisher('rwheel_ticks', Int32, queue_size=1)
 
     def main(self):
         rospy.init_node('diff_drive_robot_get')
-        rospy.loginfo("{0} started".format(rospy.get_name()))
+        self.name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.name))
 
-        self.rate = rospy.Rate(float(rospy.get_param('~rate', 5.0)))
-        self.socketClient.set_ip(str(rospy.get_param('~ip', '192.168.22.178')))
-        self.socketClient.set_port(int(rospy.get_param('~port', 23)))
+        self.rate = rospy.Rate(float(rospy.get_param('~from_robot_rate', 10.0)))
+        self.need_log_info = float(rospy.get_param('~from_robot_need_log_info', False))
+
+        self.socketClient.set_ip(str(rospy.get_param('~encoder_ip', '192.168.22.178')))
+        self.socketClient.set_port(int(rospy.get_param('~encoder_port', 23)))
+        self.socketClient.set_name(self.name)
+        self.socketClient.set_need_lo_info(self.need_log_info)
 
         while not rospy.is_shutdown():
             self.publish()

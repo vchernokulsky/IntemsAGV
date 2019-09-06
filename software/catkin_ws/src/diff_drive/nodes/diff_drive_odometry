@@ -3,7 +3,6 @@ from __future__ import division
 
 import rospy
 from geometry_msgs.msg import Quaternion
-from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Int32
 from geometry_msgs.msg import PoseWithCovarianceStamped
@@ -22,11 +21,9 @@ class Pose:
         self.yVel = 0
         self.thetaVel = 0
 
-
     def __str__(self):
         return str({'x': self.x, 'y': self.y, 'theta': self.theta,
-                    'xVel': self.xVel, 'yVel': self.yVel,
-                    'thetaVel': self.thetaVel})
+                    'xVel': self.xVel, 'yVel': self.yVel, 'thetaVel': self.thetaVel})
 
 
 class Encoder:
@@ -35,165 +32,150 @@ class Encoder:
     """
 
     def __init__(self):
-        self.setRange(-32768, 32767)
-        self.initCount(0)
+        self.delta = 0
         self.isReversed = False
 
-    def setRange(self, low, high):
-        self.range = high - low + 1
-        self.lowThresh = low + self.range * 30 // 100
-        self.highThresh = low + self.range * 70 // 100
+    def set_delta(self, delta):
+        self.delta = delta
 
-    def initCount(self, startCount):
-        self.delta = 0
-        # self.last = startCount
+    def set_reversed(self, is_reversed):
+        self.isReversed = is_reversed
 
-    def update(self, increment):
-        # if self.last > self.highThresh and newCount < self.lowThresh:
-        #     # Wrapped around the upper limit
-        #     increment = newCount + self.range - self.last
-        # elif self.last < self.lowThresh and newCount > self.highThresh:
-        #     # Wrapped around the lower limit
-        #     increment = newCount - self.range - self.last
-        # else:
-        #     increment = newCount - self.last
-
-        self.delta = increment
-        # self.last += newCount
-
-    def setReversed(self, isReversed):
-        self.isReversed = isReversed
-
-    def getDelta(self):
-        delta = self.delta
-        self.delta = 0
+    def get_delta(self):
         if self.isReversed:
-            return -delta
+            return -self.delta
         else:
-            return delta
+            return self.delta
 
-    def getLimits(self):
-        return {
-            'range': self.range,
-            'lowThresh': self.lowThresh,
-            'highThresh': self.highThresh
-        }
 
-class Odometry_set:
+class OdometrySet:
     """Keeps track of the current position and velocity of a
     robot using differential drive.
     """
 
     def __init__(self):
+        self.wheelSeparation = 0
+        self.ticksPerMeter = 0
+        self.name = ''
+        self.need_log_info = False
+
         self.leftEncoder = Encoder()
         self.rightEncoder = Encoder()
         self.pose = Pose()
         self.lastTime = 0
 
-    def setWheelSeparation(self, separation):
+    def set_wheel_separation(self, separation):
         self.wheelSeparation = separation
 
-    def setTicksPerMeter(self, ticks):
+    def set_ticks_per_meter(self, ticks):
         self.ticksPerMeter = ticks
 
-    def setEncoderRange(self, low, high):
-        self.leftEncoder.setRange(low, high)
-        self.rightEncoder.setRange(low, high)
+    def set_time(self, new_time):
+        self.lastTime = new_time
 
-    def setTime(self, newTime):
-        self.lastTime = newTime
+    def update_left_wheel(self, new_count):
+        self.leftEncoder.set_delta(new_count)
 
-    def updateLeftWheel(self, newCount):
-        self.leftEncoder.update(newCount)
+    def update_right_wheel(self, new_count):
+        self.rightEncoder.set_delta(new_count)
 
-    def updateRightWheel(self, newCount):
-        self.rightEncoder.update(newCount)
-
-    def updatePose(self, newTime):
+    def update_pose(self, new_time):
         """Updates the pose based on the accumulated encoder ticks
         of the two wheels. See https://chess.eecs.berkeley.edu/eecs149/documentation/differentialDrive.pdf
         for details.
         """
-        leftTravel = self.leftEncoder.getDelta() / self.ticksPerMeter
-        rightTravel = self.rightEncoder.getDelta() / self.ticksPerMeter
-        deltaTime = newTime - self.lastTime
+        left_tick_delta = self.leftEncoder.get_delta()
+        left_travel = left_tick_delta / self.ticksPerMeter
+        right_travel = self.rightEncoder.get_delta() / self.ticksPerMeter
+        delta_time = new_time - self.lastTime
 
-        deltaTravel = (rightTravel + leftTravel) / 2
-        deltaTheta = (rightTravel - leftTravel) / self.wheelSeparation
+        delta_travel = (right_travel + left_travel) / 2
+        delta_theta = (right_travel - left_travel) / self.wheelSeparation
 
-        if rightTravel == leftTravel:
-            deltaX = leftTravel * cos(self.pose.theta)
-            deltaY = leftTravel * sin(self.pose.theta)
+        if right_travel == left_travel:
+            delta_x = left_travel * cos(self.pose.theta)
+            delta_y = left_travel * sin(self.pose.theta)
         else:
-            radius = deltaTravel / deltaTheta
+            radius = delta_travel / delta_theta
 
             # Find the instantaneous center of curvature (ICC).
-            iccX = self.pose.x - radius * sin(self.pose.theta)
-            iccY = self.pose.y + radius * cos(self.pose.theta)
+            icc_x = self.pose.x - radius * sin(self.pose.theta)
+            icc_y = self.pose.y + radius * cos(self.pose.theta)
 
-            deltaX = cos(deltaTheta) * (self.pose.x - iccX) \
-                     - sin(deltaTheta) * (self.pose.y - iccY) \
-                     + iccX - self.pose.x
+            delta_x = cos(delta_theta) * (self.pose.x - icc_x) \
+                - sin(delta_theta) * (self.pose.y - icc_y) \
+                + icc_x - self.pose.x
 
-            deltaY = sin(deltaTheta) * (self.pose.x - iccX) \
-                     + cos(deltaTheta) * (self.pose.y - iccY) \
-                     + iccY - self.pose.y
+            delta_y = sin(delta_theta) * (self.pose.x - icc_x) \
+                + cos(delta_theta) * (self.pose.y - icc_y) \
+                + icc_y - self.pose.y
 
-        self.pose.x += deltaX
-        self.pose.y += deltaY
-        self.pose.theta = (self.pose.theta + deltaTheta) % (2 * pi)
-        self.pose.xVel = deltaTravel / deltaTime if deltaTime > 0 else 0.
+        self.pose.x += delta_x
+        self.pose.y += delta_y
+        self.pose.theta = (self.pose.theta + delta_theta) % (2 * pi)
+        self.pose.xVel = delta_travel / delta_time if delta_time > 0 else 0.
         self.pose.yVel = 0
-        self.pose.thetaVel = deltaTheta / deltaTime if deltaTime > 0 else 0.
+        self.pose.thetaVel = delta_theta / delta_time if delta_time > 0 else 0.
 
-        self.lastTime = newTime
+        self.lastTime = new_time
+        if self.need_log_info:
+            rospy.loginfo("[%s] delta_tick = %s; delta_time = %s", self.name.upper(), left_tick_delta, delta_time)
+            rospy.loginfo("[%s] odom: lin = %s; ang = %s", self.name.upper(), self.pose.xVel, self.pose.thetaVel)
 
-    def getPose(self):
+    def get_pose(self):
         return self.pose
 
-    def setPose(self, newPose):
-        self.pose = newPose
+    def set_pose(self, new_pose):
+        self.pose = new_pose
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_need_lo_info(self, need):
+        self.need_log_info = need
+
 
 class OdometryNode:
-
     def __init__(self):
-        self.odometry = Odometry_set()
+        self.rate = 0.0
+        self.baseFrameID = ''
+        self.odomFrameID = ''
+        self.name = ''
+        self.need_log_info = False
 
-    def main(self):
+        self.odometry = OdometrySet()
+
         self.odomPub = rospy.Publisher('odom', Odometry, queue_size=10)
         self.tfPub = TransformBroadcaster()
 
+    def main(self):
         rospy.init_node('diff_drive_odometry')
-        self.nodeName = rospy.get_name()
-        rospy.loginfo("{0} started".format(self.nodeName))
+        self.name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.name))
 
-        rospy.Subscriber("lwheel_ticks", Int32, self.leftCallback)
-        rospy.Subscriber("rwheel_ticks", Int32, self.rightCallback)
-        rospy.Subscriber("initialpose", PoseWithCovarianceStamped,
-                         self.on_initial_pose)
+        rospy.Subscriber("lwheel_ticks", Int32, self.left_callback)
+        rospy.Subscriber("rwheel_ticks", Int32, self.right_callback)
+        rospy.Subscriber("initialpose", PoseWithCovarianceStamped, self.on_initial_pose)
 
-        self.ticksPerMeter = int(rospy.get_param('~ticks_per_meter'))
-        self.wheelSeparation = float(rospy.get_param('~wheel_separation'))
-        self.rate = float(rospy.get_param('~rate', 10.0))
+        self.rate = rospy.Rate(float(rospy.get_param('~odom_rate', 5.0)))
         self.baseFrameID = rospy.get_param('~base_frame_id', 'base_link')
         self.odomFrameID = rospy.get_param('~odom_frame_id', 'odom')
-        self.encoderMin = int(rospy.get_param('~encoder_min', -32768))
-        self.encoderMax = int(rospy.get_param('~encoder_max', 32767))
+        self.need_log_info = float(rospy.get_param('~odom_need_log_info', False))
 
-        self.odometry.setWheelSeparation(self.wheelSeparation)
-        self.odometry.setTicksPerMeter(self.ticksPerMeter)
-        self.odometry.setEncoderRange(self.encoderMin, self.encoderMax)
-        self.odometry.setTime(rospy.get_time())
+        self.odometry.set_wheel_separation(float(rospy.get_param('~wheel_separation', 0.450)))
+        self.odometry.set_ticks_per_meter(float(rospy.get_param('~ticks_per_meter', 362)))
+        self.odometry.set_name(self.name)
+        self.odometry.set_need_lo_info(self.need_log_info)
+        self.odometry.set_time(rospy.get_time())
 
-        rate = rospy.Rate(self.rate)
         while not rospy.is_shutdown():
             self.publish()
-            rate.sleep()
+            self.rate.sleep()
 
     def publish(self):
-        self.odometry.updatePose(rospy.get_time())
+        self.odometry.update_pose(rospy.get_time())
         now = rospy.get_rostime()
-        pose = self.odometry.getPose()
+        pose = self.odometry.get_pose()
 
         q = quaternion_from_euler(0, 0, pose.theta)
         self.tfPub.sendTransform(
@@ -231,13 +213,13 @@ class OdometryNode:
         pose.theta = yaw
 
         rospy.loginfo('Setting initial pose to %s', pose)
-        self.odometry.setPose(pose)
+        self.odometry.set_pose(pose)
 
-    def leftCallback(self, msg):
-        self.odometry.updateLeftWheel(msg.data)
+    def left_callback(self, msg):
+        self.odometry.update_left_wheel(msg.data)
 
-    def rightCallback(self, msg):
-        self.odometry.updateRightWheel(msg.data)
+    def right_callback(self, msg):
+        self.odometry.update_right_wheel(msg.data)
 
 
 if __name__ == '__main__':

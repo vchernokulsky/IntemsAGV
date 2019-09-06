@@ -2,61 +2,48 @@
 from __future__ import division
 
 import rospy
-from math import pi, asin
 import socket
-from geometry_msgs.msg import Twist, Pose
-from nav_msgs.msg import Odometry
 from std_msgs.msg import Int32
 
 
 class SocketClient:
     def __init__(self):
-        self.IP = '192.168.22.177'
-        self.PORT = 23
-        self.BUFFER_SIZE = 1024
+        self.IP = '000.000.000.000'
+        self.PORT = 0
+        self.MAX_VEL = 0
+        self.MIN_VEL = 0
+        self.name = ''
+        self.need_log_info = False
 
-        self.MAX_VEL = 30
-        self.MIN_VEL = 220
+        self.left_dir = 0
+        self.left_speed = 0
+        self.right_dir = 0
+        self.right_speed = 0
 
         self.STOP = 0
         self.FORWARD = 1
         self.BACKWARD = 2
+        self.BUFFER_SIZE = 1024
 
-        self.left_dir = self.STOP
-        self.left_speed = 0
-        self.right_dir = self.STOP
-        self.right_speed = 0
-
-    def print_speeds(self):
-        data_str = str(self.left_dir) + ";" + str(self.left_speed) + ";" + str(self.right_dir) + ";" + str(self.right_speed)
-        rospy.loginfo(data_str)
+    def speeds_str(self):
+        data_str = str(self.left_dir) + ";" + str(self.left_speed) + ";" + str(self.right_dir) + ";" \
+                   + str(self.right_speed)
+        return data_str
 
     def send_speeds(self):
-        # self.print_speeds()
         data = bytearray([self.left_dir, self.left_speed, self.right_dir, self.right_speed])
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            # rospy.loginfo("socket set")
-            # rospy.loginfo("socket: ip = %s; port = %s", self.IP, self.PORT)
+            if self.need_log_info:
+                rospy.loginfo("[%s] socket set", self.name.upper())
             s.connect((self.IP, self.PORT))
-            # rospy.loginfo("socket connected")
+            if self.need_log_info:
+                rospy.loginfo("[%s] socket connected", self.name.upper())
             s.sendall(data)
-            # rospy.loginfo("data sent")
+            if self.need_log_info:
+                rospy.loginfo("[%s] data sent: %s", self.name.upper(), self.speeds_str())
         except Exception as e:
-            rospy.loginfo("!!!")
-            rospy.loginfo(e)
-
-    def set_ip(self, ip):
-        self.IP = ip
-
-    def set_port(self, port):
-        self.PORT = port
-
-    def set_max_vel(self, vel):
-        self.MAX_VEL = vel
-
-    def set_min_vel(self, vel):
-        self.MIN_VEL = vel
+            rospy.logerr(e)
 
     def set_speeds(self, left, right):
         self.left_dir = self.get_direction(left)
@@ -85,38 +72,60 @@ class SocketClient:
             return self.MAX_VEL
         return int(value)
 
+    def set_ip(self, ip):
+        self.IP = ip
+
+    def set_port(self, port):
+        self.PORT = port
+
+    def set_max_vel(self, vel):
+        self.MAX_VEL = vel
+
+    def set_min_vel(self, vel):
+        self.MIN_VEL = vel
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_need_lo_info(self, need):
+        self.need_log_info = need
+
 
 class RobotNode:
-
     def __init__(self):
+        self.rate = 0.0
+        self.timeout = 0.0
+        self.name = ''
+        self.need_log_info = False
+
         self.leftSpeed = 0
         self.rightSpeed = 0
-        self.socketClient = SocketClient()
-
-        self.rate = 10.0
-        self.timeout = 0.5
         self.lastTime = 0
+        self.socketClient = SocketClient()
 
     def main(self):
         rospy.init_node('diff_drive_robot_send')
-        rospy.loginfo("{0} started".format(rospy.get_name()))
+        self.name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.name))
 
         rospy.Subscriber('lwheel_desired_rate', Int32, self.left_callback)
         rospy.Subscriber('rwheel_desired_rate', Int32, self.right_callback)
 
-        self.rate = float(rospy.get_param('~rate', 5.0))
-        self.timeout = float(rospy.get_param('~timeout', 0.5))
+        self.rate = rospy.Rate(float(rospy.get_param('~to_robot_rate', 5.0)))
+        self.timeout = float(rospy.get_param('~to_robot_timeout', 0.5))
+        self.need_log_info = float(rospy.get_param('~to_robot_need_log_info', False))
 
-        self.socketClient.set_ip(str(rospy.get_param('~ip', '192.168.22.177')))
-        self.socketClient.set_port(int(rospy.get_param('~port', 23)))
-        self.socketClient.set_max_vel(int(rospy.get_param('~max_vel', 220)))
-        self.socketClient.set_min_vel(int(rospy.get_param('~min_vel', 30)))
+        self.socketClient.set_ip(str(rospy.get_param('~diff_drive_ip', '192.168.22.177')))
+        self.socketClient.set_port(int(rospy.get_param('~diff_drive_port', 23)))
+        self.socketClient.set_max_vel(int(rospy.get_param('~max_voltage_value', 255)))
+        self.socketClient.set_min_vel(int(rospy.get_param('~min_voltage_value', 0)))
+        self.socketClient.set_name(self.name)
+        self.socketClient.set_need_lo_info(self.need_log_info)
 
-        rate = rospy.Rate(self.rate)
         self.lastTime = rospy.get_time()
         while not rospy.is_shutdown():
             self.publish()
-            rate.sleep()
+            self.rate.sleep()
 
     def publish(self):
         new_time = rospy.get_time()
@@ -129,12 +138,10 @@ class RobotNode:
     def left_callback(self, left_speed):
         self.leftSpeed = left_speed.data
         self.socketClient.set_speeds(self.leftSpeed, self.rightSpeed)
-        # self.publish()
 
     def right_callback(self, right_speed):
         self.rightSpeed = right_speed.data
         self.socketClient.set_speeds(self.leftSpeed, self.rightSpeed)
-        # self.publish()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,5 @@
+<launch>
+  <node name="diff_drive_robot_send" pkg="diff_drive" type="diff_drive_robot_send" output="screen">
+    <rosparam file="$(find diff_drive)/config/params.yaml"/>
+  </node>
+</launch>

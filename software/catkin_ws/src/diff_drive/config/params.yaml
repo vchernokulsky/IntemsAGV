@@ -1,0 +1,30 @@
+wheel_separation: 0.450
+max_lin_vel: 3.82
+max_ang_vel: 3.82
+max_voltage: 255
+ticks_per_meter: 362
+
+max_voltage_value: 256
+min_voltage_value: 0
+
+diff_drive_ip: '192.168.22.177'
+diff_drive_host: 23
+encoder_ip: '192.168.22.178'
+encoder_port: 23
+
+base_frame_id: 'base_link'
+odom_frame_id: 'odom'
+
+controller_rate: 5.0
+controller_timeout: 2.0
+controller_need_log_info: True
+
+to_robot_rate: 5.0
+to_robot_timeout: 2.0
+to_robot_need_log_info: True
+
+from_robot_rate: 10.0
+from_robot_need_log_info: True
+
+odom_rate: 5.0
+odom_need_log_info: True

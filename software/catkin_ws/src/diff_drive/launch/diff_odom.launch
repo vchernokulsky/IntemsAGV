@@ -1,0 +1,5 @@
+<launch>
+  <node name="diff_drive_odometry" pkg="diff_drive" type="diff_drive_odometry" output="screen">
+    <rosparam file="$(find diff_drive)/config/params.yaml"/>
+  </node>
+</launch>
