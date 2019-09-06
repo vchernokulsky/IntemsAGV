@@ -1,6 +1,9 @@
 <launch>
-
-  <!-- turtlebot3_teleop_key already has its own built in velocity smoother -->
   <node pkg="cube_robot_teleop" type="cube_robot_teleop_server.py" name="cube_robot_teleop_server"  output="screen">
+    <rosparam file="$(find cube_robot_teleop)/config/teleop_params.yaml"/>
+  </node>
+  <node pkg="cube_robot_teleop" type="cmd_vel_pub.py" name="cmd_vel_publisher"  output="screen">
+    <rosparam file="$(find cube_robot_teleop)/config/teleop_params.yaml"/>
+    <rosparam param="cmd_vel_pub_need_log_info">False</rosparam>
   </node>
 </launch>
