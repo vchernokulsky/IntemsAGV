@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import socket
+import time
 import cv2
 import rospy
-
 from sensor_msgs.msg import LaserScan
 
 import numpy as np
@@ -12,6 +13,9 @@ POINT_RADIUS = 1
 POINT_COLOR = [0, 0, 255]
 RANGE_SCALE = 100
 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
+s.bind(('192.168.55.100', 5000))
+s.listen(5)
 
 class Photographer(object):
     def __init__(self, angle_min, angle_max, angle_increment, range_min, range_max, shape):
@@ -45,24 +49,32 @@ class Photographer(object):
 
         return photo
 
-def callback(all):
-    photographer = Photographer(all.angle_min,
-                                        all.angle_max,
-                                        all.angle_increment,
-                                        all.range_min,
-                                        all.range_max,
+def cheaderback(header):
+    photographer = Photographer(header.angle_min,
+                                        header.angle_max,
+                                        header.angle_increment,
+                                        header.range_min,
+                                        header.range_max,
                                         shape=[1000, 1000, 3])
 
-    photo = photographer.take_photo(all.ranges)
-    cv2.imshow('lidar_map', photo)
-    cv2.waitKey(1)
+    frame = photographer.take_photo(header.ranges)
 
+    data = cv2.imencode('.jpg', frame)[1].tostring()
+    
+
+    conn, addr = s.accept()
+    
+    conn.sendall(str(len(data)))
+    conn.sendall(data)
+
+    conn.close()
+            
 def listener():
     rospy.init_node('listener', anonymous=True)
-
-    rospy.Subscriber("scan", LaserScan, callback)
-
+    
+    rospy.Subscriber("scan", LaserScan, cheaderback)
     rospy.spin()
 
 if __name__ == '__main__':
     listener()
+    s.close()
