@@ -9,7 +9,7 @@ project(nn_class_recognizer)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
-  sensors_msgs
+  sensor_msgs
   std_msgs
 )
 
