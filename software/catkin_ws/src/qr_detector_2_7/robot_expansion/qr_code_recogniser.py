@@ -1,7 +1,8 @@
 from pyzbar import pyzbar
 import cv2
 import os
-qr_cascade = cv2.CascadeClassifier('../Haar_cascade_training/data/cascade.xml')
+
+qr_cascade = cv2.CascadeClassifier('/home/intemslab/IntemsAGV/software/catkin_ws/src/qr_detector_2_7/Haar_cascade_training/data/cascade.xml')
 
 def get_barcodes_from_img(image):
     barcodes = pyzbar.decode(image)
@@ -12,7 +13,7 @@ def get_barcodes_from_img(image):
         barcode_type = barcode.type
         return barcode_type, barcode_data
 
-    return None
+    return None, None
 
 
 def get_centered_sample(frame, x, y):
@@ -29,8 +30,7 @@ def get_qr_code_samples(frame):
     for (x, y, w, h) in qr_codes:
         new_sample = get_centered_sample(frame, x, y)
         samples += [new_sample]
-        cv2.imshow('sample', new_sample)
-        cv2.waitKey(0)
+
     return samples
 
 if __name__ == "__main__":
@@ -58,3 +58,5 @@ if __name__ == "__main__":
     if barcode_info != None:
         barcode_type, barcode_data = barcode_info
         print("Information : \n Found Type : {} Barcode : {}".format(barcode_type, barcode_data))
+    else:
+        print('There is no barcode')
