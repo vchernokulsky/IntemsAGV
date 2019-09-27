@@ -1,4 +1,4 @@
-##What do you need to run this node?
+What do you need to run this node?
  
 To run this node you need to have 3 files:
  * "checkpoint" with this content as example:
