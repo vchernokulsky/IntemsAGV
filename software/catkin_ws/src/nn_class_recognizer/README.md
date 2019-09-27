@@ -11,7 +11,7 @@ To run this node you need to have 3 files:
     all_model_checkpoint_paths: "model_epoch500.ckpt"
 ```
  * "*.ckpt.data-00000-of-00001", for example, model_epoch500.ckpt.data-00000-of-00001.
- This file is generated after training NN.
+ This file is generated after training NN;
  
  * "*.ckpt.index",for example, model_epoch500.ckpt.index;
  This file is generated after training NN.
