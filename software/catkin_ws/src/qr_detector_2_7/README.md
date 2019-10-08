@@ -6,6 +6,7 @@ How to create your own cascade?
 
 The structure of working directory must be as below:
 ```
+    data
     neg
         <name of the image 1>.jpg
         ...
