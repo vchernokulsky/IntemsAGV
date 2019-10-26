@@ -1,0 +1,37 @@
+{
+  "appTitle": "Калибровка CV-алгоритмов",
+  "font": ["Verdana", 12],
+  "backButtonName": "Назад",
+  "saveButtonName":  "Сохранить",
+  "HomePage": {
+    "title": "Меню"
+  },
+  "QrCodePage": {
+    "title": "QR-код",
+    "table": {
+      "sharp": "гауссиан",
+      "erode": "эрозия",
+      "kernel": "ядро",
+      "kernelDivider": "делитель ядра",
+      "times": "количество итераций",
+      "color": "White",
+      "cellSize": [20, 0]
+    }
+  },
+  "LaneRecognitionPage": {
+    "title": "Распознавание дороги",
+    "table": {
+      "sharp": "гауссиан",
+      "kernel": "ядро",
+      "times": "количество итераций",
+      "kernelDivider": "делитель ядра",
+      "color": "White",
+      "laneColor": "Цвет дороги в HSV",
+      "widthLineRange": "Размах ширины линии",
+      "laneWidth": "Ширина дороги",
+      "laneWidthEps": "Eps ширины дороги",
+      "laneTreshold": "Порог цвета дороги",
+      "cellSize": [20, 0]
+    }
+  }
+}
