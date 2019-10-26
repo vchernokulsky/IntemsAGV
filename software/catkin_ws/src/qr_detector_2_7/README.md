@@ -1,6 +1,7 @@
 What do you need to run this node?
 
 To run this node you need to have 2 files with Haar cascades for QR code and barcode. For example, "cascade.xml".
+Also you need to give the right path to CV algorithm settings.
 
 How to create your own cascade?
 
