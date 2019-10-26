@@ -3,30 +3,31 @@ import robot_expansion.code_recogniser as recogn
 import rospy
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
-import cv2
+import message_filters
 from cv_bridge import CvBridge
+import cv2
 import json
 
 init_name = 'QR_code_publisher'
 topic_to_publish = 'QR_code_meaning'
-topic_to_subscribe = '/usb_cam/image_raw'
+topics_to_subscribe = ['/CV_settings','/usb_cam/image_raw']
 
 
 class QrDetectorNode(object):
 
     def __init__(self):
-	    pass
+        self.publisher = rospy.Publisher(topic_to_publish, String, queue_size=10)
 
-    def cheaderback(self, header):
+    def read_code(self, image):
         bridge = CvBridge()
-        frame = bridge.imgmsg_to_cv2(header, "bgr8")
+        frame = bridge.imgmsg_to_cv2(image, "bgr8")
 
         # start with qr_codes
         samples = recogn.get_qr_code_samples(frame.copy())
         barcode_info = (None, None)
         for sample in samples:
             barcode_info = recogn.get_codes_from_img(sample)
-            
+
             if barcode_info != None:
                 break
 
@@ -34,8 +35,8 @@ class QrDetectorNode(object):
         json_dict = json.dumps(barcode_dict)
         self.publisher.publish(json_dict)
 
-
         samples = recogn.get_barcode_samples(frame)
+
         barcode_info = (None, None)
         for sample in samples:
             barcode_info = recogn.get_codes_from_img(sample)
@@ -47,12 +48,19 @@ class QrDetectorNode(object):
         json_dict = json.dumps(barcode_dict)
         self.publisher.publish(json_dict)
 
+    @staticmethod
+    def check_settings(cv_settings_info):
+        if cv_settings_info.data == 'QrCode':
+            recogn.update_settings()
 
     def run(self):
         rospy.init_node(init_name)
-        self.publisher = rospy.Publisher(topic_to_publish, String, queue_size = 10)
-        rospy.Subscriber(topic_to_subscribe, Image, self.cheaderback)
-	rospy.spin()
+
+        rospy.Subscriber(topics_to_subscribe[0], String, self.check_settings)
+        rospy.Subscriber(topics_to_subscribe[1], Image, self.read_code)
+
+        rospy.spin()
+
 
 qr = QrDetectorNode()
 qr.run()
