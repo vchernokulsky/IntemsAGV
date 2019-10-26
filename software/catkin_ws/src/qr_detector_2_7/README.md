@@ -1,6 +1,6 @@
 What do you need to run this node?
 
-To run this node you need to have file with Haar cascade. For example, "cascade.xml".
+To run this node you need to have 2 files with Haar cascades for QR code and barcode. For example, "cascade.xml".
 
 How to create your own cascade?
 
