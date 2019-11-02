@@ -58,7 +58,7 @@ def get_qr_code_samples(frame):
     return samples
 
 
-def get_barcode_samples(frame):
+def get_preprocessed_img_for_barcode(frame):
     def sharp_with_gaussian(image):
 
         kernel = np.array(eval(settings['QrCode']['sharp']['kernel']), dtype=float) / eval(settings['QrCode']['sharp']['kernelDivider'])
@@ -75,12 +75,7 @@ def get_barcode_samples(frame):
                      np.array(eval(settings['QrCode']['erode']['kernel']), dtype=float) / eval(settings['QrCode']['erode']['kernelDivider']),
                      iterations=eval(settings['QrCode']['erode']['times']))
 
-    barcodes = barcode_cascade.detectMultiScale(gray, 50, 50)
-
-    samples = []
-    for (x, y, w, h) in barcodes:
-        new_sample = get_centered_sample(gray, x, y)
-        samples += [new_sample]
-
-    return samples
+    cv2.imshow('gray', gray)
+    cv2.waitKey(1)
+    return gray
 # unic functions end

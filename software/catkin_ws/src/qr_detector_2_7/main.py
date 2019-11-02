@@ -35,14 +35,8 @@ class QrDetectorNode(object):
         json_dict = json.dumps(barcode_dict)
         self.publisher.publish(json_dict)
 
-        samples = recogn.get_barcode_samples(frame)
-
-        barcode_info = (None, None)
-        for sample in samples:
-            barcode_info = recogn.get_codes_from_img(sample)
-
-            if barcode_info != None:
-                break
+        preprocessed = recogn.get_preprocessed_img_for_barcode(frame.copy())
+        barcode_info = recogn.get_codes_from_img(preprocessed)
 
         barcode_dict = {'barcode_type': barcode_info[0], 'barcode_data': barcode_info[1]}
         json_dict = json.dumps(barcode_dict)
