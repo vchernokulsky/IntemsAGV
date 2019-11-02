@@ -1,26 +1,5 @@
-"""This is an TensorFLow implementation of AlexNet by Alex Krizhevsky at all.
-
-Paper:
-(http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)
-
-Explanation can be found in my blog post:
-https://kratzert.github.io/2017/02/24/finetuning-alexnet-with-tensorflow.html
-
-This script enables finetuning AlexNet on any given Dataset with any number of
-classes. The structure of this script is strongly inspired by the fast.ai
-Deep Learning class by Jeremy Howard and Rachel Thomas, especially their vgg16
-finetuning script:
-Link:
-- https://github.com/fastai/courses/blob/master/deeplearning1/nbs/vgg16.py
-
-
-The pretrained weights can be downloaded here and should be placed in the same
-folder as this file:
-- http://www.cs.toronto.edu/~guerzhoy/tf_alexnet/
-
-@author: Frederik Kratzert (contact: f.kratzert(at)gmail.com)
-"""
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import tensorflow as tf
 import numpy as np
 
@@ -106,19 +85,19 @@ class AlexNet(object):
             # Check if layer should be trained from scratch
             if op_name not in self.SKIP_LAYER:
 
-                with tf.compat.v1.variable_scope(op_name, reuse=True):
+                with tf.variable_scope(op_name, reuse=True):
 
                     # Assign weights/biases to their corresponding tf variable
                     for data in weights_dict[op_name]:
 
                         # Biases
                         if len(data.shape) == 1:
-                            var = tf.compat.v1.get_variable ('biases', trainable=False)
+                            var = tf.get_variable('biases', trainable=False)
                             session.run(var.assign(data))
 
                         # Weights
                         else:
-                            var = tf.compat.v1.get_variable ('weights', trainable=False)
+                            var = tf.get_variable('weights', trainable=False)
                             session.run(var.assign(data))
 
 
@@ -136,13 +115,13 @@ def conv(x, filter_height, filter_width, num_filters, stride_y, stride_x, name,
                                          strides=[1, stride_y, stride_x, 1],
                                          padding=padding)
 
-    with tf.compat.v1.variable_scope(name) as scope:
+    with tf.variable_scope(name) as scope:
         # Create tf variables for the weights and biases of the conv layer
-        weights = tf.compat.v1.get_variable ('weights', shape=[filter_height,
+        weights = tf.get_variable('weights', shape=[filter_height,
                                                     filter_width,
                                                     input_channels/groups,
                                                     num_filters])
-        biases = tf.compat.v1.get_variable ('biases', shape=[num_filters])
+        biases = tf.get_variable('biases', shape=[num_filters])
 
     if groups == 1:
         conv = convolve(x, weights)
@@ -169,15 +148,15 @@ def conv(x, filter_height, filter_width, num_filters, stride_y, stride_x, name,
 
 def fc(x, num_in, num_out, name, relu=True):
     """Create a fully connected layer."""
-    with tf.compat.v1.variable_scope(name) as scope:
+    with tf.variable_scope(name) as scope:
 
         # Create tf variables for the weights and biases
-        weights = tf.compat.v1.get_variable ('weights', shape=[num_in, num_out],
+        weights = tf.get_variable('weights', shape=[num_in, num_out],
                                   trainable=True)
-        biases = tf.compat.v1.get_variable ('biases', [num_out], trainable=True)
+        biases = tf.get_variable('biases', [num_out], trainable=True)
 
         # Matrix multiply weights and inputs and add bias
-        act = tf.compat.v1.nn.xw_plus_b(x, weights, biases, name=scope.name)
+        act = tf.nn.xw_plus_b(x, weights, biases, name=scope.name)
 
     if relu:
         # Apply ReLu non linearity
@@ -190,7 +169,7 @@ def fc(x, num_in, num_out, name, relu=True):
 def max_pool(x, filter_height, filter_width, stride_y, stride_x, name,
              padding='SAME'):
     """Create a max pooling layer."""
-    return tf.nn.max_pool2d(x, ksize=[1, filter_height, filter_width, 1],
+    return tf.nn.max_pool(x, ksize=[1, filter_height, filter_width, 1],
                           strides=[1, stride_y, stride_x, 1],
                           padding=padding, name=name)
 
@@ -204,4 +183,4 @@ def lrn(x, radius, alpha, beta, name, bias=1.0):
 
 def dropout(x, keep_prob):
     """Create a dropout layer."""
-    return tf.nn.dropout(x, rate=keep_prob)
+    return tf.nn.dropout(x, keep_prob)
