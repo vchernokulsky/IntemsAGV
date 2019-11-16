@@ -8,11 +8,13 @@ Req - Request
 Resp - Response
 """
 
+from SLMP.SLMP_exception import PLCException
+
 from scapy.all import *
 
 READ_COMMAND = 0x0401
 WRITE_COMMAND = 0x1401
-FIRST_QUADRO_F_SUBHEADER_CONST = 0x5400
+FIRST_DUO_OF_SUBHEADER_CONST = 0x5400
 
 
 class SLMPRequest(Packet):
@@ -20,12 +22,12 @@ class SLMPRequest(Packet):
 
     fields_desc = [
         # Subheader starts
-        XShortField('FirstQuadroOfSubheader', 0x5000),
+        XShortField('FirstDuoOfSubheader', 0x5000),
         ConditionalField(ShortField('SerialNo', 0),
-                         lambda paket: paket.FirstQuadroOfSubheader == FIRST_QUADRO_F_SUBHEADER_CONST
+                         lambda paket: paket.FirstDuoOfSubheader == FIRST_DUO_OF_SUBHEADER_CONST
                          ),
-        ConditionalField(ShortField('ThirdQuadroOfSubheader', 0),
-                         lambda paket: paket.FirstQuadroOfSubheader == FIRST_QUADRO_F_SUBHEADER_CONST
+        ConditionalField(ShortField('ThirdDuoOfSubheader', 0),
+                         lambda paket: paket.FirstDuoOfSubheader == FIRST_DUO_OF_SUBHEADER_CONST
                          ),
         # Subheader ends
         ByteField('ReqDestNetNo',0),
@@ -40,7 +42,7 @@ class SLMPRequest(Packet):
         LEThreeBytesField('HeadDeviceNo',0x8),                        #  | = tmp. RequestDataLength = \
         ByteField('DeviceCode',0xA8),                                 #  |        sum([len(field) for field in tmp])
         ShortField('NoOfDevicePoints', 0x0100),                       #  |
-        ConditionalField(LEShortField('Value', 0),                      #  |
+        ConditionalField(LEShortField('Value', 0),                    #  |
                          lambda paket: paket.Command == WRITE_COMMAND #  |
                          )                                            # _|
         # Request data ends
@@ -58,29 +60,35 @@ class SLMPRequest(Packet):
         self.Value = value
 
     def add_serial_no(self, serial_no):
-        self.FirstQuadroOfSubheader = FIRST_QUADRO_F_SUBHEADER_CONST
+        self.FirstDuoOfSubheader = FIRST_DUO_OF_SUBHEADER_CONST
         self.SerialNo = serial_no
 
 
 class SLMPResponse(Packet):
     name = 'SLMP'
 
+    def __init__(self, data_in_bytes):
+        Packet.__init__(self, data_in_bytes)
+
+        if self.EndCode > 0x4000:
+            raise PLCException(self.EndCode)
+
     fields_desc = [
         # Subheader starts
-        XShortField('FirstQuadroOfSubheader', 0xD000),
+        XShortField('FirstDuoOfSubheader', 0xD000),
         ConditionalField(ShortField('SerialNo', 0),
-                         lambda paket: paket.FirstQuadroOfSubheader == 0xD400
+                         lambda paket: paket.FirstDuoOfSubheader == 0xD400
                          ),
-        ConditionalField(ShortField('ThirdQuadroOfSubheader', 0),
-                         lambda paket: paket.FirstQuadroOfSubheader == 0xD400
+        ConditionalField(ShortField('ThirdDuoOfSubheader', 0),
+                         lambda paket: paket.FirstDuoOfSubheader == 0xD400
                          ),
         # Subheader ends
         ByteField('ReqDestNetNo',0),
         XByteField('ReqDestStationNo', 0),
-        XShortField('Processor',0),
+        ShortField('Processor',0),
         ByteField('Reserved', 0),
         LEShortField('RespDataLength',0),
-        ShortField('EndCode', 0),
+        LEShortField('EndCode', 0),
         # Response data starts
         # if success:
         #     Successful case starts
