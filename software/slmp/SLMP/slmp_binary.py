@@ -21,14 +21,12 @@ class SLMPBinaryRequest(Packet):
     fields_desc = [
         *binary_common_block,
         ShortField('MonitoringTimer', 1),
-        # Request data starts
         LEShortField('Command', 0),
         ShortField('SubCommand', 0),
         LEThreeBytesField('HeadDeviceNo', 0x8),
         ByteField('DeviceCode', 0xA8),
         ShortField('NoOfDevicePoints', 0x0100),
         ConditionalField(LEShortField('Value', 0), lambda pkt: pkt.Command == WRITE_COMMAND)
-        # Request data ends
     ]
 
     def read(self, register):
@@ -59,9 +57,7 @@ class SLMPBinaryResponse(Packet):
     fields_desc = [
         *binary_common_block,
         LEShortField('EndCode', 0),
-        # if success:
         ConditionalField(LEShortField('Value', 0), lambda pkt: pkt.EndCode == 0),
-        # else:
         ConditionalField(ByteField('RespNetNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(ByteField('RespStationNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(XShortField('RespProcessor', 0), lambda pkt: pkt.EndCode != 0),
