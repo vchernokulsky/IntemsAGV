@@ -28,6 +28,9 @@ def ascii_to_int_16(value):
             not_30_index = i
             break
 
+    if not_30_index == -1:
+        return 0
+
     ascii_str = ''.join(list_of_ascii_digits[not_30_index:])
     
     value_16_str = '0x' + ''.join([chr(int(''.join([ascii_str[i: i + 2]]), 16)) for i in range(0, len(ascii_str), 2)])
@@ -35,5 +38,3 @@ def ascii_to_int_16(value):
     value_16 = int(value_16_str, 16)
 
     return value_16
-
-

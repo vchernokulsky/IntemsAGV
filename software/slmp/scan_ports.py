@@ -43,5 +43,5 @@ def udp_scan(target, ports):
                                 print(pkt.summary())
 
 
-syn_scan('192.168.88.2', [i for i in range(4900, 5100)])
-udp_scan('192.168.88.2', [i for i in range(4900, 5100)])
+syn_scan('192.168.88.2', [i for i in range(4995, 5005)])
+udp_scan('192.168.88.2', [i for i in range(4995, 5005)])

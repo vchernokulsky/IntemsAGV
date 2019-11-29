@@ -1,3 +1,8 @@
+import pytest
+from json import load
+
+from SLMP.SLMP import *
+
 """
 Скрипт тестирует корректное формирование SLMP-пакета.
 Проверяется:
@@ -5,12 +10,6 @@
 	2) значение поля RequestDataLength (ReqDataLength в коде),
 	3) состав пакета, полученного от устройства.
 """
-
-import pytest
-from json import load
-
-from SLMP.SLMP import *
-
 
 with open('test_suit.json', 'r', encoding='utf-8') as f:
 	test_suit = load(f)
