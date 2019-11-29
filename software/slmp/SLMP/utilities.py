@@ -1,6 +1,5 @@
 def create_ascii_zero_sequence(zero_count):
-    ascii_str = '0x' + ''.join(['30'] * zero_count)
-    return int(ascii_str, 16) if zero_count != 0 else ''
+    return int('0x' + ''.join(['30'] * zero_count), 16) if zero_count != 0 else ''
 
 
 def int_16_to_ascii(value, field_byte_size):

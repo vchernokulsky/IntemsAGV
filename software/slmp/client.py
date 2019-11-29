@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 from SLMP.slmp_ascii import *
 import socket
 from scapy.all import *
