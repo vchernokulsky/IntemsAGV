@@ -1,68 +1,50 @@
 {
-	"Int16ToASCII": [
-		["0x11", "4", "0x30303131"],
-		["0x11", "4", "0x30303131"],
-		["0x11", "4", "0x30303131"],
-		["0x11", "4", "0x30303131"],
-		["0x11", "4", "0x30303131"],
-		["0x11", "4", "0x30303131"]
-	],
-	"correctRequestPacketSize": [
-		["read", ["2901"], "21"],
-		["write", ["1000", "27"], "23"]
-	],
-	"correctValueOfRequestDataLengthField": [
-		["read", ["1000"], "0x0C"],
-		["write", ["1000", "27"], "0x0E"]
-	],
-	"correctResponsePacketConsistense": [
-		["\\xd0\\x00\\x00\\xff\\xff\\x03\\x00\\x04\\x00\\x00\\x00@\\x1f",
-			[
-			"FirstDuoOfSubheader",
-			"ReqDestNetNo",
-			"ReqDestStationNo",
-			"Processor",
-			"Reserved",
-			"RespDataLength",
-			"EndCode",
-			"Value"
-			]
-		],
-		["\\xd0\\x00\\x00\\xff\\xff\\x03\\x00\\x0b\\x00V\\xc0\\x00\\xff\\xff\\x03\\x00\\x01\\x04\\x00\\x00",
-			[
-			"FirstDuoOfSubheader",
-			"ReqDestNetNo",
-			"ReqDestStationNo",
-			"Processor",
-			"Reserved",
-			"RespDataLength",
-			"EndCode",
-			"RespNetNo",
-			"RespStationNo",
-			"Processor",
-			"Reserved",
-			"Command",
-			"SubCommand"
-			]
-		],
-		["\\xd4\\x00\\x00\\x08\\x00\\x00\\x00\\xff\\xff\\x03\\x00\\x0b\\x00V\\xc0\\x00\\xff\\xff\\x03\\x00\\x01\\x04\\x00\\x00",
-			[
-			"FirstDuoOfSubheader",
-			"SerialNo",
-			"ThirdDuoOfSubheader",
-			"ReqDestNetNo",
-			"ReqDestStationNo",
-			"Processor",
-			"Reserved",
-			"RespDataLength",
-			"EndCode",
-			"RespNetNo",
-			"RespStationNo",
-			"Processor",
-			"Reserved",
-			"Command",
-			"SubCommand"
-			]
-		]
-	]
+  "SLMPASCII":
+  {
+    "correctReqPacketSize":
+    [
+      ["read", ["0x100", "1"], "42", "24"],
+      ["read", ["0x100", "2"], "42", "24"],
+      ["write", ["0x100", "7"], "46", "28"],
+      ["write", ["0x100", "7777"], "46", "28"],
+      ["write", ["0x100", "1234123"], "50", "32"],
+      ["write", ["0x100", "12341234"], "50", "32"],
+      ["add_serial_no", ["0x2f"], "50", "0"]
+    ],
+    "correctRespPacketConsistenseFromByteSequense":
+    [
+      ["",
+        [
+
+        ],
+        [
+
+        ]
+      ]
+    ]
+  },
+  "SLMPBinary":
+  {
+    "correctReqPacketSize":
+    [
+      ["read", ["0x100", "1"], "", ""],
+      ["read", ["0x100", "2"], "", ""],
+      ["write", ["0x100", "7"], "", ""],
+      ["write", ["0x100", "7777"], "", ""],
+      ["write", ["0x100", "11111111"], "", ""],
+      ["write", ["0x100", "1234123"], "", ""],
+      ["add_serial_no", ["0x2f"], "50"]
+    ],
+    "correctRespPacketConsistenseFromByteSequense":
+    [
+      ["",
+        [
+
+        ],
+        [
+
+        ]
+      ]
+    ]
+  }
 }

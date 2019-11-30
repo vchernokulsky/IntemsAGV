@@ -36,9 +36,14 @@ class SLMPASCIIRequest(Packet):
         self.NoOfDevicePoints = int_16_to_ascii(no_of_device_points, 4)
 
     def write(self, register, value):
+        value_str = str(value)
+        remainder = len(value_str) % 4
+        if remainder != 0:
+            value_str += ''.join(['0'] * (4 - remainder))
+
         self.Command = int_16_to_ascii(WRITE_COMMAND, 4)
         self.DeviceCode_and_DeviceNo = concat_ascii_sequences(D_MEM['ascii'], int_16_to_ascii(register, 6))
-        self.Value = str(value)
+        self.Value = value_str
         self.DataLength = int_16_to_ascii(int(hex(24 + len(self.Value)), 16), 4)
         self.NoOfDevicePoints = int_16_to_ascii(len(self.Value) // 4, 4)
 

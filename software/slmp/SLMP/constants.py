@@ -2,8 +2,8 @@ from .utilities import create_ascii_zero_sequence
 
 READ_COMMAND = 0x0401
 WRITE_COMMAND = 0x1401
-SERIAL_NO_TRUE = 0x5400
-SERIAL_NO_FALSE = 0x5000
+SERIAL_NO_TRUE = 0x5400  # it means that there is serial no. (number) in packet
+SERIAL_NO_FALSE = 0x5000  # it means that there is no serial no. (number) in packet
 DEFAULT_STATION_NO = 0xff
 DEFAULT_PROCESSOR = 0x3ff
 D_MEM = {'binary': 0xA8, 'ascii': 0x442A}  # device code to read D area of memory
