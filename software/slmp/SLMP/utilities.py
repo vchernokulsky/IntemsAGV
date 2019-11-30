@@ -1,3 +1,6 @@
+import math
+
+
 def create_ascii_zero_sequence(zero_count):
     return int('0x' + ''.join(['30'] * zero_count), 16) if zero_count != 0 else ''
 
@@ -37,3 +40,17 @@ def ascii_to_int_16(value):
     value_16 = int(value_16_str, 16)
 
     return value_16
+
+
+def int_16_to_binary_le(value):
+    value_str = hex(value)[2:]
+
+    return b''.join([int(value_str[i: i + 4], 16).to_bytes(2, byteorder='little') for i in range(0, len(value_str), 4)])
+
+
+def binary_le_to_binary_be(value):
+    if not isinstance(value, bytes):
+        value = [value]
+
+    byte_list = list(map(lambda num: str(chr(num)), value))
+    return b''.join([''.join(byte_list[i: i + 2][::-1]).encode() for i in range(0, len(byte_list), 2)])

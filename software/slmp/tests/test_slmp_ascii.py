@@ -22,14 +22,9 @@ def test_correct_request_packet_size_0(test_case):
     assert pkt.DataLength == int_16_to_ascii(eval(data_length_field_value), 4)
 
 
-@pytest.mark.parametrize('test_case', test_suit['correctRespPacketConsistenseFromByteSequense'])
-def test_correct_request_packet_size_1(test_case):
-    byte_sequence, fields_to_be, fields_not_to_be = test_case
+@pytest.mark.parametrize('test_case', test_suit['correctBadRespPacketBehavior'])
+def test_correct_request_packet_size_2(test_case):
+    byte_sequence = test_case
 
-    pkt = SLMPASCIIResponse(byte_sequence.encode())
-
-    for field in fields_to_be:
-        assert hasattr(pkt, field)
-
-    for field in fields_not_to_be:
-        assert not hasattr(pkt, field)
+    with pytest.raises(PLCException):
+        pkt = SLMPASCIIResponse(eval(byte_sequence))

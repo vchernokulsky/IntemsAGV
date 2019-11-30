@@ -2,15 +2,16 @@ from scapy.all import *
 
 from .constants import *
 from .exceptions import *
+from .utilities import *
 
 binary_common_block = [
     XShortField('isSerialNo', SERIAL_NO_FALSE),
-    ConditionalField(ShortField('SerialNo', 0), lambda pkt: pkt.isSerialNo == SERIAL_NO_TRUE),
-    ConditionalField(ShortField('FieldIfSerialNo', 0), lambda pkt: pkt.isSerialNo == SERIAL_NO_TRUE),
+    ConditionalField(XShortField('SerialNo', 0), lambda pkt: pkt.isSerialNo == SERIAL_NO_TRUE),
+    ConditionalField(XShortField('FieldIfSerialNo', 0), lambda pkt: pkt.isSerialNo == SERIAL_NO_TRUE),
     ByteField('ReqDestNetNo', 0),
     XByteField('ReqDestStationNo', DEFAULT_STATION_NO),
-    ShortField('ReqProcessor', DEFAULT_PROCESSOR),
-    ByteField('ReqReserved', 0),
+    XLEShortField('ReqProcessor', DEFAULT_PROCESSOR),
+    XByteField('ReqReserved', 0),
     LEShortField('DataLength', 0)
 ]
 
@@ -21,24 +22,29 @@ class SLMPBinaryRequest(Packet):
     fields_desc = [
         *binary_common_block,
         ShortField('MonitoringTimer', 1),
-        LEShortField('Command', 0),
-        ShortField('SubCommand', 0),
-        LEThreeBytesField('HeadDeviceNo', 0x8),
-        ByteField('DeviceCode', D_MEM['binary']),
-        ShortField('NoOfDevicePoints', 0x0100),
-        ConditionalField(LEShortField('Value', 0), lambda pkt: pkt.Command == WRITE_COMMAND)
+        XLEShortField('Command', 0),
+        XLEShortField('SubCommand', 0),
+        LEX3BytesField('HeadDeviceNo', 0x8),
+        XByteField('DeviceCode', D_MEM['binary']),
+        XLEShortField('NoOfDevicePoints', 0x0100),
+        ConditionalField(StrField('Value', 0), lambda pkt: pkt.Command == WRITE_COMMAND)
     ]
 
-    def read(self, register):
+    def read(self, register, no_of_device_points):
         self.DataLength = 12
         self.Command = READ_COMMAND
         self.HeadDeviceNo = register
+        self.NoOfDevicePoints = no_of_device_points
 
     def write(self, register, value):
-        self.DataLength = 14
         self.Command = WRITE_COMMAND
         self.HeadDeviceNo = register
-        self.Value = value
+        self.Value = int_16_to_binary_le(value)
+
+        num_of_digits = len(list(self.Value))
+
+        self.DataLength = 12 + num_of_digits
+        self.NoOfDevicePoints = num_of_digits // 2
 
     def add_serial_no(self, serial_no):
         self.isSerialNo = SERIAL_NO_TRUE
@@ -54,10 +60,13 @@ class SLMPBinaryResponse(Packet):
         if self.EndCode > END_CODE_THRESHOLD:
             raise PLCException(self.EndCode)
 
+    def decode_value_field_from_le(self):
+        return binary_le_to_binary_be(self.Value)
+
     fields_desc = [
         *binary_common_block,
         LEShortField('EndCode', 0),
-        ConditionalField(LEShortField('Value', 0), lambda pkt: pkt.EndCode == 0),
+        ConditionalField(StrField('Value', 0), lambda pkt: pkt.EndCode == 0),
         ConditionalField(ByteField('RespNetNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(ByteField('RespStationNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(XShortField('RespProcessor', 0), lambda pkt: pkt.EndCode != 0),

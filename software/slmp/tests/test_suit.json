@@ -11,16 +11,9 @@
       ["write", ["0x100", "12341234"], "50", "32"],
       ["add_serial_no", ["0x2f"], "50", "0"]
     ],
-    "correctRespPacketConsistenseFromByteSequense":
-    [
-      ["",
-        [
 
-        ],
-        [
-
-        ]
-      ]
+    "correctBadRespPacketBehavior": [
+      "b'D00000FF03FF000016C05000FF03FF0014010000'"
     ]
   },
   "SLMPBinary":
@@ -35,7 +28,7 @@
       ["write", ["0x100", "1234123"], "", ""],
       ["add_serial_no", ["0x2f"], "50"]
     ],
-    "correctRespPacketConsistenseFromByteSequense":
+    "correctGoodRespPacketConsistenseFromByteSequence":
     [
       ["",
         [
