@@ -3,7 +3,7 @@ import socket
 from scapy.all import *
 
 HOST = '192.168.88.2'
-PORT = 5002  # 5002 if 192.168.55.100
+PORT = 5003  # 5002 if 192.168.55.100
 REGISTER = 100
 
 
@@ -23,4 +23,4 @@ print('got: ', data, '\n')
 res = SLMPBinaryResponse(data)
 print(res.show())
 
-print(res.decode_value_field_from_le())
+print(res.decode_value_field_from_le().decode())
