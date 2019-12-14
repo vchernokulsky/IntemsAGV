@@ -22,8 +22,7 @@ types_and_sizes = {  # size in words, one word of controller is short
     'float': 2,
     'signed double word': 2,
     'unsigned double word': 2,
-    'string': 0,
-    'time': 0,
+    'string': 1,
     'boolean': 1
 }
 
@@ -50,15 +49,19 @@ class SLMPBinaryRequest(Packet):
                          lambda pkt: pkt.Command == WRITE_COMMAND and pkt.value_type == 'signed double word'),
         ConditionalField(LEIntField('Value', 0),
                          lambda pkt: pkt.Command == WRITE_COMMAND and pkt.value_type == 'unsigned double word'),
+        ConditionalField(StrField('Value', ''),
+                         lambda pkt: pkt.Command == WRITE_COMMAND and pkt.value_type == 'string'),
+        ConditionalField(BooleanField('Value', False),
+                         lambda pkt: pkt.Command == WRITE_COMMAND and pkt.value_type == 'boolean'),
     ]
 
-    def initialize_request(self, register, command, value, value_type):
+    def initialize_request(self, register, device_code, command, value, value_type):
         SLMPBinaryRequest.value_type = value_type
 
         self.Command = command
         self.Value = value
-        self.HeadDeviceNo = register
-
+        self.DeviceCode= device_code
+        self.HeadDeviceNo = int(str(register), 8) if device_code == Y_MEM['binary'] else register
         self.NoOfDevicePoints = types_and_sizes[value_type]
         self.DataLength = 12 + (self.NoOfDevicePoints * 2 if command == WRITE_COMMAND else 0)
 
@@ -75,12 +78,14 @@ class SLMPBinaryResponse(Packet):
         ConditionalField(LEShortField('Value', 0), lambda pkt: pkt.EndCode == 0 and pkt.value_type == 'unsigned word'),
         ConditionalField(LESignedIntField('Value', 0), lambda pkt: pkt.EndCode == 0 and pkt.value_type == 'signed double word'),
         ConditionalField(LEIntField('Value', 0), lambda pkt: pkt.EndCode == 0 and pkt.value_type == 'unsigned double word'),
+        ConditionalField(BooleanField('Value', False), lambda pkt: pkt.EndCode == 0 and pkt.value_type == 'boolean'),
         ConditionalField(ByteField('RespNetNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(ByteField('RespStationNo', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(XShortField('RespProcessor', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(ByteField('RespReserved', 0), lambda pkt: pkt.EndCode != 0),
         ConditionalField(XLEShortField('Command', 0), lambda pkt: pkt.EndCode != 0),
-        ConditionalField(XLEShortField('SubCommand', 0), lambda pkt: pkt.EndCode != 0)
+        ConditionalField(XLEShortField('SubCommand', 0), lambda pkt: pkt.EndCode != 0),
+        ConditionalField(StrField('Value', ''), lambda pkt: pkt.EndCode != 0 and pkt.value_type == 'string'),
     ]
 
     def __init__(self, data_in_bytes, value_type):

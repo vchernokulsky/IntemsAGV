@@ -7,6 +7,7 @@ SERIAL_NO_FALSE = 0x5000  # it means that there is no serial no. (number) in pac
 DEFAULT_STATION_NO = 0xff
 DEFAULT_PROCESSOR = 0x3ff
 D_MEM = {'binary': 0xa8, 'ascii': 0x442a}  # device code to read D area of memory
+Y_MEM = {'binary': 0x9d}
 END_CODE_THRESHOLD = 0x4000  # code which upper 0x4000 connected with slmp functions
 ASCII_ZERO_4_BYTE = create_ascii_zero_sequence(4)  # creates sequence of 4 ascii zeros
 ASCII_ZERO_2_BYTE = create_ascii_zero_sequence(2)  # creates sequence of 2 ascii zeros
