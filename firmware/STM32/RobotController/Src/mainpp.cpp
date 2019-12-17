@@ -1,10 +1,13 @@
 #include <mainpp.h>
+#include <string>
 #include "UartHelper.h"
+#include "SocketClient.h"
 
 
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
+SocketClient socket_client;
 
 
 void StartSecondTask(void const * argument)
@@ -22,17 +25,31 @@ void StartUARTTask(void const * argument)
 	uart_helper.UARTTask();
 }
 
+void StartSocketSendTask(void const * argument){
+	std::string str = "1234";
+	  for(;;)
+	  {
+		  socket_client.socket_send(str.c_str(), str.length());
+		  osDelay(100);
+	  }
+//	vTaskDelete( NULL );
+}
+
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1){
 	  huart = main_huart;
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
-
+	  socket_client.init(hspi, &uart_helper);
+	  socket_client.socket_connect();
 
 	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
+
+	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketSendTask), NULL);
 
 
 }

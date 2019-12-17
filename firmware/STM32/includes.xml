@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="s,S">
+<includepath workspace_path="true">/RobotController/Lib/ioLibrary_Driver/Ethernet</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Ethernet</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DHCP</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DNS</includepath>
+
+</language>
+<language name="C Source File">
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>Inc</includepath>
+<includepath>Drivers/CMSIS/Include</includepath>
+<includepath>Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
+<includepath>Drivers/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath workspace_path="true">/RobotController/Lib/ioLibrary_Driver/Ethernet</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Ethernet</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DHCP</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DNS</includepath>
+
+</language>
+<language name="C++ Source File">
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/include</includepath>
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F</includepath>
+<includepath>Inc</includepath>
+<includepath>Drivers/CMSIS/Include</includepath>
+<includepath>Drivers/STM32F4xx_HAL_Driver/Inc</includepath>
+<includepath>Drivers/CMSIS/Device/ST/STM32F4xx/Include</includepath>
+<includepath>Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS</includepath>
+<includepath>Drivers/STM32F4xx_HAL_Driver/Inc/Legacy</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Ethernet</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DHCP</includepath>
+<includepath>/home/developer/projects/IntemsAGV/firmware/STM32/RobotController/Lib/ioLibrary_Driver/Internet/DNS</includepath>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="s,S">
+
+</language>
+<language name="C Source File">
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>STM32F401xE</name><value/>
+</macro>
+<macro>
+<name>DEBUG</name><value/>
+</macro>
+
+</language>
+<language name="C++ Source File">
+<macro>
+<name>USE_HAL_DRIVER</name><value/>
+</macro>
+<macro>
+<name>STM32F401xE</name><value/>
+</macro>
+<macro>
+<name>DEBUG</name><value/>
+</macro>
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>
