@@ -27,8 +27,14 @@ void StartUARTTask(void const * argument)
 
 void StartSocketSendTask(void const * argument){
 	std::string str = "1234";
+	 const static uint16_t rbuflen = 128;
+	uint8_t rbuf[rbuflen];
+	uint16_t Size = 5;
+	uint32_t* rdmaInd;
 	  for(;;)
 	  {
+		  socket_client.socket_receive(rbuf, Size, rdmaInd);
+		  uart_helper.printf(rbuf);
 		  socket_client.socket_send(str.c_str(), str.length());
 		  osDelay(100);
 	  }
