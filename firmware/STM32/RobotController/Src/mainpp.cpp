@@ -2,12 +2,42 @@
 #include <string>
 #include "UartHelper.h"
 #include "SocketClient.h"
+#include <ros.h>
+#include <std_msgs/String.h>
 
 
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient socket_client;
+
+ros::NodeHandle nh;
+
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
+
+void setupRos(void)
+{
+  nh.initNode();
+  nh.advertise(chatter);
+
+}
+
+
+void rosLoop(void)
+{
+  str_msg.data = "Hello world!";
+  chatter.publish(&str_msg);
+  nh.spinOnce();
+  osDelay(500);
+}
+
+void StartRosTask(void const * argument){
+
+	for(;;){
+		rosLoop();
+	}
+}
 
 
 void StartSecondTask(void const * argument)
@@ -48,14 +78,19 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1){
 	  socket_client.init(hspi, &uart_helper);
 	  socket_client.socket_connect();
 
+	  setupRos();
+
 	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
 
-	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(SocketSendTask), NULL);
+//	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(SocketSendTask), NULL);
+
+	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(RosTask), NULL);
 
 
 }
