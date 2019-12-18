@@ -1,0 +1,2803 @@
+{
+    "connectors": [
+        {
+            "id": 1,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10000",
+            "bit": 0,
+            "name": "bRFID_Authorization_Enable",
+            "description": "RFID- \u043c\u0435\u0442\u043a\u0430 \u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043e"
+        },
+        {
+            "id": 2,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10000",
+            "bit": 1,
+            "name": "bRFID_LogOFFEnabled",
+            "description": "\u041e\u0442\u043c\u0435\u043d\u0430 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438"
+        },
+        {
+            "id": 3,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10000",
+            "bit": 2,
+            "name": "bLifeBitSend",
+            "description": "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0441\u0432\u044f\u0437\u0438, \u043e\u0442\u043f\u0440\u0430\u0432\u0438\u043b\u0438."
+        },
+        {
+            "id": 4,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10000",
+            "bit": 3,
+            "name": "bTandemSelected",
+            "description": "\u0412\u044b\u0431\u0440\u0430\u043d \u0440\u0435\u0436\u0438\u043c \u0422\u0430\u043d\u0434\u0435\u043c"
+        },
+        {
+            "id": 5,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10001",
+            "bit": 0,
+            "name": "bRFID_Authorization_Requst",
+            "description": "\u0417\u0430\u043f\u0440\u043e\u0441 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438, \u043d\u0430 \u0440\u0430\u0434\u0438\u043e \u043f\u0443\u043b\u044c\u0442\u0435 \u043d\u0430\u0447\u0438\u043d\u0430\u0435\u0442 \u043c\u0438\u0433\u0430\u0442\u044c \u043b\u0430\u043c\u043f\u043e\u0447\u043a\u0430"
+        },
+        {
+            "id": 6,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10001",
+            "bit": 1,
+            "name": "bRFID_RadioPU",
+            "description": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u0440\u0438\u0448\u043b\u0430 \u043e\u0442 \u0440\u0430\u0434\u0438\u043e\u043f\u0443\u043b\u044c\u0442\u0430"
+        },
+        {
+            "id": 7,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10001",
+            "bit": 2,
+            "name": "bRFID_CablePU",
+            "description": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u0440\u0438\u0448\u043b\u0430 \u043e\u0442 \u043a\u0430\u0431\u0435\u043b\u044c\u043d\u043e\u0433\u043e \u043f\u0443\u043b\u044c\u0442\u0430"
+        },
+        {
+            "id": 8,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10001",
+            "bit": 3,
+            "name": "bRFID_LogOffRequest",
+            "description": "\u0417\u0430\u043f\u0440\u043e\u0441 \u043e\u0442\u043c\u0435\u043d\u044b \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438"
+        },
+        {
+            "id": 9,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10001",
+            "bit": 4,
+            "name": "bLifeBitResiv",
+            "description": "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0441\u0432\u044f\u0437\u0438, \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438."
+        },
+        {
+            "id": 10,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10002",
+            "threshold": "50",
+            "name": "wOGP1_mass",
+            "description": "\u041c\u0430\u0441\u0441\u0430 \u0433\u0440\u0443\u0437\u0430 \u0434\u043b\u044f \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21161"
+        },
+        {
+            "id": 11,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10003",
+            "threshold": "50",
+            "name": "wOGP2_mass",
+            "description": "\u041c\u0430\u0441\u0441\u0430 \u0433\u0440\u0443\u0437\u0430 \u0434\u043b\u044f \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21162"
+        },
+        {
+            "id": 12,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10004",
+            "threshold": "1",
+            "name": "wTerm",
+            "description": "\u041d\u043e\u043c\u0435\u0440 \u0446\u0438\u043a\u043b\u0430 \u043f\u043e\u0434\u044a\u0435\u043c\u0430"
+        },
+        {
+            "id": 16,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 17,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 18,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 19,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 20,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 21,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 22,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 23,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 24,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 25,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 26,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 27,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 28,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 29,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 30,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10100",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 31,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10102",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 32,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10103",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 33,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10101",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 34,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10104",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 35,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10105",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 36,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10106",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 37,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10107",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 38,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 39,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 40,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 41,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 42,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 43,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 44,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 45,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 46,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 47,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 48,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 49,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 50,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 51,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 52,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10110",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 53,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10112",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 54,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10113",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 55,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10111",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 56,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10114",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 57,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10115",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 58,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10116",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 59,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10117",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 60,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10121",
+            "bit": 0,
+            "name": "forward",
+            "description": ""
+        },
+        {
+            "id": 61,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10121",
+            "bit": 1,
+            "name": "backward",
+            "description": ""
+        },
+        {
+            "id": 62,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10120",
+            "threshold": "1",
+            "name": "speed",
+            "description": ""
+        },
+        {
+            "id": 66,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 67,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 68,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 69,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 70,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 71,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 72,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 73,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 74,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 75,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 76,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 77,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 78,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 79,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 80,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10200",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 81,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10202",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 82,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10203",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 83,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10201",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 84,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10204",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 85,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10205",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 86,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10206",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 87,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10207",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 88,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10211",
+            "bit": 0,
+            "name": "up",
+            "description": ""
+        },
+        {
+            "id": 89,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10211",
+            "bit": 1,
+            "name": "down",
+            "description": ""
+        },
+        {
+            "id": 90,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10210",
+            "threshold": "1",
+            "name": "speed",
+            "description": ""
+        },
+        {
+            "id": 91,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10212",
+            "threshold": "50",
+            "name": "mass",
+            "description": ""
+        },
+        {
+            "id": 92,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10213",
+            "threshold": "10",
+            "name": "length",
+            "description": ""
+        },
+        {
+            "id": 96,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 97,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 98,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 99,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 100,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 101,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 102,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 103,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 104,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 105,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 106,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 107,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 108,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 109,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 110,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10300",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 111,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10302",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 112,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10303",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 113,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10301",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 114,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10304",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 115,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10305",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 116,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10306",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 117,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10307",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 118,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10311",
+            "bit": 0,
+            "name": "up",
+            "description": ""
+        },
+        {
+            "id": 119,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10311",
+            "bit": 1,
+            "name": "down",
+            "description": ""
+        },
+        {
+            "id": 120,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10310",
+            "threshold": "1",
+            "name": "speed",
+            "description": ""
+        },
+        {
+            "id": 121,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10312",
+            "threshold": "50",
+            "name": "mass",
+            "description": ""
+        },
+        {
+            "id": 122,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10313",
+            "threshold": "10",
+            "name": "length",
+            "description": ""
+        },
+        {
+            "id": 126,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 127,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 128,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 129,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 130,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 131,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 132,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 133,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 134,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 135,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 136,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 137,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 138,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 139,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 140,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10400",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 141,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10402",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 142,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10403",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 143,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10401",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 144,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10404",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 145,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10405",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 146,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10406",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 147,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10407",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 148,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10411",
+            "bit": 0,
+            "name": "forward",
+            "description": ""
+        },
+        {
+            "id": 149,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10410",
+            "threshold": "1",
+            "name": "speed",
+            "description": ""
+        },
+        {
+            "id": 150,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10411",
+            "bit": 1,
+            "name": "backward",
+            "description": ""
+        },
+        {
+            "id": 154,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 4,
+            "name": "b05_Reserve",
+            "description": ""
+        },
+        {
+            "id": 155,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 5,
+            "name": "b06_Reserve",
+            "description": ""
+        },
+        {
+            "id": 156,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 6,
+            "name": "b07_Reserve",
+            "description": ""
+        },
+        {
+            "id": 157,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 7,
+            "name": "b08_Reserve",
+            "description": ""
+        },
+        {
+            "id": 158,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 0,
+            "name": "b00_ForwardRunning",
+            "description": ""
+        },
+        {
+            "id": 159,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 1,
+            "name": "b01_ReverseRunning",
+            "description": ""
+        },
+        {
+            "id": 160,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 2,
+            "name": "b03_ErrorStatusFlag",
+            "description": ""
+        },
+        {
+            "id": 161,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 3,
+            "name": "b04_RemoteStationReady",
+            "description": ""
+        },
+        {
+            "id": 162,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 8,
+            "name": "b09_Reserve",
+            "description": ""
+        },
+        {
+            "id": 163,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 9,
+            "name": "b0A_Reserve",
+            "description": ""
+        },
+        {
+            "id": 164,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 10,
+            "name": "b0B_Reserve",
+            "description": ""
+        },
+        {
+            "id": 165,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 11,
+            "name": "b0C_Reserve",
+            "description": ""
+        },
+        {
+            "id": 166,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 12,
+            "name": "b0D_Reserve",
+            "description": ""
+        },
+        {
+            "id": 167,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 13,
+            "name": "b0E_Reserve",
+            "description": ""
+        },
+        {
+            "id": 168,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10500",
+            "bit": 14,
+            "name": "b0F_Reserve",
+            "description": ""
+        },
+        {
+            "id": 169,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10502",
+            "threshold": "1",
+            "name": "w01_Current",
+            "description": ""
+        },
+        {
+            "id": 170,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10503",
+            "threshold": "1",
+            "name": "w02_Torque",
+            "description": ""
+        },
+        {
+            "id": 171,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10501",
+            "threshold": "1",
+            "name": "w00_Frequency",
+            "description": ""
+        },
+        {
+            "id": 172,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10504",
+            "threshold": "1",
+            "name": "w03_Encoder",
+            "description": ""
+        },
+        {
+            "id": 173,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10505",
+            "threshold": "1",
+            "name": "w04_FifthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 174,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10506",
+            "threshold": "1",
+            "name": "w05_SixthMonitorValue",
+            "description": ""
+        },
+        {
+            "id": 175,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10507",
+            "threshold": "1",
+            "name": "w06_FaultHistoryNo_FaultData",
+            "description": ""
+        },
+        {
+            "id": 176,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10511",
+            "bit": 0,
+            "name": "forward",
+            "description": ""
+        },
+        {
+            "id": 177,
+            "type": "analog",
+            "direction": "input",
+            "register": "D10510",
+            "threshold": "1",
+            "name": "speed",
+            "description": ""
+        },
+        {
+            "id": 178,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10511",
+            "bit": 1,
+            "name": "backward",
+            "description": ""
+        },
+        {
+            "id": 181,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 0,
+            "name": "bServiceMode",
+            "description": "\u0421\u0435\u0440\u0432\u0438\u0441\u043d\u044b\u0439 \u043a\u043b\u044e\u0447 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \"\u0421\u0415\u0420\u0412\u0418\u0421\" (\u0440\u0430\u0431\u043e\u0442\u0430 \u0431\u0435\u0437 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438)"
+        },
+        {
+            "id": 182,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 1,
+            "name": "bAntiSwayOn",
+            "description": "\u041f\u0440\u043e\u0442\u0438\u0432\u043e\u0440\u0430\u0441\u043a\u0430\u0447\u0438\u0432\u0430\u043d\u0438\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e"
+        },
+        {
+            "id": 183,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 2,
+            "name": "bAlarmUpDownCargoAntiSway",
+            "description": "\u041a\u043b\u044e\u0447 \u0431\u044b\u043b \u043f\u0435\u0440\u0435\u0432\u0435\u0434\u0435\u043d \u0432 ON, \u043d\u043e \u0437\u0430\u043f\u0438\u0441\u044c \u0432 \u0438\u043d\u0432\u0435\u0440\u0442\u043e\u0440 \u043d\u0435 \u043f\u0440\u043e\u0448\u043b\u0430 "
+        },
+        {
+            "id": 184,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 3,
+            "name": "bAlarmNotSinchroCar1Car2Backward",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0442\u0435\u043b\u0435\u0436\u0435\u043a \u043d\u0430\u0437\u0430\u0434"
+        },
+        {
+            "id": 185,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 4,
+            "name": "bAlarmNotSinchroCar1Car2Forward",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0442\u0435\u043b\u0435\u0436\u0435\u043a \u0432\u043f\u0435\u0440\u0451\u0434"
+        },
+        {
+            "id": 186,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 5,
+            "name": "bAlarmNotSinchroUp",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u044b\u0439 \u043f\u043e\u0434\u044a\u0451\u043c"
+        },
+        {
+            "id": 187,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 6,
+            "name": "bAlarmNotSinchroDown",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u044b\u0439 \u0441\u043f\u0443\u0441\u043a"
+        },
+        {
+            "id": 188,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 7,
+            "name": "bAlarmNotSinchroLeft",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u043e\u0435 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u043c\u043e\u0441\u0442\u0430 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 189,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10011",
+            "bit": 8,
+            "name": "bAlarmNotSinchroRight",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u043e\u0435 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u043c\u043e\u0441\u0442\u0430 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 190,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 0,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 191,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 1,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 192,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 2,
+            "name": "bHighTermalMotor3",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M3 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 193,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 3,
+            "name": "bHighTermalMotor4",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M4 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 194,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 4,
+            "name": "bTR_4KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 195,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 5,
+            "name": "bTR_4KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 196,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 6,
+            "name": "bTR_4KK3",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK3 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M3 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 197,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 7,
+            "name": "bTR_4KK4",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK4 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M4 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 198,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 8,
+            "name": "bMotorCB1",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 4QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 199,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 9,
+            "name": "bMotorCB2",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 4QF2 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 200,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 10,
+            "name": "bBrakeCB1",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 4QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 201,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 11,
+            "name": "bBrakeCB2",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 4QF13 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 202,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 12,
+            "name": "bMotorLock12",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 4M1 \u0438 4M2 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 203,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 13,
+            "name": "bMotorLock23",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 4M3 \u0438 4M4 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 204,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 14,
+            "name": "bInv_4UZ1_NotRUN",
+            "description": "\u041f\u0427 4UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 205,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10020",
+            "bit": 15,
+            "name": "bInv_4UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 4UZ1"
+        },
+        {
+            "id": 206,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 0,
+            "name": "bInv_4UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 4UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 207,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 1,
+            "name": "bInv_4UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 4UZ1"
+        },
+        {
+            "id": 208,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 2,
+            "name": "bInv_4UZ2_NotRUN",
+            "description": "\u041f\u0427 4UZ2 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 209,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 3,
+            "name": "bInv_4UZ2_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 4UZ2"
+        },
+        {
+            "id": 210,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 4,
+            "name": "bInv_4UZ2_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 4UZ2  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 211,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 5,
+            "name": "bInv_4UZ2_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 4UZ2"
+        },
+        {
+            "id": 212,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 213,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10021",
+            "bit": 7,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 214,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10022",
+            "bit": 0,
+            "name": "bBackSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u0437\u0430\u0434."
+        },
+        {
+            "id": 215,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10022",
+            "bit": 1,
+            "name": "bFrontSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f  \u0432\u043f\u0435\u0440\u0435\u0434."
+        },
+        {
+            "id": 216,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10022",
+            "bit": 2,
+            "name": "bBackLimit",
+            "description": "\u0414\u043e\u0441\u0442\u0438\u0433\u043d\u0443\u0442 \u043f\u0440\u0435\u0434\u0435\u043b \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u043c\u043e\u0441\u0442\u0430 \u043a\u0440\u0430\u043d\u0430 \u043d\u0430\u0437\u0430\u0434."
+        },
+        {
+            "id": 217,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10022",
+            "bit": 3,
+            "name": "bFrontLimit",
+            "description": "\u0414\u043e\u0441\u0442\u0438\u0433\u043d\u0443\u0442 \u043f\u0440\u0435\u0434\u0435\u043b \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u043c\u043e\u0441\u0442\u0430 \u043a\u0440\u0430\u043d\u0430 \u0432\u043f\u0435\u0440\u0435\u0434."
+        },
+        {
+            "id": 218,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 0,
+            "name": "bHighTermalMotor",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 11M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 219,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 1,
+            "name": "bTR_x1KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 11KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u043f\u043e\u0434\u044a\u0435\u043c\u0430 x1M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 220,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 2,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 11QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 221,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 3,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 11QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 222,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 4,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 11M1 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 223,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 5,
+            "name": "bInv_x1UZ1_NotRUN",
+            "description": "\u041f\u0427 11UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 224,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 6,
+            "name": "bInv_x1UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 11UZ1"
+        },
+        {
+            "id": 225,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 7,
+            "name": "bInv_x1UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 11UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 226,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 8,
+            "name": "bInv_x1UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 11UZ1"
+        },
+        {
+            "id": 227,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 9,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 228,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 10,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 229,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10030",
+            "bit": 11,
+            "name": "bFunCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u043e\u0431\u0434\u0443\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 230,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10032",
+            "bit": 0,
+            "name": "bUpSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445"
+        },
+        {
+            "id": 231,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10032",
+            "bit": 1,
+            "name": "bDownSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 232,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10032",
+            "bit": 2,
+            "name": "bUpDownnDisable",
+            "description": "\u0423\u043a\u043b\u0430\u0434\u0447\u0438\u043a \u043a\u0430\u043d\u0430\u0442\u0430 \u0432\u0437\u0432\u0435\u0434\u0451\u043d"
+        },
+        {
+            "id": 233,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10032",
+            "bit": 3,
+            "name": "bUpLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445 "
+        },
+        {
+            "id": 234,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10032",
+            "bit": 4,
+            "name": "bDownLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 235,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10033",
+            "bit": 0,
+            "name": "bHighWeght",
+            "description": "\u0412\u0435\u0441 \u0433\u0440\u0443\u0437\u0430 \u0431\u043b\u0438\u0437\u043e\u043a \u043a \u043d\u043e\u043c\u0438\u043d\u0430\u043b\u044c\u043d\u043e\u043c\u0443."
+        },
+        {
+            "id": 236,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10033",
+            "bit": 1,
+            "name": "bLimitWeght",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u041e\u0413\u041f. \u041f\u0440\u0435\u0432\u044b\u0448\u0435\u043d\u0430 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u0437\u043e\u043f\u043e\u0434\u044a\u0451\u043c\u043d\u043e\u0441\u0442\u044c."
+        },
+        {
+            "id": 237,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10033",
+            "bit": 2,
+            "name": "bOGP",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u044b\u0439 \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445."
+        },
+        {
+            "id": 238,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 0,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 239,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 1,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 240,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 2,
+            "name": "bTR_x3KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 13KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 241,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 3,
+            "name": "bTR_x3KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 13KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438- \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 242,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 4,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 13QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 243,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 5,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 13QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 244,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 245,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 7,
+            "name": "bInv_x3UZ1_NotRUN",
+            "description": "\u041f\u0427 13UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 246,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 8,
+            "name": "bInv_x3UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 13UZ1"
+        },
+        {
+            "id": 247,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 9,
+            "name": "bInv_x3UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 13UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 248,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 10,
+            "name": "bInv_x3UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 13UZ1"
+        },
+        {
+            "id": 249,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 11,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 250,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10040",
+            "bit": 12,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 251,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10042",
+            "bit": 0,
+            "name": "bRghtSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 252,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10042",
+            "bit": 1,
+            "name": "bLeftSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 253,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10042",
+            "bit": 2,
+            "name": "bRghtLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 254,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10042",
+            "bit": 3,
+            "name": "bLeftLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 255,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 0,
+            "name": "bHighTermalMotor",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 21M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 256,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 1,
+            "name": "bTR_x1KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 21KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u043f\u043e\u0434\u044a\u0435\u043c\u0430 x1M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 257,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 2,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 21QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 258,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 3,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 21QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 259,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 4,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 21M1 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 260,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 5,
+            "name": "bInv_x1UZ1_NotRUN",
+            "description": "\u041f\u0427 21UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 261,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 6,
+            "name": "bInv_x1UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 21UZ1"
+        },
+        {
+            "id": 262,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 7,
+            "name": "bInv_x1UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 21UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 263,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 8,
+            "name": "bInv_x1UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 21UZ1"
+        },
+        {
+            "id": 264,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 9,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 265,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 10,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 266,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10050",
+            "bit": 11,
+            "name": "bFunCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u043e\u0431\u0434\u0443\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 267,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10052",
+            "bit": 0,
+            "name": "bUpSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445"
+        },
+        {
+            "id": 268,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10052",
+            "bit": 1,
+            "name": "bDownSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 269,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10052",
+            "bit": 2,
+            "name": "bUpDownnDisable",
+            "description": "\u0423\u043a\u043b\u0430\u0434\u0447\u0438\u043a \u043a\u0430\u043d\u0430\u0442\u0430 \u0432\u0437\u0432\u0435\u0434\u0451\u043d"
+        },
+        {
+            "id": 270,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10052",
+            "bit": 3,
+            "name": "bUpLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445 "
+        },
+        {
+            "id": 271,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10052",
+            "bit": 4,
+            "name": "bDownLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 272,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10053",
+            "bit": 0,
+            "name": "bHighWeght",
+            "description": "\u0412\u0435\u0441 \u0433\u0440\u0443\u0437\u0430 \u0431\u043b\u0438\u0437\u043e\u043a \u043a \u043d\u043e\u043c\u0438\u043d\u0430\u043b\u044c\u043d\u043e\u043c\u0443."
+        },
+        {
+            "id": 273,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10053",
+            "bit": 1,
+            "name": "bLimitWeght",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u041e\u0413\u041f. \u041f\u0440\u0435\u0432\u044b\u0448\u0435\u043d\u0430 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u0437\u043e\u043f\u043e\u0434\u044a\u0451\u043c\u043d\u043e\u0441\u0442\u044c."
+        },
+        {
+            "id": 274,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10053",
+            "bit": 2,
+            "name": "bOGP",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u044b\u0439 \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445."
+        },
+        {
+            "id": 275,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 0,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 276,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 1,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 277,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 2,
+            "name": "bTR_x3KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 23KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 278,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 3,
+            "name": "bTR_x3KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 23KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438- \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 279,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 4,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 23QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 280,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 5,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 23QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 281,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 282,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 7,
+            "name": "bInv_x3UZ1_NotRUN",
+            "description": "\u041f\u0427 23UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 283,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 8,
+            "name": "bInv_x3UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 23UZ1"
+        },
+        {
+            "id": 284,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 9,
+            "name": "bInv_x3UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 23UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 285,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 10,
+            "name": "bInv_x3UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 23UZ1"
+        },
+        {
+            "id": 286,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 11,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 287,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10060",
+            "bit": 12,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 288,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10062",
+            "bit": 0,
+            "name": "bRghtSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 289,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10062",
+            "bit": 1,
+            "name": "bLeftSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 290,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10062",
+            "bit": 2,
+            "name": "bRghtLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 291,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10062",
+            "bit": 3,
+            "name": "bLeftLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f.  \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 292,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 0,
+            "name": "bSafetyRelayOff",
+            "description": "\u0426\u0435\u043f\u044c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0440\u0430\u0437\u043e\u0431\u0440\u0430\u043d\u0430"
+        },
+        {
+            "id": 293,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 1,
+            "name": "bDOOR1opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21161 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 294,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 2,
+            "name": "bDOOR2opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21162 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 295,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 3,
+            "name": "bDOOR3opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21163 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 296,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 4,
+            "name": "bDOOR4opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21164 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 297,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 5,
+            "name": "bSB1",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u0434\u0432\u0435\u0440\u0446\u0435 \u0448\u043a\u0430\u0444\u0430"
+        },
+        {
+            "id": 298,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 6,
+            "name": "bSB_Radio",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u0440\u0430\u0434\u0438\u043e\u043f\u0443\u043b\u044c\u0442\u0435"
+        },
+        {
+            "id": 299,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 7,
+            "name": "bSB_Cable",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u043a\u0430\u0431\u0435\u043b\u044c\u043d\u043e\u043c \u043f\u0443\u043b\u044c\u0442\u0435"
+        },
+        {
+            "id": 300,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 8,
+            "name": "bPLC_Permit",
+            "description": "\u041d\u0435\u0442 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u044f \u0440\u0430\u0431\u043e\u0442\u044b \u043e\u0442 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u043b\u0435\u0440\u0430"
+        },
+        {
+            "id": 301,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 9,
+            "name": "bCAB1_SB62",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435"
+        },
+        {
+            "id": 302,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 10,
+            "name": "bCAB1_DOOR1opened",
+            "description": "\u0414\u0432\u0435\u0440\u044c \u0432 \u043a\u0430\u0431\u0438\u043d\u0443 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 303,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10063",
+            "bit": 11,
+            "name": "bCAB1_DOOR2Opened",
+            "description": "\u041b\u044e\u043a \u0432 \u043a\u0430\u0431\u0438\u043d\u0443 \u043e\u0442\u043a\u0440\u044b\u0442"
+        },
+        {
+            "id": 304,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10064",
+            "bit": 0,
+            "name": "bCDC1_KV1_11",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b\u043e \u0440\u0435\u043b\u0435  \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044f \u043f\u0438\u0442\u0430\u044e\u0449\u0438\u0445 \u0444\u0430\u0437"
+        },
+        {
+            "id": 305,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10064",
+            "bit": 1,
+            "name": "bCDC1_KM1_14",
+            "description": "\u0413\u043b\u0430\u0432\u043d\u044b\u0439 \u0441\u0438\u043b\u043e\u0432\u043e\u0439 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u043e\u0440 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 306,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 0,
+            "name": "ibCPLC1_SF32_11",
+            "description": "\u041d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0432\u043d\u0443\u0442\u0440\u0438\u0448\u043a\u0430\u0444\u043d\u044b\u0445 \u0446\u0435\u043f\u0435\u0439 24VDC SF32 \u0432 +CPLC1"
+        },
+        {
+            "id": 307,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 1,
+            "name": "ibCPLC1_X33_5",
+            "description": "\u041d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0432\u043d\u0435\u0448\u043d\u0438\u0445 \u0446\u0435\u043f\u0435\u0439 24VDC \u0432 +CPLC1"
+        },
+        {
+            "id": 308,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 2,
+            "name": "ibCPLC1_QF4_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CPLC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 309,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 3,
+            "name": "ibCPLC1_QF10_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f QF10 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0432 \u0448\u043a\u0430\u0444\u0443 +CPLC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 310,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 4,
+            "name": "ibCDC1_QF2_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u0446\u0435\u043f\u0435\u0439 380VAC QF2 \u0432 +CDC1 \u0434\u043e \u0440\u0443\u0431\u0438\u043b\u044c\u043d\u0438\u043a\u0430 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d "
+        },
+        {
+            "id": 311,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 5,
+            "name": "ibCDC1_QF4_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 312,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 6,
+            "name": "ibCDC1_QF5_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC1 - \u0432\u0437\u0432\u0435\u0434\u0435\u043d"
+        },
+        {
+            "id": 313,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 7,
+            "name": "ibCDC2_QF4_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 314,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 8,
+            "name": "ibCDC2_QF5_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 315,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 9,
+            "name": "ibCDC3_QF4_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 316,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 10,
+            "name": "ibCDC3_QF5_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 317,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 11,
+            "name": "ibCART1_A41_SA65_14",
+            "description": "\u041f\u043e\u0434\u0432\u0435\u0441\u043d\u043e\u0439 \u043f\u0443\u043b\u044c\u0442: \u043a\u043b\u044e\u0447-\u043c\u0430\u0440\u043a\u0430 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \u0432\u043a\u043b."
+        },
+        {
+            "id": 318,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 12,
+            "name": "ibCAB1_SA61",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u043a\u043b\u044e\u0447-\u043c\u0430\u0440\u043a\u0430 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \u0432\u043a\u043b."
+        },
+        {
+            "id": 319,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 13,
+            "name": "ibCAB1_SA31",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u044b\u0431\u043e\u0440\u0430 \u043c\u0435\u0441\u0442\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \"\u041a\u0440\u0435\u0441\u043b\u043e-\u043f\u0443\u043b\u044c\u0442\""
+        },
+        {
+            "id": 320,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 14,
+            "name": "ibCAB1_X38_1",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u043d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0446\u0435\u043f\u0435\u0439 24\u0412 \u043a\u0430\u0431\u0438\u043d\u044b \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f"
+        },
+        {
+            "id": 321,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10065",
+            "bit": 15,
+            "name": "ibCAB1_QS9",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0440\u0443\u0431\u0438\u043b\u044c\u043d\u0438\u043a \u0446\u0435\u043f\u0435\u0439 220\u0412 \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u043f\u0443\u043b\u044c\u0442\u0430 QS9 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 322,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 0,
+            "name": "ibCAB1_QF12",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0430\u0432\u0442\u043e\u043c\u0430\u0442 \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u043a\u0430\u0431\u0438\u043d\u044b \u0438 \u0442\u0443\u043c\u0431 \u043a\u0440\u0435\u0441\u043b\u043e\u043f\u0443\u043b\u044c\u0442\u0430 QF12 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 323,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 1,
+            "name": "ibCAB1_QF21",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0430\u0432\u0442\u043e\u043c\u0430\u0442 \u0446\u0435\u043f\u0435\u0439 220\u0412 \u043a\u0440\u0435\u0441\u043b\u043e\u043f\u0443\u043b\u044c\u0442\u0430 QF21 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 324,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 4,
+            "name": "ibCDC1_4QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043a\u0440\u0430\u043d\u0430 4QF16 \u0432 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 325,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 5,
+            "name": "ibCDC2_QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21161 QF16 \u0432 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 326,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 6,
+            "name": "ibCDC3_QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21162 QF16 \u0432 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 327,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10066",
+            "bit": 7,
+            "name": "ibCDC1_QF8_QF9",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u0438 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u044f \u043a\u0430\u0431\u0438\u043d\u044b  QF8, QF9 \u0432 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u044b"
+        },
+        {
+            "id": 328,
+            "type": "discrete",
+            "direction": "input",
+            "register": "D10067",
+            "bit": 2,
+            "name": "bBatarryLow",
+            "description": "\u041d\u0438\u0437\u043a\u0438\u0439 \u0437\u0430\u0440\u044f\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 \u0432 CPU. \u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f \u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0431\u0430\u0442\u0430\u0440\u0435\u044e."
+        }
+    ]
+}

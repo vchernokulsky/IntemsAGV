@@ -4,14 +4,14 @@ from scapy.all import *
 
 HOST = '192.168.88.2'
 PORT = 5002  # 5002 if 192.168.55.100
-REGISTER = 1024
-VALUE_TYPE = 'unsigned double word'
-VALUE = 19
+REGISTER = 1000
+VALUE_TYPE = 'sw'
+VALUE = 67
 COMMAND = WRITE_COMMAND
 
 if __name__ == '__main__':
-    req = SLMPBinaryRequest()
-    req.initialize_request(register=REGISTER, device_code=D_MEM['binary'],  value=VALUE, value_type=VALUE_TYPE, command=COMMAND)
+    SLMPBinary.value_type = VALUE_TYPE
+    req = SLMPBinary.prepare_request(REGISTER, MEM['binary']['D'], COMMAND, no_of_device_points=4)
     print(req.show())
     print('\nsent: ', bytes(req))
 
@@ -21,6 +21,5 @@ if __name__ == '__main__':
 
     print('got: ', data, '\n')
 
-    res = SLMPBinaryResponse(data, VALUE_TYPE)
+    res = SLMPBinary.form_response(data)
     print(res.show())
-    print(res.Value)

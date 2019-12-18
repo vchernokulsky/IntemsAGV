@@ -1,0 +1,134 @@
+{
+    "movement": [
+        {
+            "Id": 1,
+            "name": "forward"
+        },
+        {
+            "Id": 2,
+            "name": "backward"
+        },
+        {
+            "Id": 3,
+            "name": "up"
+        },
+        {
+            "Id": 4,
+            "name": "down"
+        },
+        {
+            "Id": 5,
+            "name": "stop"
+        },
+        {
+            "Id": 6,
+            "name": "speed"
+        },
+        {
+            "Id": 7,
+            "name": "mass"
+        },
+        {
+            "Id": 8,
+            "name": "length"
+        }
+    ],
+    "crane": [
+        {
+            "connectorId": 60,
+            "movementId": 1
+        },
+        {
+            "connectorId": 61,
+            "movementId": 2
+        },
+        {
+            "connectorId": 62,
+            "movementId": 6
+        }
+    ],
+    "carriages": [
+        {
+            "1": [
+                {
+                    "connectorId": 148,
+                    "movementId": 1
+                },
+                {
+                    "connectorId": 149,
+                    "movementId": 6
+                },
+                {
+                    "connectorId": 150,
+                    "movementId": 2
+                }
+            ]
+        },
+        {
+            "2": [
+                {
+                    "connectorId": 176,
+                    "movementId": 1
+                },
+                {
+                    "connectorId": 177,
+                    "movementId": 6
+                },
+                {
+                    "connectorId": 178,
+                    "movementId": 2
+                }
+            ]
+        }
+    ],
+    "lifts": [
+        {
+            "1": [
+                {
+                    "connectorId": 88,
+                    "movementId": 3
+                },
+                {
+                    "connectorId": 89,
+                    "movementId": 4
+                },
+                {
+                    "connectorId": 90,
+                    "movementId": 6
+                },
+                {
+                    "connectorId": 91,
+                    "movementId": 7
+                },
+                {
+                    "connectorId": 92,
+                    "movementId": 8
+                }
+            ]
+        },
+        {
+            "2": [
+                {
+                    "connectorId": 118,
+                    "movementId": 3
+                },
+                {
+                    "connectorId": 119,
+                    "movementId": 4
+                },
+                {
+                    "connectorId": 120,
+                    "movementId": 6
+                },
+                {
+                    "connectorId": 121,
+                    "movementId": 7
+                },
+                {
+                    "connectorId": 122,
+                    "movementId": 8
+                }
+            ]
+        }
+    ]
+}

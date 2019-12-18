@@ -1,0 +1,8 @@
+{
+    "auth_response_id":   1,
+    "logoff_response_id": 2,
+    "auth_request_id":    5,
+    "radio_pu_id":        6,
+    "cable_pu_id":        7,
+    "logoff_request_id": 8
+}

@@ -1,0 +1,1350 @@
+{
+    "types": [
+        {
+            "id": 7,
+            "name": "HMI_Common"
+        },
+        {
+            "id": 8,
+            "name": "HMI_DRIVES"
+        },
+        {
+            "id": 6,
+            "name": "HMI_ALARM"
+        }
+    ],
+    "emergencies": [
+        {
+            "id": 1,
+            "displayId": 10,
+            "isWarning": 0,
+            "connectorId": "181",
+            "typeId": 6,
+            "name": "bServiceMode",
+            "description": "\u0421\u0435\u0440\u0432\u0438\u0441\u043d\u044b\u0439 \u043a\u043b\u044e\u0447 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \"\u0421\u0415\u0420\u0412\u0418\u0421\" (\u0440\u0430\u0431\u043e\u0442\u0430 \u0431\u0435\u0437 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438)"
+        },
+        {
+            "id": 2,
+            "displayId": 9,
+            "isWarning": 0,
+            "connectorId": "182",
+            "typeId": 6,
+            "name": "bAntiSwayOn",
+            "description": "\u041f\u0440\u043e\u0442\u0438\u0432\u043e\u0440\u0430\u0441\u043a\u0430\u0447\u0438\u0432\u0430\u043d\u0438\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e"
+        },
+        {
+            "id": 3,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "183",
+            "typeId": 6,
+            "name": "bAlarmUpDownCargoAntiSway",
+            "description": "\u041a\u043b\u044e\u0447 \u0431\u044b\u043b \u043f\u0435\u0440\u0435\u0432\u0435\u0434\u0435\u043d \u0432 ON, \u043d\u043e \u0437\u0430\u043f\u0438\u0441\u044c \u0432 \u0438\u043d\u0432\u0435\u0440\u0442\u043e\u0440 \u043d\u0435 \u043f\u0440\u043e\u0448\u043b\u0430 "
+        },
+        {
+            "id": 4,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "184",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroCar1Car2Backward",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0442\u0435\u043b\u0435\u0436\u0435\u043a \u043d\u0430\u0437\u0430\u0434"
+        },
+        {
+            "id": 5,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "185",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroCar1Car2Forward",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0442\u0435\u043b\u0435\u0436\u0435\u043a \u0432\u043f\u0435\u0440\u0451\u0434"
+        },
+        {
+            "id": 6,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "186",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroUp",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u044b\u0439 \u043f\u043e\u0434\u044a\u0451\u043c"
+        },
+        {
+            "id": 7,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "187",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroDown",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u044b\u0439 \u0441\u043f\u0443\u0441\u043a"
+        },
+        {
+            "id": 8,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "188",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroLeft",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u043e\u0435 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u043c\u043e\u0441\u0442\u0430 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 9,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "189",
+            "typeId": 6,
+            "name": "bAlarmNotSinchroRight",
+            "description": "\u041d\u0435 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u043d\u043e\u0435 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u043c\u043e\u0441\u0442\u0430 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 10,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "190",
+            "typeId": 6,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 11,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "191",
+            "typeId": 6,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 12,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "192",
+            "typeId": 6,
+            "name": "bHighTermalMotor3",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M3 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 13,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "193",
+            "typeId": 6,
+            "name": "bHighTermalMotor4",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M4 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 14,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "194",
+            "typeId": 6,
+            "name": "bTR_4KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 15,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "195",
+            "typeId": 6,
+            "name": "bTR_4KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 16,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "196",
+            "typeId": 6,
+            "name": "bTR_4KK3",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK3 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M3 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 17,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "197",
+            "typeId": 6,
+            "name": "bTR_4KK4",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 4KK4 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 4M4 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 18,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "198",
+            "typeId": 6,
+            "name": "bMotorCB1",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 4QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 19,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "199",
+            "typeId": 6,
+            "name": "bMotorCB2",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 4QF2 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 20,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "200",
+            "typeId": 6,
+            "name": "bBrakeCB1",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 4QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 21,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "201",
+            "typeId": 6,
+            "name": "bBrakeCB2",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 4QF13 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 22,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "202",
+            "typeId": 6,
+            "name": "bMotorLock12",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 4M1 \u0438 4M2 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 23,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "203",
+            "typeId": 6,
+            "name": "bMotorLock23",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 4M3 \u0438 4M4 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 24,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "204",
+            "typeId": 6,
+            "name": "bInv_4UZ1_NotRUN",
+            "description": "\u041f\u0427 4UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 25,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "205",
+            "typeId": 6,
+            "name": "bInv_4UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 4UZ1"
+        },
+        {
+            "id": 26,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "206",
+            "typeId": 6,
+            "name": "bInv_4UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 4UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 27,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "207",
+            "typeId": 6,
+            "name": "bInv_4UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 4UZ1"
+        },
+        {
+            "id": 28,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "208",
+            "typeId": 6,
+            "name": "bInv_4UZ2_NotRUN",
+            "description": "\u041f\u0427 4UZ2 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 29,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "209",
+            "typeId": 6,
+            "name": "bInv_4UZ2_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 4UZ2"
+        },
+        {
+            "id": 30,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "210",
+            "typeId": 6,
+            "name": "bInv_4UZ2_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 4UZ2  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 31,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "211",
+            "typeId": 6,
+            "name": "bInv_4UZ2_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 4UZ2"
+        },
+        {
+            "id": 32,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "212",
+            "typeId": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 33,
+            "displayId": 1,
+            "isWarning": 0,
+            "connectorId": "213",
+            "typeId": 6,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 34,
+            "displayId": 1,
+            "isWarning": 1,
+            "connectorId": "214",
+            "typeId": 6,
+            "name": "bBackSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u0437\u0430\u0434."
+        },
+        {
+            "id": 35,
+            "displayId": 1,
+            "isWarning": 1,
+            "connectorId": "215",
+            "typeId": 6,
+            "name": "bFrontSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f  \u0432\u043f\u0435\u0440\u0435\u0434."
+        },
+        {
+            "id": 36,
+            "displayId": 1,
+            "isWarning": 1,
+            "connectorId": "216",
+            "typeId": 6,
+            "name": "bBackLimit",
+            "description": "\u0414\u043e\u0441\u0442\u0438\u0433\u043d\u0443\u0442 \u043f\u0440\u0435\u0434\u0435\u043b \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u043c\u043e\u0441\u0442\u0430 \u043a\u0440\u0430\u043d\u0430 \u043d\u0430\u0437\u0430\u0434."
+        },
+        {
+            "id": 37,
+            "displayId": 1,
+            "isWarning": 1,
+            "connectorId": "217",
+            "typeId": 6,
+            "name": "bFrontLimit",
+            "description": "\u0414\u043e\u0441\u0442\u0438\u0433\u043d\u0443\u0442 \u043f\u0440\u0435\u0434\u0435\u043b \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u043c\u043e\u0441\u0442\u0430 \u043a\u0440\u0430\u043d\u0430 \u0432\u043f\u0435\u0440\u0435\u0434."
+        },
+        {
+            "id": 38,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "218",
+            "typeId": 6,
+            "name": "bHighTermalMotor",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 11M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 39,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "219",
+            "typeId": 6,
+            "name": "bTR_x1KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 11KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u043f\u043e\u0434\u044a\u0435\u043c\u0430 x1M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 40,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "220",
+            "typeId": 6,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 11QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 41,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "221",
+            "typeId": 6,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 11QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 42,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "222",
+            "typeId": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 11M1 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 43,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "223",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_NotRUN",
+            "description": "\u041f\u0427 11UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 44,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "224",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 11UZ1"
+        },
+        {
+            "id": 45,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "225",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 11UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 46,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "226",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 11UZ1"
+        },
+        {
+            "id": 47,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "227",
+            "typeId": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 48,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "228",
+            "typeId": 6,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 49,
+            "displayId": 2,
+            "isWarning": 0,
+            "connectorId": "229",
+            "typeId": 6,
+            "name": "bFunCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u043e\u0431\u0434\u0443\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 50,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "230",
+            "typeId": 6,
+            "name": "bUpSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445"
+        },
+        {
+            "id": 51,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "231",
+            "typeId": 6,
+            "name": "bDownSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 52,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "232",
+            "typeId": 6,
+            "name": "bUpDownnDisable",
+            "description": "\u0423\u043a\u043b\u0430\u0434\u0447\u0438\u043a \u043a\u0430\u043d\u0430\u0442\u0430 \u0432\u0437\u0432\u0435\u0434\u0451\u043d"
+        },
+        {
+            "id": 53,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "233",
+            "typeId": 6,
+            "name": "bUpLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445 "
+        },
+        {
+            "id": 54,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "234",
+            "typeId": 6,
+            "name": "bDownLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 55,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "235",
+            "typeId": 6,
+            "name": "bHighWeght",
+            "description": "\u0412\u0435\u0441 \u0433\u0440\u0443\u0437\u0430 \u0431\u043b\u0438\u0437\u043e\u043a \u043a \u043d\u043e\u043c\u0438\u043d\u0430\u043b\u044c\u043d\u043e\u043c\u0443."
+        },
+        {
+            "id": 56,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "236",
+            "typeId": 6,
+            "name": "bLimitWeght",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u041e\u0413\u041f. \u041f\u0440\u0435\u0432\u044b\u0448\u0435\u043d\u0430 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u0437\u043e\u043f\u043e\u0434\u044a\u0451\u043c\u043d\u043e\u0441\u0442\u044c."
+        },
+        {
+            "id": 57,
+            "displayId": 2,
+            "isWarning": 1,
+            "connectorId": "237",
+            "typeId": 6,
+            "name": "bOGP",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u044b\u0439 \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445."
+        },
+        {
+            "id": 58,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "238",
+            "typeId": 6,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 59,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "239",
+            "typeId": 6,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 60,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "240",
+            "typeId": 6,
+            "name": "bTR_x3KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 13KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 61,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "241",
+            "typeId": 6,
+            "name": "bTR_x3KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 13KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 13M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438- \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 62,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "242",
+            "typeId": 6,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 13QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 63,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "243",
+            "typeId": 6,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 13QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 64,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "244",
+            "typeId": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 65,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "245",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_NotRUN",
+            "description": "\u041f\u0427 13UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 66,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "246",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 13UZ1"
+        },
+        {
+            "id": 67,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "247",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 13UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 68,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "248",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 13UZ1"
+        },
+        {
+            "id": 69,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "249",
+            "typeId": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 70,
+            "displayId": 4,
+            "isWarning": 0,
+            "connectorId": "250",
+            "typeId": 6,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 71,
+            "displayId": 4,
+            "isWarning": 1,
+            "connectorId": "251",
+            "typeId": 6,
+            "name": "bRghtSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 72,
+            "displayId": 4,
+            "isWarning": 1,
+            "connectorId": "252",
+            "typeId": 6,
+            "name": "bLeftSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f. \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 73,
+            "displayId": 4,
+            "isWarning": 1,
+            "connectorId": "253",
+            "typeId": 6,
+            "name": "bRghtLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 74,
+            "displayId": 4,
+            "isWarning": 1,
+            "connectorId": "254",
+            "typeId": 6,
+            "name": "bLeftLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f.  \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 75,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "255",
+            "typeId": 6,
+            "name": "bHighTermalMotor",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 21M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 76,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "256",
+            "typeId": 6,
+            "name": "bTR_x1KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 21KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u043f\u043e\u0434\u044a\u0435\u043c\u0430 x1M1 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 77,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "257",
+            "typeId": 6,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 21QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 78,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "258",
+            "typeId": 6,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 21QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 79,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "259",
+            "typeId": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 21M1 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 80,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "260",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_NotRUN",
+            "description": "\u041f\u0427 21UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 81,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "261",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 21UZ1"
+        },
+        {
+            "id": 82,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "262",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 21UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 83,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "263",
+            "typeId": 6,
+            "name": "bInv_x1UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 21UZ1"
+        },
+        {
+            "id": 84,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "264",
+            "typeId": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 85,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "265",
+            "typeId": 6,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 86,
+            "displayId": 3,
+            "isWarning": 0,
+            "connectorId": "266",
+            "typeId": 6,
+            "name": "bFunCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u043e\u0431\u0434\u0443\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 87,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "267",
+            "typeId": 6,
+            "name": "bUpSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445"
+        },
+        {
+            "id": 88,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "268",
+            "typeId": 6,
+            "name": "bDownSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 89,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "269",
+            "typeId": 6,
+            "name": "bUpDownnDisable",
+            "description": "\u0423\u043a\u043b\u0430\u0434\u0447\u0438\u043a \u043a\u0430\u043d\u0430\u0442\u0430 \u0432\u0437\u0432\u0435\u0434\u0451\u043d"
+        },
+        {
+            "id": 90,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "270",
+            "typeId": 6,
+            "name": "bUpLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445 "
+        },
+        {
+            "id": 91,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "271",
+            "typeId": 6,
+            "name": "bDownLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043d\u0438\u0437"
+        },
+        {
+            "id": 92,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "272",
+            "typeId": 6,
+            "name": "bHighWeght",
+            "description": "\u0412\u0435\u0441 \u0433\u0440\u0443\u0437\u0430 \u0431\u043b\u0438\u0437\u043e\u043a \u043a \u043d\u043e\u043c\u0438\u043d\u0430\u043b\u044c\u043d\u043e\u043c\u0443."
+        },
+        {
+            "id": 93,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "273",
+            "typeId": 6,
+            "name": "bLimitWeght",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u041e\u0413\u041f. \u041f\u0440\u0435\u0432\u044b\u0448\u0435\u043d\u0430 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u0437\u043e\u043f\u043e\u0434\u044a\u0451\u043c\u043d\u043e\u0441\u0442\u044c."
+        },
+        {
+            "id": 94,
+            "displayId": 3,
+            "isWarning": 1,
+            "connectorId": "274",
+            "typeId": 6,
+            "name": "bOGP",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u044b\u0439 \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c. \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u0432\u0435\u0440\u0445."
+        },
+        {
+            "id": 95,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "275",
+            "typeId": 6,
+            "name": "bHighTermalMotor1",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 96,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "276",
+            "typeId": 6,
+            "name": "bHighTermalMotor2",
+            "description": "\u0422\u0435\u0440\u043c\u043e\u0441\u0442\u0430\u0442 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 97,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "277",
+            "typeId": 6,
+            "name": "bTR_x3KK1",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 23KK1 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M1 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438 - \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 98,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "278",
+            "typeId": 6,
+            "name": "bTR_x3KK2",
+            "description": "\u0422\u0435\u043f\u043b\u043e\u0432\u043e\u0435 \u0440\u0435\u043b\u0435 23KK2 \u0437\u0430\u0449\u0438\u0442\u044b \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u044f 23M2 \u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u044f \u0442\u0435\u043b\u0435\u0436\u043a\u0438- \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043e"
+        },
+        {
+            "id": 99,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "279",
+            "typeId": 6,
+            "name": "bMotorCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u041f\u0427 \u043f\u043e\u0434\u044a\u0435\u043c\u0430 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 23QF1 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 100,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "280",
+            "typeId": 6,
+            "name": "bBrakeCB",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u043e\u0432 23QF11 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u043b."
+        },
+        {
+            "id": 101,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "281",
+            "typeId": 6,
+            "name": "bMotorLock",
+            "description": "\u0420\u0435\u043b\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0442\u043e\u0440\u043c\u043e\u0437\u0430\u043c\u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u043d\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        },
+        {
+            "id": 102,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "282",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_NotRUN",
+            "description": "\u041f\u0427 23UZ1 \u043d\u0435 \u0432 \u0440\u0430\u0431\u043e\u0442\u0435"
+        },
+        {
+            "id": 103,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "283",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_Error",
+            "description": "\u0410\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u041f\u0427 23UZ1"
+        },
+        {
+            "id": 104,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "284",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_CommError",
+            "description": "\u041d\u0435\u0442 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f \u0441 \u041f\u0427 23UZ1  \u043f\u043e Ethernet."
+        },
+        {
+            "id": 105,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "285",
+            "typeId": 6,
+            "name": "bInv_x3UZ1_RWError",
+            "description": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u043f\u0438\u0441\u0438/\u0447\u0442\u0435\u043d\u0438\u044f \u0432 \u041f\u0427 23UZ1"
+        },
+        {
+            "id": 106,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "286",
+            "typeId": 6,
+            "name": "bBrakeNotOpened",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 107,
+            "displayId": 5,
+            "isWarning": 0,
+            "connectorId": "287",
+            "typeId": 6,
+            "name": "bBrakeNotClosed",
+            "description": "\u0422\u043e\u0440\u043c\u043e\u0437\u0430 \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u043b\u0438\u0441\u044c"
+        },
+        {
+            "id": 108,
+            "displayId": 5,
+            "isWarning": 1,
+            "connectorId": "288",
+            "typeId": 6,
+            "name": "bRghtSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f. \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 109,
+            "displayId": 5,
+            "isWarning": 1,
+            "connectorId": "289",
+            "typeId": 6,
+            "name": "bLeftSlow",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 110,
+            "displayId": 5,
+            "isWarning": 1,
+            "connectorId": "290",
+            "typeId": 6,
+            "name": "bRghtLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u0434\u0430\u0442\u0447\u0438\u043a \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0441\u0442\u043e\u043b\u043a\u043d\u043e\u0432\u0435\u043d\u0438\u044f.  \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043f\u0440\u0430\u0432\u043e"
+        },
+        {
+            "id": 111,
+            "displayId": 5,
+            "isWarning": 1,
+            "connectorId": "291",
+            "typeId": 6,
+            "name": "bLeftLimit",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b \u043a\u043e\u043d\u0446\u0435\u0432\u043e\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c.  \u0417\u0430\u043f\u0440\u0435\u0442 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0432\u043b\u0435\u0432\u043e"
+        },
+        {
+            "id": 112,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "292",
+            "typeId": 6,
+            "name": "bSafetyRelayOff",
+            "description": "\u0426\u0435\u043f\u044c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0440\u0430\u0437\u043e\u0431\u0440\u0430\u043d\u0430"
+        },
+        {
+            "id": 113,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "293",
+            "typeId": 6,
+            "name": "bDOOR1opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21161 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 114,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "294",
+            "typeId": 6,
+            "name": "bDOOR2opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21162 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 115,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "295",
+            "typeId": 6,
+            "name": "bDOOR3opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21163 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 116,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "296",
+            "typeId": 6,
+            "name": "bDOOR4opened",
+            "description": "\u041a\u0430\u043b\u0438\u0442\u043a\u0430 \u21164 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 117,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "297",
+            "typeId": 6,
+            "name": "bSB1",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u0434\u0432\u0435\u0440\u0446\u0435 \u0448\u043a\u0430\u0444\u0430"
+        },
+        {
+            "id": 118,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "298",
+            "typeId": 6,
+            "name": "bSB_Radio",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u0440\u0430\u0434\u0438\u043e\u043f\u0443\u043b\u044c\u0442\u0435"
+        },
+        {
+            "id": 119,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "299",
+            "typeId": 6,
+            "name": "bSB_Cable",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u043d\u0430 \u043a\u0430\u0431\u0435\u043b\u044c\u043d\u043e\u043c \u043f\u0443\u043b\u044c\u0442\u0435"
+        },
+        {
+            "id": 120,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "300",
+            "typeId": 6,
+            "name": "bPLC_Permit",
+            "description": "\u041d\u0435\u0442 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u044f \u0440\u0430\u0431\u043e\u0442\u044b \u043e\u0442 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u043b\u0435\u0440\u0430"
+        },
+        {
+            "id": 121,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "301",
+            "typeId": 6,
+            "name": "bCAB1_SB62",
+            "description": "\u041d\u0430\u0436\u0430\u0442\u0430 \u043a\u043d\u043e\u043f\u043a\u0430 \u0430\u0432\u0430\u0440\u0438\u0439\u043d\u043e\u0433\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u0430 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435"
+        },
+        {
+            "id": 122,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "302",
+            "typeId": 6,
+            "name": "bCAB1_DOOR1opened",
+            "description": "\u0414\u0432\u0435\u0440\u044c \u0432 \u043a\u0430\u0431\u0438\u043d\u0443 \u043e\u0442\u043a\u0440\u044b\u0442\u0430"
+        },
+        {
+            "id": 123,
+            "displayId": 6,
+            "isWarning": 0,
+            "connectorId": "303",
+            "typeId": 6,
+            "name": "bCAB1_DOOR2Opened",
+            "description": "\u041b\u044e\u043a \u0432 \u043a\u0430\u0431\u0438\u043d\u0443 \u043e\u0442\u043a\u0440\u044b\u0442"
+        },
+        {
+            "id": 124,
+            "displayId": 8,
+            "isWarning": 0,
+            "connectorId": "304",
+            "typeId": 6,
+            "name": "bCDC1_KV1_11",
+            "description": "\u0421\u0440\u0430\u0431\u043e\u0442\u0430\u043b\u043e \u0440\u0435\u043b\u0435  \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044f \u043f\u0438\u0442\u0430\u044e\u0449\u0438\u0445 \u0444\u0430\u0437"
+        },
+        {
+            "id": 125,
+            "displayId": 8,
+            "isWarning": 0,
+            "connectorId": "305",
+            "typeId": 6,
+            "name": "bCDC1_KM1_14",
+            "description": "\u0413\u043b\u0430\u0432\u043d\u044b\u0439 \u0441\u0438\u043b\u043e\u0432\u043e\u0439 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u043e\u0440 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 126,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "306",
+            "typeId": 6,
+            "name": "ibCPLC1_SF32_11",
+            "description": "\u041d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0432\u043d\u0443\u0442\u0440\u0438\u0448\u043a\u0430\u0444\u043d\u044b\u0445 \u0446\u0435\u043f\u0435\u0439 24VDC SF32 \u0432 +CPLC1"
+        },
+        {
+            "id": 127,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "307",
+            "typeId": 6,
+            "name": "ibCPLC1_X33_5",
+            "description": "\u041d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0432\u043d\u0435\u0448\u043d\u0438\u0445 \u0446\u0435\u043f\u0435\u0439 24VDC \u0432 +CPLC1"
+        },
+        {
+            "id": 128,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "308",
+            "typeId": 6,
+            "name": "ibCPLC1_QF4_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CPLC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 129,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "309",
+            "typeId": 6,
+            "name": "ibCPLC1_QF10_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f QF10 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0430\u043d\u0430 \u0432 \u0448\u043a\u0430\u0444\u0443 +CPLC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 130,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "310",
+            "typeId": 6,
+            "name": "ibCDC1_QF2_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u0446\u0435\u043f\u0435\u0439 380VAC QF2 \u0432 +CDC1 \u0434\u043e \u0440\u0443\u0431\u0438\u043b\u044c\u043d\u0438\u043a\u0430 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d "
+        },
+        {
+            "id": 131,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "311",
+            "typeId": 6,
+            "name": "ibCDC1_QF4_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 132,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "312",
+            "typeId": 6,
+            "name": "ibCDC1_QF5_11",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC1 - \u0432\u0437\u0432\u0435\u0434\u0435\u043d"
+        },
+        {
+            "id": 133,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "313",
+            "typeId": 6,
+            "name": "ibCDC2_QF4_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 134,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "314",
+            "typeId": 6,
+            "name": "ibCDC2_QF5_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 135,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "315",
+            "typeId": 6,
+            "name": "ibCDC3_QF4_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0438 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f QF4 \u0448\u043a\u0430\u0444\u0430 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 136,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "316",
+            "typeId": 6,
+            "name": "ibCDC3_QF5_14",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u0435\u043d\u0442\u0438\u043b\u044f\u0446\u0438\u0438 QF5 \u0448\u043a\u0430\u0444\u0430 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 137,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "317",
+            "typeId": 6,
+            "name": "ibCART1_A41_SA65_14",
+            "description": "\u041f\u043e\u0434\u0432\u0435\u0441\u043d\u043e\u0439 \u043f\u0443\u043b\u044c\u0442: \u043a\u043b\u044e\u0447-\u043c\u0430\u0440\u043a\u0430 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \u0432\u043a\u043b."
+        },
+        {
+            "id": 138,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "318",
+            "typeId": 6,
+            "name": "ibCAB1_SA61",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u043a\u043b\u044e\u0447-\u043c\u0430\u0440\u043a\u0430 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \u0432\u043a\u043b."
+        },
+        {
+            "id": 139,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "319",
+            "typeId": 6,
+            "name": "ibCAB1_SA31",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0432\u044b\u0431\u043e\u0440\u0430 \u043c\u0435\u0441\u0442\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u0432 \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \"\u041a\u0440\u0435\u0441\u043b\u043e-\u043f\u0443\u043b\u044c\u0442\""
+        },
+        {
+            "id": 140,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "320",
+            "typeId": 6,
+            "name": "ibCAB1_X38_1",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u043d\u0435\u0442 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u0446\u0435\u043f\u0435\u0439 24\u0412 \u043a\u0430\u0431\u0438\u043d\u044b \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f"
+        },
+        {
+            "id": 141,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "321",
+            "typeId": 6,
+            "name": "ibCAB1_QS9",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0440\u0443\u0431\u0438\u043b\u044c\u043d\u0438\u043a \u0446\u0435\u043f\u0435\u0439 220\u0412 \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u043f\u0443\u043b\u044c\u0442\u0430 QS9 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 142,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "322",
+            "typeId": 6,
+            "name": "ibCAB1_QF12",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0430\u0432\u0442\u043e\u043c\u0430\u0442 \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u043a\u0430\u0431\u0438\u043d\u044b \u0438 \u0442\u0443\u043c\u0431 \u043a\u0440\u0435\u0441\u043b\u043e\u043f\u0443\u043b\u044c\u0442\u0430 QF12 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 143,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "323",
+            "typeId": 6,
+            "name": "ibCAB1_QF21",
+            "description": "\u041a\u0430\u0431\u0438\u043d\u0430: \u0430\u0432\u0442\u043e\u043c\u0430\u0442 \u0446\u0435\u043f\u0435\u0439 220\u0412 \u043a\u0440\u0435\u0441\u043b\u043e\u043f\u0443\u043b\u044c\u0442\u0430 QF21 \u0432 \u043a\u0430\u0431\u0438\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 144,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "324",
+            "typeId": 6,
+            "name": "ibCDC1_4QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u043a\u0440\u0430\u043d\u0430 4QF16 \u0432 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 145,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "325",
+            "typeId": 6,
+            "name": "ibCDC2_QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21161 QF16 \u0432 +CDC2 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 146,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "326",
+            "typeId": 6,
+            "name": "ibCDC3_QF16",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0433\u0440\u0435\u0432\u0430 \u0434\u0432\u0438\u0433\u0430\u0442\u0435\u043b\u0435\u0439 \u0442\u0435\u043b\u0435\u0436\u043a\u0438 \u21162 QF16 \u0432 +CDC3 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d"
+        },
+        {
+            "id": 147,
+            "displayId": 7,
+            "isWarning": 0,
+            "connectorId": "327",
+            "typeId": 6,
+            "name": "ibCDC1_QF8_QF9",
+            "description": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u0438 \u0437\u0430\u0449\u0438\u0442\u044b \u0446\u0435\u043f\u0435\u0439 \u043f\u0438\u0442\u0430\u043d\u0438\u044f \u043e\u0431\u043e\u0440\u0443\u0434\u043e\u0432\u0430\u043d\u0438\u044f \u043a\u0430\u0431\u0438\u043d\u044b  QF8, QF9 \u0432 +CDC1 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u044b"
+        },
+        {
+            "id": 148,
+            "displayId": 7,
+            "isWarning": 1,
+            "connectorId": "328",
+            "typeId": 6,
+            "name": "bBatarryLow",
+            "description": "\u041d\u0438\u0437\u043a\u0438\u0439 \u0437\u0430\u0440\u044f\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 \u0432 CPU. \u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f \u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0431\u0430\u0442\u0430\u0440\u0435\u044e."
+        }
+    ]
+}
