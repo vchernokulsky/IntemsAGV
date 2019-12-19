@@ -33,7 +33,7 @@ private:
 	UartHelper *uart_helper;
 
 	volatile bool ip_assigned;
-	uint8_t addr[4] = {192, 168,55,10};
+	uint8_t addr[4] = {192, 168, 55, 10};
 	uint16_t port = 11411;
 
 	void socket_init();
