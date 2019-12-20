@@ -10,6 +10,7 @@
 
 #include <ros.h>
 #include <std_msgs/String.h>
+#include "cmsis_os.h"
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"

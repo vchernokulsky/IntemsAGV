@@ -28,8 +28,7 @@ void RosHelper::rosLoop(void)
   str_msg.data = "Hello world!";
   chatter.publish(&str_msg);
   nh.spinOnce();
-//  osDelay(500);
-  HAL_Delay(500);
+  osDelay(500);
 }
 
 void RosHelper::RosTask(void){

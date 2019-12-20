@@ -81,6 +81,10 @@ void StartRosTask(void const * argument){
 void setup(UART_HandleTypeDef *main_huart){
 	  huart = main_huart;
 	  ros_helper.setupRos();
+
+	  /*===============ROS=======================================*/
+	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(RosTask), NULL);
 }
 
 void loop(void){
