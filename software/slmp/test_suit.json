@@ -1,0 +1,60 @@
+{
+	"correctRequestPacketSize": [
+		["read", ["2901"], "21"],
+		["write", ["1000", "27"], "23"]
+	],
+	"correctValueOfRequestDataLengthField": [
+		["read", ["1000"], "0x0C"],
+		["write", ["1000", "27"], "0x0E"]
+	],
+	"correctResponsePacketConsistense": [
+		["\\xd0\\x00\\x00\\xff\\xff\\x03\\x00\\x04\\x00\\x00\\x00@\\x1f",
+			[
+			"FirstDuoOfSubheader",
+			"ReqDestNetNo",
+			"ReqDestStationNo",
+			"Processor",
+			"Reserved",
+			"RespDataLength",
+			"EndCode",
+			"Value"
+			]
+		],
+		["\\xd0\\x00\\x00\\xff\\xff\\x03\\x00\\x0b\\x00V\\xc0\\x00\\xff\\xff\\x03\\x00\\x01\\x04\\x00\\x00",
+			[
+			"FirstDuoOfSubheader",
+			"ReqDestNetNo",
+			"ReqDestStationNo",
+			"Processor",
+			"Reserved",
+			"RespDataLength",
+			"EndCode",
+			"RespNetNo",
+			"RespStationNo",
+			"Processor",
+			"Reserved",
+			"Command",
+			"SubCommand"
+			]
+		],
+		["\\xd4\\x00\\x00\\x08\\x00\\x00\\x00\\xff\\xff\\x03\\x00\\x0b\\x00V\\xc0\\x00\\xff\\xff\\x03\\x00\\x01\\x04\\x00\\x00",
+			[
+			"FirstDuoOfSubheader",
+			"SerialNo",
+			"ThirdQuadroOfSubheader",
+			"ReqDestNetNo",
+			"ReqDestStationNo",
+			"Processor",
+			"Reserved",
+			"RespDataLength",
+			"EndCode",
+			"RespNetNo",
+			"RespStationNo",
+			"Processor",
+			"Reserved",
+			"Command",
+			"SubCommand"
+			]
+		]
+	]
+}

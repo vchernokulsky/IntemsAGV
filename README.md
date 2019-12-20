@@ -46,7 +46,7 @@ Ros-мастера(jetson nano, порт 11311 является стандарт
 
 Пример использования https://github.com/eborghi10/my_ROS_mobile_robot.git 
 
-Для запуска примера: ` roslaunch my_robot_bhw_control.launch`
+Для запуска примера: ` roslaunch my_robot_base hw_control.launch`
 
 Конфигурация робота для примера: `IntemsAGV/software/catkin_ws/src/my_ROS_mobile_robot/my_robot_control/config`
 
