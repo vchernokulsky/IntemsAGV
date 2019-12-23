@@ -15,18 +15,21 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 
+#include "WheelSubscriber.h"
+
 class RosHelper {
 private:
 	ros::NodeHandle nh;
 	std_msgs::String str_msg;
 	ros::Publisher chatter;
+	WheelSubscriber *wheel;
 
 
 
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(void);
+	void setupRos(TIM_HandleTypeDef *main_htim);
 	void RosTask();
 	void flush(void);
 	void reset_buf(void);
