@@ -23,18 +23,20 @@ private:
 	std_msgs::String str_msg;
 	ros::Publisher chatter;
 	WheelSubscriber *wheel;
+	WheelSubscriber *wheel2;
 
 
 
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(TIM_HandleTypeDef *main_htim);
+	void setupRos(TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2);
 	void RosTask();
 	void flush(void);
 	void reset_buf(void);
 	void rosLoop(void);
 	void setSpeedTask(void);
+	void setSpeedTask2(void);
 };
 
 #endif /* ROSHELPER_H_ */

@@ -26,6 +26,10 @@ void StartSetSpeedTask(void const * argument){
 	ros_helper.setSpeedTask();
 }
 
+void StartSetSpeedTask2(void const * argument){
+	ros_helper.setSpeedTask2();
+}
+
 
 //void StartSecondTask(void const * argument)
 //{
@@ -82,9 +86,9 @@ void StartSetSpeedTask(void const * argument){
 //
 //}
 
-void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim){
+void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2){
 	  huart = main_huart;
-	  ros_helper.setupRos(main_htim);
+	  ros_helper.setupRos(main_htim, main_htim2);
 
 	  /*===============ROS=======================================*/
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
@@ -92,6 +96,9 @@ void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim){
 
 	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask), NULL);
+
+	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask2), NULL);
 }
 
 void loop(void){
