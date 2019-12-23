@@ -27,7 +27,8 @@ void RosHelper::setupRos(TIM_HandleTypeDef *main_htim)
 
 //    wheel->set_ports(GPIOA, GPIOB, GPIOC, GPIOC);
 //    wheel->set_pins(GPIO_PIN_11, GPIO_PIN_6, GPIO_PIN_6, GPIO_PIN_9);
-  wheel->subscribe(&nh, main_htim, TIM_CHANNEL_1);
+//  wheel->subscribe(&nh, main_htim, TIM_CHANNEL_1);
+  wheel->subscribe(&nh, main_htim, TIM_CHANNEL_1, TIM_CHANNEL_2);
 }
 
 
