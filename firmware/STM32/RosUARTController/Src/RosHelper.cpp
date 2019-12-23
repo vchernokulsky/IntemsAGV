@@ -47,6 +47,13 @@ void RosHelper::RosTask(void){
 	}
 }
 
+void RosHelper::setSpeedTask(void){
+	for(;;){
+		wheel->set_speed();
+		osDelay(50);
+	}
+}
+
 void RosHelper::flush(void){
 	nh.getHardware()->flush();
 }

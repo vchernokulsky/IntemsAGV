@@ -34,6 +34,7 @@ public:
 	void flush(void);
 	void reset_buf(void);
 	void rosLoop(void);
+	void setSpeedTask(void);
 };
 
 #endif /* ROSHELPER_H_ */

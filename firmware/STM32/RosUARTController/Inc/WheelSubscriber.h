@@ -12,6 +12,8 @@
 class WheelSubscriber
 {
 private:
+	xQueueHandle q;
+
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
 	uint32_t Channel_rev;
@@ -31,16 +33,24 @@ private:
 public:
 
 	void wheel_callback(const std_msgs::Float32& msg){
-		if(msg.data == 0){
+		float data = msg.data;
+		xQueueSend( q, ( void * ) &data, portMAX_DELAY  );
+
+	}
+
+	void set_speed(void){
+		float data;
+		xQueueReceive( q, &( data ), portMAX_DELAY );
+		if(data == 0){
 			__HAL_TIM_SetCompare(htim, Channel, 0);
 			__HAL_TIM_SetCompare(htim, Channel_rev, 0);
 			return;
 		}
 		int sign = 1;
-		if(msg.data < 0){
+		if(data < 0){
 			sign = -1;
 		}
-		float speed = (sign * msg.data / MAX_SPEED ) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+		float speed = (sign * data / MAX_SPEED ) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 		if(speed > MAX_VALUE){
 			speed = MAX_VALUE;
 		}
@@ -51,10 +61,10 @@ public:
 			__HAL_TIM_SetCompare(htim, Channel, 0);
 			__HAL_TIM_SetCompare(htim, Channel_rev, (int)speed);
 		}
-
-
-		osDelay(50);
 	}
+
+
+
 	WheelSubscriber(char topic_in[]):sub(topic_in,&WheelSubscriber::wheel_callback, this){}
 
 	void set_ports(GPIO_TypeDef* ren,GPIO_TypeDef* len, GPIO_TypeDef* rpwm, GPIO_TypeDef* lpwm){
@@ -75,6 +85,9 @@ public:
 		htim = main_htim;
 		Channel = main_channel;
 		Channel_rev = main_channel_rev;
+
+		q = xQueueCreate( 8, sizeof( float ) );
+
 		HAL_GPIO_WritePin(GPIO_REN, pin_ren, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIO_LEN, pin_len, GPIO_PIN_SET);
 		HAL_TIM_PWM_Start(htim, Channel);

@@ -22,6 +22,10 @@ void StartRosTask(void const * argument){
 	ros_helper.RosTask();
 }
 
+void StartSetSpeedTask(void const * argument){
+	ros_helper.setSpeedTask();
+}
+
 
 //void StartSecondTask(void const * argument)
 //{
@@ -85,6 +89,9 @@ void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim){
 	  /*===============ROS=======================================*/
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(RosTask), NULL);
+
+	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask), NULL);
 }
 
 void loop(void){
