@@ -7,28 +7,73 @@ UART_HandleTypeDef *huart;
 //SPI_HandleTypeDef *hspi;
 //UartHelper uart_helper;
 //SocketClient socket_client;
-RosHelper ros_helper;
+RosHelper* ros_helper = nullptr;
 
+uint32_t countA = 0;
+uint32_t countB = 0;
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
-	ros_helper.flush();
+	if (ros_helper != nullptr){
+		ros_helper->flush();
+	}
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	ros_helper.reset_buf();
+	if (ros_helper != nullptr){
+		ros_helper->reset_buf();
+	}
 }
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if (ros_helper != nullptr){
+		ros_helper->exti_Callback(GPIO_Pin);
+	}
+}
+
+//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+//{
+//  if (GPIO_Pin == GPIO_PIN_4)
+//  {
+//	  countA++;
+//	  return;
+//  }
+//  if (GPIO_Pin == GPIO_PIN_10)
+//   {
+// 	  countB++;
+// 	  return;
+//   }
+//  else
+//    {
+//      __NOP();
+//
+//    }
+//}
+
+
 
 
 void StartRosTask(void const * argument){
-	ros_helper.RosTask();
+	ros_helper->RosTask();
 }
 
 void StartSetSpeedTask(void const * argument){
-	ros_helper.setSpeedTask();
+	ros_helper->setSpeedTask();
 }
 
 void StartSetSpeedTask2(void const * argument){
-	ros_helper.setSpeedTask2();
+	ros_helper->setSpeedTask2();
 }
+
+//void StartReadSpeedTask(void const * argument){
+//	ros_helper->readSpeedTask();
+//}
+//
+//void StartReadSpeedTask2(void const * argument){
+//	ros_helper->readSpeedTask2();
+//}
+
+
+
+
 
 
 //void StartSecondTask(void const * argument)
@@ -88,7 +133,8 @@ void StartSetSpeedTask2(void const * argument){
 
 void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2){
 	  huart = main_huart;
-	  ros_helper.setupRos(main_htim, main_htim2);
+	  ros_helper = new RosHelper();
+	  ros_helper->setupRos(main_htim, main_htim2);
 
 	  /*===============ROS=======================================*/
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
@@ -99,10 +145,16 @@ void setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim, TIM_Han
 
 	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask2), NULL);
+
+//	  osThreadDef(readSpeedTask, StartReadSpeedTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(readSpeedTask), NULL);
+//
+//	  osThreadDef(readSpeedTask2, StartReadSpeedTask2, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(readSpeedTask2), NULL);
 }
 
 void loop(void){
-	ros_helper.rosLoop();
+	ros_helper->rosLoop();
 }
 
 

@@ -16,6 +16,7 @@
 #include "stm32f4xx_hal_gpio.h"
 
 #include "WheelSubscriber.h"
+#include "WheelPublisher.h"
 
 class RosHelper {
 private:
@@ -24,7 +25,8 @@ private:
 	ros::Publisher chatter;
 	WheelSubscriber *wheel;
 	WheelSubscriber *wheel2;
-
+	WheelPublisher *encoder;
+	WheelPublisher *encoder2;
 
 
 public:
@@ -37,6 +39,9 @@ public:
 	void rosLoop(void);
 	void setSpeedTask(void);
 	void setSpeedTask2(void);
+	void readSpeedTask(void);
+	void readSpeedTask2(void);
+	void exti_Callback(uint16_t GPIO_Pin);
 };
 
 #endif /* ROSHELPER_H_ */
