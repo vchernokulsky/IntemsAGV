@@ -31,7 +31,7 @@ types_and_sizes = {  # size in words, one word of controller is short
 
 types_and_fmt = {
     'sw': '< h',
-    'uw': 'h',
+    'uw': '< H',
     'f': '< f',
     'sdw': '< i',
     'udw': '< I',

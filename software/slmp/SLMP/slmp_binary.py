@@ -42,29 +42,48 @@ class SLMPBinary(Packet):
         ConditionalField(BooleanField('Value', False), lambda pkt: (
                                                                                pkt.direction == 'response' or pkt.Command == WRITE_COMMAND) and pkt.value_type == 'bool'),
     ]
-
-    @classmethod
-    def prepare_request(cls, register, device_code, command, value=None, no_of_device_points=None, dump=None):
-        SLMPBinary.direction = 'request'
-
+    
+    @staticmethod
+    def _check_args(command, value, no_of_device_points):
         if SLMPBinary.value_type not in types_and_sizes.keys():
             raise Exception('value_type does not match anything')
 
-        if no_of_device_points is None and dump is None and value is None:
-            raise Exception('no_of_device_points or dump or value must be specified')
+        if value is not None and isinstance(value, bytes) is False and SLMPBinary.value_type == 'dump':
+            raise Exception('value must belong to type bytes when value_type is dump')
 
-        if dump is not None and dump is not isinstance(dump, bytes):
-            raise Exception('dump must belong to type bytes')
+        if command == WRITE_COMMAND:
+            if value is None:
+                raise Exception('value must be specified when command is WRITE_COMMAND')
 
+            if no_of_device_points is not None:
+                raise Exception('no_of_device_points must not be specified with WRITE_COMMAND')
+
+        if command == READ_COMMAND:
+            if value is not None:
+                raise Exception('value must not be specified when command is READ_COMMAND')
+
+            if no_of_device_points is None and SLMPBinary.value_type == 'dump':
+                raise Exception('no_of_device_points must be specified with READ_COMMAND when value_type is dump')
+
+            if no_of_device_points is not None and SLMPBinary.value_type != 'dump':
+                raise Exception('no_of_device_points must not be specified with READ_COMMAND when value_type is not dump')
+
+    @classmethod
+    def prepare_request(cls, register, device_code, command, value=None, no_of_device_points=None):
+        SLMPBinary.direction = 'request'
+        
+        cls._check_args(command, value, no_of_device_points)
+        
         instance = cls(Command=command,
                        Value=value,
                        DeviceCode=device_code,
                        HeadDeviceNo=int(str(register), 8) if device_code == MEM['binary']['Y'] else register,
                        NoOfDevicePoints=types_and_sizes[SLMPBinary.value_type],
-                       DataLength=12 + (types_and_sizes[SLMPBinary.value_type] * 2 if command == WRITE_COMMAND else 0)
+                       DataLength=0
                        )
 
         if SLMPBinary.value_type != 'dump':
+            instance.DataLength = 12 + (types_and_sizes[SLMPBinary.value_type] * 2 if command == WRITE_COMMAND else 0)
             return instance
 
         if command == READ_COMMAND:
@@ -73,10 +92,10 @@ class SLMPBinary(Packet):
 
             return instance
 
-        instance.NoOfDevicePoints = len(dump) / 2
+        instance.NoOfDevicePoints = len(value) // 2
         instance.DataLength = 12 + instance.NoOfDevicePoints * 2
 
-        return instance / dump
+        return instance / value
 
     @classmethod
     def form_response(cls, data_in_bytes):
