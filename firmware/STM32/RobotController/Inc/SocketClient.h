@@ -12,7 +12,7 @@
 #define DNS_SOCKET      1
 #define HTTP_SOCKET     2
 
-#define W5500_CS_Pin GPIO_PIN_12
+#define W5500_CS_Pin GPIO_PIN_6
 #define W5500_CS_GPIO_Port GPIOB
 
 #define BUFF_SIZE 20

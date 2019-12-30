@@ -68,19 +68,20 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
 
 void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd){
 
-		int32_t nbytes = recv(http_socket, pData, Size);
+		int32_t nbytes = 0;
+		uint16_t recvsize = getSn_RX_RSR(http_socket);
+		if (recvsize > 0){
+			nbytes = recv(http_socket, pData, Size);
+		}
 		*rdmaInd = nbytes;
-//		if(nbytes == SOCKERR_SOCKSTATUS) {
-//			(*uart_helper).printf("\r\nConnection closed.\r\n");
-//			return;
-//		}
+
 
 		if(nbytes < 0) {
 			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
 			return;
 		}
 		if (nbytes > 0){
-			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
+//			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
 			return;
 		} else {
 			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
@@ -126,11 +127,23 @@ void SocketClient::W5500_Unselect(void) {
 }
 
 void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
-    HAL_SPI_Receive(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+    //HAL_SPI_Receive(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+	uint32_t begin = HAL_GetTick();
+	HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
+	uint32_t end = HAL_GetTick();
+	if(end - begin > 110) {
+		osDelay(50);
+	}
 }
 
 void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len) {
-    HAL_SPI_Transmit(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+    //HAL_SPI_Transmit(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+	uint32_t begin = HAL_GetTick();
+	HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
+	uint32_t end = HAL_GetTick();
+	if(end - begin > 110) {
+		osDelay(50);
+	}
 }
 
 uint8_t SocketClient::W5500_ReadByte(void) {

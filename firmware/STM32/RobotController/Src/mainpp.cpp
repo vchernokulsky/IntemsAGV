@@ -51,14 +51,16 @@ void StartSocketSendTask(void const * argument){
 }
 
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1){
+//	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
 	  huart = main_huart;
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 	  socket_client.init(hspi, &uart_helper);
 	  socket_client.socket_connect();
+	  ros_helper.setupRos(&uart_helper);
 
-	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(SecondTask), NULL);
+//	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);

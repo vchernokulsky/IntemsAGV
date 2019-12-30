@@ -17,11 +17,12 @@ private:
 	std_msgs::String str_msg;
 	ros::Publisher chatter;
 
-	void setupRos(void);
+
 	void rosLoop(void);
 public:
 	RosHelper();
 	virtual ~RosHelper();
+	void setupRos(UartHelper *uart_helper);
 	void RosTask();
 };
 

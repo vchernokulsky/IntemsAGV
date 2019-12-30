@@ -9,18 +9,18 @@
 
 RosHelper::RosHelper():chatter("chatter",&str_msg) {
 	// TODO Auto-generated constructor stub
-	setupRos();
+
 }
 
 RosHelper::~RosHelper() {
 	// TODO Auto-generated destructor stub
 }
 
-void RosHelper::setupRos(void)
+void RosHelper::setupRos(UartHelper *uart_helper)
 {
   nh.initNode();
   nh.advertise(chatter);
-
+  nh.setUARTHelper(uart_helper);
 }
 
 
