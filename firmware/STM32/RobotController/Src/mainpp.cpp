@@ -9,15 +9,17 @@ UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient socket_client;
-RosHelper ros_helper;
+RosHelper* ros_helper  = nullptr;
 
 
 
 
 void StartRosTask(void const * argument){
-	ros_helper.RosTask();
+	ros_helper->RosTask();
 }
-
+void StartSetSpeedTask(void const * argument){
+	ros_helper->setSpeedTask();
+}
 
 void StartSecondTask(void const * argument)
 {
@@ -50,14 +52,17 @@ void StartSocketSendTask(void const * argument){
 //	vTaskDelete( NULL );
 }
 
-void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1){
+void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim){
 //	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
 	  huart = main_huart;
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
+
 	  socket_client.init(hspi, &uart_helper);
 	  socket_client.socket_connect();
-	  ros_helper.setupRos(&uart_helper);
+
+	  ros_helper = new RosHelper();
+	  ros_helper->setupRos(&uart_helper, main_htim);
 
 //	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
 //	  osThreadCreate(osThread(SecondTask), NULL);
@@ -70,6 +75,9 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1){
 
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(RosTask), NULL);
+
+	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask), NULL);
 
 
 }

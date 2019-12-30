@@ -14,7 +14,7 @@
 
 
 
-void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1);
+void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim);
 
 #ifdef __cplusplus
 }
