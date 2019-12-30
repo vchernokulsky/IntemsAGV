@@ -31,6 +31,10 @@ void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim, 
   wheel2->set_ports(GPIOA, GPIOB, GPIOC, GPIOC);
   wheel2->set_pins(GPIO_PIN_11, GPIO_PIN_6, GPIO_PIN_6, GPIO_PIN_9);
   wheel2->subscribe(&nh, main_htim2, TIM_CHANNEL_1, TIM_CHANNEL_4);
+
+  encoder = new WheelPublisher(&nh, "/my_robot/left_wheel_angle");
+  encoder2 = new WheelPublisher(&nh, "/my_robot/right_wheel_angle");
+
 }
 
 
@@ -38,6 +42,8 @@ void RosHelper::rosLoop(void)
 {
   str_msg.data = "Hello world!";
   chatter.publish(&str_msg);
+  encoder->publish();
+  encoder2->publish();
   nh.spinOnce();
   osDelay(500);
 }
@@ -61,5 +67,39 @@ void RosHelper::setSpeedTask2(void){
 		osDelay(5);
 	}
 }
+void RosHelper::readSpeedTask(void){
+	for(;;){
+		encoder->calculate_ang();
+		osDelay(5);
+	}
+}
+void RosHelper::readSpeedTask2(void){
+	for(;;){
+		encoder2->calculate_ang();
+		osDelay(5);
+	}
+}
 
+void RosHelper::exti_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == GPIO_PIN_4 || GPIO_Pin == GPIO_PIN_10)
+	{
+	  uint8_t gray_code = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4) | HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) << 1;
+//	  encoder->push(gray_code);
+	  encoder->calculate_ang(gray_code);
+	  return;
+	}
+  if (GPIO_Pin == GPIO_PIN_3 || GPIO_Pin == GPIO_PIN_5)
+	{
+	  uint8_t gray_code = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) | HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) << 1;
+//	  encoder2->push(gray_code);
+	  encoder2->calculate_ang(gray_code);
+	  return;
+	}
+  else
+	{
+	  __NOP();
+
+	}
+}
 
