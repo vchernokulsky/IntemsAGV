@@ -18,15 +18,16 @@ private:
 	std_msgs::String str_msg;
 	ros::Publisher chatter;
 	WheelSubscriber *wheel;
-
+	WheelSubscriber *wheel2;
 
 	void rosLoop(void);
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(UartHelper *uart_helper,TIM_HandleTypeDef *main_htim);
+	void setupRos(UartHelper *uart_helper,TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2);
 	void RosTask();
 	void setSpeedTask(void);
+	void setSpeedTask2(void);
 };
 
 #endif /* ROSHELPER_H_ */

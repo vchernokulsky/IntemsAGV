@@ -52,7 +52,7 @@ void StartSocketSendTask(void const * argument){
 //	vTaskDelete( NULL );
 }
 
-void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim){
+void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2){
 //	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
 	  huart = main_huart;
 	  hspi = main_hspi1;
@@ -62,7 +62,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 	  socket_client.socket_connect();
 
 	  ros_helper = new RosHelper();
-	  ros_helper->setupRos(&uart_helper, main_htim);
+	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2);
 
 //	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
 //	  osThreadCreate(osThread(SecondTask), NULL);
