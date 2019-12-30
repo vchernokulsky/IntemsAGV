@@ -23,14 +23,14 @@ void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim, 
   nh.setUARTHelper(uart_helper);
 
   	wheel = new WheelSubscriber("my_robot/left_wheel_vel");
-	wheel->set_ports(GPIOA, GPIOC, GPIOA, GPIOA);
-	wheel->set_pins(GPIO_PIN_9, GPIO_PIN_7, GPIO_PIN_0, GPIO_PIN_1);
+	wheel->set_ports(GPIOA, GPIOB, GPIOA, GPIOA);
+	wheel->set_pins(GPIO_PIN_4, GPIO_PIN_0, GPIO_PIN_0, GPIO_PIN_1);
 	wheel->subscribe(&nh, main_htim, TIM_CHANNEL_1, TIM_CHANNEL_2);
 
   wheel2 = new WheelSubscriber("my_robot/right_wheel_vel");
-  wheel2->set_ports(GPIOA, GPIOB, GPIOC, GPIOC);
-  wheel2->set_pins(GPIO_PIN_11, GPIO_PIN_6, GPIO_PIN_6, GPIO_PIN_9);
-  wheel2->subscribe(&nh, main_htim2, TIM_CHANNEL_1, TIM_CHANNEL_4);
+  wheel2->set_ports(GPIOA, GPIOB, GPIOB, GPIOB);
+  wheel2->set_pins(GPIO_PIN_8, GPIO_PIN_10, GPIO_PIN_4, GPIO_PIN_5);
+  wheel2->subscribe(&nh, main_htim2, TIM_CHANNEL_1, TIM_CHANNEL_2);
 
   encoder = new WheelPublisher(&nh, "/my_robot/left_wheel_angle");
   encoder2 = new WheelPublisher(&nh, "/my_robot/right_wheel_angle");
