@@ -20,6 +20,9 @@ void StartRosTask(void const * argument){
 void StartSetSpeedTask(void const * argument){
 	ros_helper->setSpeedTask();
 }
+void StartSetSpeedTask2(void const * argument){
+	ros_helper->setSpeedTask2();
+}
 
 void StartSecondTask(void const * argument)
 {
@@ -78,6 +81,9 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 
 	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask), NULL);
+
+	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask2), NULL);
 
 
 }
