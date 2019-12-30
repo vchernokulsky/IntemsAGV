@@ -7,3 +7,9 @@ software/Simulation/catkin_ws/build/
 software/Simulation/catkin_ws/devel/
 software/Simulation/catkin_ws/.catkin_workspace
 software/Simulation/catkin_ws/src/CMakeList.txt
+
+firmware/STM32/RobotController/Debug/
+firmware/STM32/RosUARTController/Debug/
+firmware/STM32/TCPClientF7/Debug/
+
+software/catkin_ws/src/creating_map_lidar/venv/
