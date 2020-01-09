@@ -4,12 +4,17 @@
 #include "SocketClient.h"
 #include "RosHelper.h"
 
+#include "SetSpeedTest.h"
+
 
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient socket_client;
 RosHelper* ros_helper  = nullptr;
+
+TIM_HandleTypeDef *htim = nullptr;
+TIM_HandleTypeDef *htim2 = nullptr;
 
 
 
@@ -39,7 +44,8 @@ void StartUARTTask(void const * argument)
 	uart_helper.UARTTask();
 }
 
-void StartSocketSendTask(void const * argument){
+void StartSocketSendTask(void const * argument)
+{
 	std::string str = "1234";
 	 const static uint16_t rbuflen = 128;
 	uint8_t rbuf[rbuflen];
@@ -55,6 +61,14 @@ void StartSocketSendTask(void const * argument){
 //	vTaskDelete( NULL );
 }
 
+void StartWheelSpeedTask(void const * argument){
+	set_speed1(htim, 128);
+	set_speed2(htim2, 128);
+	for (;;){
+		osDelay(100);
+	}
+}
+
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2){
 //	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
 	  huart = main_huart;
@@ -64,26 +78,45 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 	  socket_client.init(hspi, &uart_helper);
 	  socket_client.socket_connect();
 
-	  ros_helper = new RosHelper();
-	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2);
 
-//	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(SecondTask), NULL);
-
+	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
 
+	  //========== ROS ===============
+//
+//	  //******** SpinOnce ***********
+//	  ros_helper = new RosHelper();
+//	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2);
+//	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(RosTask), NULL);
+//
+//	  //**** Wheel1 subscriber ********
+//	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(setSpeedTask), NULL);
+//
+//	  //**** Wheel2 subscriber ********
+//	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(setSpeedTask2), NULL);
+
+	  //==============================
+
+	  //****** UART Test ***************
+//	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(SecondTask), NULL);
+
+	  //******* Socket Test *************
 //	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
 //	  osThreadCreate(osThread(SocketSendTask), NULL);
 
-	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(RosTask), NULL);
+	  //******* Wheel Speed Test ***********
+	  htim = main_htim;
+	  htim2 = main_htim2;
+	  osThreadDef(wheelSpeedTask, StartWheelSpeedTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(wheelSpeedTask), NULL);
 
-	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(setSpeedTask), NULL);
 
-	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(setSpeedTask2), NULL);
+
 
 
 }
