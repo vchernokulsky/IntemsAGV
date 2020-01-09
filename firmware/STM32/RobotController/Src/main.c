@@ -525,10 +525,40 @@ void StartDefaultTask(void const * argument)
     
 
   /* USER CODE BEGIN 5 */
+
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+//	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1, 256);
+//	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_1, 0);
+
+//	TIM_HandleTypeDef *htim = &htim2;
+//
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 1);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, 1);
+//	HAL_TIM_PWM_Start(htim, TIM_CHANNEL_1);
+//	__HAL_TIM_SetCompare(htim, TIM_CHANNEL_1, 256);
+
+//	TIM_HandleTypeDef *htim = &htim2;
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+//	HAL_TIM_PWM_Start( &htim2, TIM_CHANNEL_1);
+//	HAL_TIM_PWM_Start( &htim2, TIM_CHANNEL_2);
+//	__HAL_TIM_SetCompare( &htim2, TIM_CHANNEL_1, 256);
+
+
+//	if (speed > 0){
+//		__HAL_TIM_SetCompare(htim, CHANNEL1, speed);
+//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, 0);
+//	} else {
+//		__HAL_TIM_SetCompare(htim, CHANNEL1, 0);
+//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, speed * (-1));
+//	}
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
+//    __HAL_TIM_SetCompare( htim, TIM_CHANNEL_1, 0);
   }
   /* USER CODE END 5 */ 
 }

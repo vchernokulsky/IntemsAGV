@@ -13,12 +13,12 @@ UartHelper uart_helper;
 SocketClient socket_client;
 RosHelper* ros_helper  = nullptr;
 
-TIM_HandleTypeDef *htim = nullptr;
-TIM_HandleTypeDef *htim2 = nullptr;
+static TIM_HandleTypeDef *htim = nullptr;
+static TIM_HandleTypeDef *htim2 = nullptr;
 
-TIM_HandleTypeDef *encoder_htim = nullptr;
+static TIM_HandleTypeDef *encoder_htim = nullptr;
 
-uint16_t encoderCount;
+uint64_t encoderCount;
 uint8_t encoderDirection;
 
 
@@ -66,19 +66,32 @@ void StartSocketSendTask(void const * argument)
 }
 
 void StartWheelSpeedTask(void const * argument){
-	set_speed1(htim, 128);
-	set_speed2(htim2, 128);
+
+
+
+
+
+	set_speed1(htim, -128);
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+//	HAL_TIM_PWM_Start(htim, TIM_CHANNEL_1);
+//	__HAL_TIM_SetCompare(htim, TIM_CHANNEL_1, 256);
+//	__HAL_TIM_SetCompare(htim, TIM_CHANNEL_1, 0);
+	set_speed2(htim2, -128);
 	for (;;){
 		osDelay(100);
 	}
 }
 
 void StartEncoderTestTask(void const * argument){
-
+//	  HAL_TIM_Encoder_Start_IT(encoder_htim,TIM_CHANNEL_1 | TIM_CHANNEL_2);
+//	  HAL_TIM_Base_Start(encoder_htim);
+	HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
 	for(;;){
 		encoderCount = __HAL_TIM_GET_COUNTER(encoder_htim);
 		encoderDirection = __HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim);
-		uart_helper.printf("Count,Direction=%i,%i\n", encoderCount, encoderDirection);
+		uart_helper.printf("\r\nCount=%i\r\n", encoderCount);
+		uart_helper.printf("\r\nDirection=%i\r\n", encoderDirection);
 		osDelay(500);
 	}
 }
@@ -89,8 +102,8 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 
-	  socket_client.init(hspi, &uart_helper);
-	  socket_client.socket_connect();
+//	  socket_client.init(hspi, &uart_helper);
+//	  socket_client.socket_connect();
 
 
 	  //****** UART **********
@@ -126,6 +139,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 	  //******* Wheel Speed Test ***********
 	  htim = main_htim;
 	  htim2 = main_htim2;
+
 	  osThreadDef(wheelSpeedTask, StartWheelSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(wheelSpeedTask), NULL);
 
