@@ -6,7 +6,7 @@
 
 #define MAX_VALUE 256
 #define MIN_VALUE 20
-#define MAX_SPEED 3.8
+#define MAX_SPEED 1.0
 
 
 class WheelSubscriber

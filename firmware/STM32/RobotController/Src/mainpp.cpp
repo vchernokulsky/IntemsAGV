@@ -16,6 +16,10 @@ RosHelper* ros_helper  = nullptr;
 TIM_HandleTypeDef *htim = nullptr;
 TIM_HandleTypeDef *htim2 = nullptr;
 
+TIM_HandleTypeDef *encoder_htim = nullptr;
+
+uint16_t encoderCount;
+uint8_t encoderDirection;
 
 
 
@@ -69,7 +73,17 @@ void StartWheelSpeedTask(void const * argument){
 	}
 }
 
-void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2){
+void StartEncoderTestTask(void const * argument){
+
+	for(;;){
+		encoderCount = __HAL_TIM_GET_COUNTER(encoder_htim);
+		encoderDirection = __HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim);
+		uart_helper.printf("Count,Direction=%i,%i\n", encoderCount, encoderDirection);
+		osDelay(500);
+	}
+}
+
+void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *main_encoder_htim1){
 //	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
 	  huart = main_huart;
 	  hspi = main_hspi1;
@@ -115,9 +129,10 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1, TIM_Ha
 	  osThreadDef(wheelSpeedTask, StartWheelSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(wheelSpeedTask), NULL);
 
-
-
-
+	  //******* Encoder Test ***********
+	  encoder_htim = main_encoder_htim1;
+	  osThreadDef(EncoderTestTask, StartEncoderTestTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(EncoderTestTask), NULL);
 
 }
 
