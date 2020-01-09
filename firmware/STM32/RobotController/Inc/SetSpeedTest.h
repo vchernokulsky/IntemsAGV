@@ -10,18 +10,18 @@
 
 #define CHANNEL1 TIM_CHANNEL_1
 #define CHANNEL_REV1 TIM_CHANNEL_2
-#define CHANNEL2 TIM_CHANNEL_1
-#define CHANNEL_REV2 TIM_CHANNEL_2
+#define CHANNEL2 TIM_CHANNEL_3
+#define CHANNEL_REV2 TIM_CHANNEL_4
 
-#define GPIO_REN1 GPIOA
+#define GPIO_REN1 GPIOB
 #define GPIO_LEN1 GPIOB
-#define PIN_REN1 GPIO_PIN_4
-#define PIN_LEN1 GPIO_PIN_0
+#define PIN_REN1 GPIO_PIN_14
+#define PIN_LEN1 GPIO_PIN_13
 
-#define GPIO_REN2 GPIOA
+#define GPIO_REN2 GPIOC
 #define GPIO_LEN2 GPIOB
-#define PIN_REN2 GPIO_PIN_8
-#define PIN_LEN2 GPIO_PIN_10
+#define PIN_REN2 GPIO_PIN_6
+#define PIN_LEN2 GPIO_PIN_2
 
 
 void from_min_to_max1(TIM_HandleTypeDef *htim){
@@ -73,15 +73,6 @@ void set_speed1(TIM_HandleTypeDef *htim, int speed){
 		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, speed * (-1));
 	}
 
-
-//	HAL_GPIO_WritePin(GPIO_REN1, PIN_REN1, GPIO_PIN_SET);
-//	HAL_GPIO_WritePin(GPIO_LEN1, PIN_LEN1, GPIO_PIN_SET);
-////	HAL_TIM_PWM_Start(htim, CHANNEL1);
-////	__HAL_TIM_SetCompare(htim, CHANNEL1, 256);
-////	__HAL_TIM_SetCompare(htim, CHANNEL1, 0);
-//	HAL_TIM_PWM_Start(htim, CHANNEL_REV1);
-//	__HAL_TIM_SetCompare(htim, CHANNEL_REV1, 256);
-//	__HAL_TIM_SetCompare(htim, CHANNEL_REV1, 0);
 }
 
 void set_speed2(TIM_HandleTypeDef *htim, int speed){

@@ -66,17 +66,7 @@ void StartSocketSendTask(void const * argument)
 }
 
 void StartWheelSpeedTask(void const * argument){
-
-
-
-
-
 	set_speed1(htim, -128);
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
-//	HAL_TIM_PWM_Start(htim, TIM_CHANNEL_1);
-//	__HAL_TIM_SetCompare(htim, TIM_CHANNEL_1, 256);
-//	__HAL_TIM_SetCompare(htim, TIM_CHANNEL_1, 0);
 	set_speed2(htim2, -128);
 	for (;;){
 		osDelay(100);
