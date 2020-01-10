@@ -28,7 +28,7 @@ private:
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(UartHelper *uart_helper,TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2);
+	void setupRos(UartHelper *uart_helper,TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
 	void RosTask();
 	void setSpeedTask(void);
 	void setSpeedTask2(void);

@@ -10,15 +10,15 @@
 class WheelPublisher
 {
 private:
-	xQueueHandle q;
 	ros::NodeHandle* nh;
+	TIM_HandleTypeDef *encoder_htim = nullptr;
+	UartHelper *uart_helper = nullptr;
 	std_msgs::Float32 float_msg;
 	ros::Publisher pub;
 
-	uint32_t prev_tick;
-	uint32_t cur_tick;
-
-	uint8_t previous_code;
+	uint16_t prev_tick;
+	uint16_t cur_tick;
+	uint16_t delta;
 
 	unsigned graydecode(unsigned gray)
 	{
@@ -31,58 +31,58 @@ private:
 
 public:
 
-	WheelPublisher(ros::NodeHandle* n, char topic_out[]):pub(topic_out,&float_msg){
-		q = xQueueCreate( 64, sizeof( uint8_t ) );
+	WheelPublisher(ros::NodeHandle* n, char topic_out[], TIM_HandleTypeDef *htim, UartHelper *main_uart_helper):pub(topic_out,&float_msg){
 		nh = n;
 		(*nh).advertise(pub);
+		uart_helper = main_uart_helper;
 
 		prev_tick = 0;
 		cur_tick = 0;
-		previous_code = 0;
+		delta = 0;
+		encoder_htim = htim;
+		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
 	}
 
+
+
+//	void publish(){
+//		float_msg.data = ((float)cur_tick - (float)prev_tick) * RAD_PER_TICK;
+//		prev_tick = cur_tick;
+//		pub.publish(&float_msg);
+//	}
+
 	void publish(){
-		float_msg.data = ((float)cur_tick - (float)prev_tick) * RAD_PER_TICK;
-//		float_msg.data = (float)cur_tick  * RAD_PER_TICK;
+		uint8_t encoderDirection;
+		cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
+//		uart_helper->printf("\r\nCount=%i\r\n", cur_tick);
+		encoderDirection = __HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim);
+		delta = cur_tick - prev_tick;
+		float_msg.data = delta * RAD_PER_TICK / 4;
+//		float_msg.data = delta ;
 		prev_tick = cur_tick;
 		pub.publish(&float_msg);
 	}
 
 	void push(uint8_t gray_code){
 		uint8_t code = gray_code;
-		xQueueSend( q, ( void * ) &code, portMAX_DELAY  );
+//		xQueueSend( q, ( void * ) &code, portMAX_DELAY  );
 	}
 
-	void calculate_ang(void){
-		uint8_t gray_code;
-		xQueueReceive( q, &( gray_code ), portMAX_DELAY );
-		unsigned code = graydecode(gray_code);
-		if (code == 0)
-		{
-		   if (previous_code == 3){
-//		     Serial.println("->");
-			 cur_tick += 1;
-		   }
-		   else if (previous_code == 1)
-//		     Serial.println("<-");
-			 cur_tick -= 1;
-		 }
-		 previous_code = code;
-	}
+
 
 	void calculate_ang(uint8_t gray_code){
 			unsigned code = graydecode(gray_code);
-			if (code == 0)
-			{
-			   if (previous_code == 3){
-	//		     Serial.println("->");
-				 cur_tick += 1;
-			   }
-			   else if (previous_code == 1)
-	//		     Serial.println("<-");
-				 cur_tick -= 1;
-			 }
-			 previous_code = code;
+//			if (code == 0)
+//			{
+//			   if (previous_code == 3){
+//	//		     Serial.println("->");
+//				 cur_tick += 1;
+//			   }
+//			   else if (previous_code == 1)
+//	//		     Serial.println("<-");
+//				 cur_tick -= 1;
+//			 }
+//			 previous_code = code;
 		}
 
 

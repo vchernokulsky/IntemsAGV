@@ -16,7 +16,7 @@ RosHelper::~RosHelper() {
 	// TODO Auto-generated destructor stub
 }
 
-void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2)
+void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
 	nh.initNode();
 	nh.advertise(chatter);
@@ -32,8 +32,8 @@ void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim, 
 	wheel2->set_timers(main_htim2, CHANNEL2, CHANNEL_REV2);
 	wheel2->subscribe(&nh);
 
-	encoder = new WheelPublisher(&nh, "/my_robot/left_wheel_angle");
-	encoder2 = new WheelPublisher(&nh, "/my_robot/right_wheel_angle");
+	encoder = new WheelPublisher(&nh, "/my_robot/left_wheel_angle", encoder_htim, uart_helper);
+	encoder2 = new WheelPublisher(&nh, "/my_robot/right_wheel_angle", encoder_htim2, uart_helper);
 
 }
 
@@ -42,8 +42,8 @@ void RosHelper::rosLoop(void)
 {
   str_msg.data = "Hello world!";
   chatter.publish(&str_msg);
-//  encoder->publish();
-//  encoder2->publish();
+  encoder->publish();
+  encoder2->publish();
   nh.spinOnce();
   osDelay(500);
 }
@@ -69,13 +69,13 @@ void RosHelper::setSpeedTask2(void){
 }
 void RosHelper::readSpeedTask(void){
 	for(;;){
-		encoder->calculate_ang();
+//		encoder->calculate_ang();
 		osDelay(5);
 	}
 }
 void RosHelper::readSpeedTask2(void){
 	for(;;){
-		encoder2->calculate_ang();
+//		encoder2->calculate_ang();
 		osDelay(5);
 	}
 }
@@ -93,7 +93,7 @@ void RosHelper::exti_Callback(uint16_t GPIO_Pin)
 	{
 	  uint8_t gray_code = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) | HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) << 1;
 //	  encoder2->push(gray_code);
-	  encoder2->calculate_ang(gray_code);
+//	  encoder2->calculate_ang(gray_code);
 	  return;
 	}
   else

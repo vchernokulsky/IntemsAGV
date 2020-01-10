@@ -107,7 +107,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 //
 //	  //******** SpinOnce ***********
 	  ros_helper = new RosHelper();
-	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2);
+	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(RosTask), NULL);
 //
