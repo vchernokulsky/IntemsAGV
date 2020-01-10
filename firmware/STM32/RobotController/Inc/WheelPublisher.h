@@ -19,6 +19,7 @@ private:
 	uint16_t prev_tick;
 	uint16_t cur_tick;
 	uint16_t delta;
+	uint8_t encoderDirection;
 
 	unsigned graydecode(unsigned gray)
 	{
@@ -52,12 +53,18 @@ public:
 //	}
 
 	void publish(){
-		uint8_t encoderDirection;
 		cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
 //		uart_helper->printf("\r\nCount=%i\r\n", cur_tick);
 		encoderDirection = __HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim);
-		delta = cur_tick - prev_tick;
-		float_msg.data = delta * RAD_PER_TICK / 4;
+		if(encoderDirection == 0){
+			delta = cur_tick - prev_tick;
+			float_msg.data = delta * RAD_PER_TICK / 4;
+		} else {
+			delta = prev_tick - cur_tick;
+			float_msg.data = (-1) * delta * RAD_PER_TICK / 4;
+		}
+
+
 //		float_msg.data = delta ;
 		prev_tick = cur_tick;
 		pub.publish(&float_msg);
