@@ -47,6 +47,10 @@ void StartUARTTask(void const * argument)
 {
 	uart_helper.UARTTask();
 }
+void StartSocketTask(void const * argument)
+{
+	socket_client.socket_statecheck_task();
+}
 
 void StartSocketSendTask(void const * argument)
 {
@@ -96,12 +100,15 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  uart_helper.init(huart);
 
 	  socket_client.init(hspi, &uart_helper);
-	  socket_client.socket_connect();
+//	  socket_client.socket_connect();
 
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
+	  //****** Socket **********
+	  osThreadDef(SocketTask, StartSocketTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketTask), NULL);
 
 	  //========== ROS ===============
 //

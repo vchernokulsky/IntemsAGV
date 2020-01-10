@@ -29,6 +29,7 @@
 class SocketClient {
 private:
 	static SPI_HandleTypeDef *hspi1;
+	uint16_t any_port;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
 
@@ -52,6 +53,8 @@ public:
 
 	void init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
 	void socket_connect();
+	int8_t state_loop();
+	void socket_statecheck_task();
 	void socket_send(uint8_t *pData, uint16_t len);
 	void socket_send(const char *pData, uint16_t len);
 	void socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd);

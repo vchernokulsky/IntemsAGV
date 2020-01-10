@@ -14,6 +14,7 @@ SocketClient::SocketClient() {
 
 void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
 	hspi1 = main_hspi1;
+	any_port = 5000;
 	uart_helper = main_uart_helper;
 
 	SocketClient::socket_init();
@@ -32,6 +33,50 @@ void SocketClient::socket_connect(){
         return;
     }
     (*uart_helper).printf("socket connected\r\n");
+}
+
+void SocketClient::socket_statecheck_task(){
+	for(;;){
+		state_loop();
+		osDelay(300);
+	}
+}
+
+
+int8_t SocketClient::state_loop(){
+	int32_t ret;
+	   switch(getSn_SR(http_socket))
+	   {
+	      case SOCK_ESTABLISHED :
+	         if(getSn_IR(http_socket) & Sn_IR_CON)	// Socket n interrupt register mask; TCP CON interrupt = connection with peer is successful
+	         {
+	        	 (*uart_helper).printf("SOCK_ESTABLISHED\r\n");
+				setSn_IR(http_socket, Sn_IR_CON);  // this interrupt should be write the bit cleared to '1'
+	         }
+	         break;
+
+	      case SOCK_CLOSE_WAIT :
+	    	  (*uart_helper).printf("SOCK_CLOSE_WAIT\r\n");
+	         if((ret=disconnect(http_socket)) != SOCK_OK) return ret;
+	         break;
+
+	      case SOCK_INIT :
+	    	  (*uart_helper).printf("SOCK_INIT\r\n");
+	    	 if( (ret = connect(http_socket, addr, port)) != SOCK_OK) return ret;	//	Try to TCP connect to the TCP server (destination)
+	         break;
+
+	      case SOCK_CLOSED:
+	    	  (*uart_helper).printf("SOCK_CLOSED\r\n");
+//	    	  close(http_socket);
+	    	  if((ret=socket(http_socket, Sn_MR_TCP, SocketClient::any_port++, 0x00)) != http_socket){
+	         if(any_port == 0xffff) any_port = 50000;
+	         return ret; // TCP socket open with 'any_port' port number
+	        }
+	         break;
+	      default:
+	         break;
+	   }
+	   return 1;
 }
 
 void SocketClient::socket_send(uint8_t *pData, uint16_t len){
@@ -109,13 +154,6 @@ void SocketClient::socket_init(){
     wizchip_setnetinfo(&net_info);
     wizchip_getnetinfo(&net_info);
     SocketClient::http_socket = HTTP_SOCKET;
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
-    if(code != SocketClient::http_socket) {
-    	(*uart_helper).printf("socket() failed, code = %d\r\n", code);
-        return;
-    }
-
-//    (*uart_helper).printf("Socket created, connecting...\r\n");
 }
 
 void SocketClient::W5500_Select(void) {
