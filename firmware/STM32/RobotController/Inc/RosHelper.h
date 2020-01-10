@@ -9,6 +9,7 @@
 #define ROSHELPER_H_
 
 #include <ros.h>
+#include "config.h"
 #include <std_msgs/String.h>
 #include "WheelSubscriber.h"
 #include "WheelPublisher.h"

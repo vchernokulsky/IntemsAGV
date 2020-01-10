@@ -136,7 +136,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  setup(&huart2, &hspi1, &htim3, &htim3, &htim2);
+  setup(&huart2, &hspi1, &htim3, &htim3, &htim2, &htim1);
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
