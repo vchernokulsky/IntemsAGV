@@ -4,9 +4,18 @@
 #include "stm32f4xx_hal_gpio.h"
 #include <std_msgs/Float32.h>
 
-#define MAX_VALUE 256
+#define MAX_VALUE 255
 #define MIN_VALUE 20
 #define MAX_SPEED 1.0
+
+#define PWD_STEP_L 10
+#define SPEED_DELTA_L 0.5
+
+#define PWD_STEP_M 5
+#define SPEED_DELTA_M 0.1
+
+#define PWD_STEP_S 1
+#define SPEED_DELTA_S 0.05
 
 
 class WheelSubscriber
@@ -18,44 +27,74 @@ private:
 	uint32_t Channel;
 	uint32_t Channel_rev;
 
+	float target_vel;
+
+
+	int16_t cur_pwd;
+
 	ros::Subscriber<std_msgs::Float32,WheelSubscriber> sub;
 
 public:
 
 	void wheel_callback(const std_msgs::Float32& msg){
-		float data = msg.data;
-		xQueueSend( q, ( void * ) &data, portMAX_DELAY  );
-
+		target_vel = msg.data;
 	}
 
-	void set_speed(void){
-		float data;
-		xQueueReceive( q, &( data ), portMAX_DELAY );
-		if(data == 0){
-			__HAL_TIM_SetCompare(htim, Channel, 0);
-			__HAL_TIM_SetCompare(htim, Channel_rev, 0);
-			return;
+	void set_speed(float cur_vel){
+		uint8_t speed = 0;
+		uint8_t speed_rev = 0;
+
+		float delta_abs = target_vel - cur_vel;
+		int vel_sign = 1;
+		if (delta_abs < 0){
+			delta_abs = -delta_abs;
+			vel_sign = -1;
 		}
-		int sign = 1;
-		if(data < 0){
-			sign = -1;
-		}
-		float speed = (sign * data / MAX_SPEED ) * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-		if(speed > MAX_VALUE){
-			speed = MAX_VALUE;
-		}
-		if(sign > 0){
-			__HAL_TIM_SetCompare(htim, Channel, (int)speed);
-			__HAL_TIM_SetCompare(htim, Channel_rev, 0);
+		int16_t pwd_delta = 0;
+		if (delta_abs > SPEED_DELTA_L){
+			pwd_delta = PWD_STEP_L;
 		} else {
-			__HAL_TIM_SetCompare(htim, Channel, 0);
-			__HAL_TIM_SetCompare(htim, Channel_rev, (int)speed);
+			if (delta_abs > SPEED_DELTA_M){
+				pwd_delta = PWD_STEP_M;
+			} else {
+				if (delta_abs > SPEED_DELTA_S){
+					pwd_delta = PWD_STEP_S;
+				}
+			}
+
 		}
+		if (pwd_delta == 0 && target_vel==0){
+			cur_pwd = 0;
+		} else {
+			cur_pwd += vel_sign*pwd_delta;
+		}
+
+		if(cur_pwd > 0){
+			if (cur_pwd > MAX_VALUE){
+				cur_pwd = MAX_VALUE;
+			}
+			speed = cur_pwd;
+
+		}
+		if(cur_pwd < 0){
+			if (cur_pwd < -MAX_VALUE){
+				cur_pwd = -MAX_VALUE;
+			}
+			speed_rev = (-1) * cur_pwd;
+		}
+
+		__HAL_TIM_SetCompare(htim, Channel, speed);
+		__HAL_TIM_SetCompare(htim, Channel_rev, speed_rev);
+
+
 	}
 
 
 
-	WheelSubscriber(char topic_in[]):sub(topic_in,&WheelSubscriber::wheel_callback, this){}
+	WheelSubscriber(char topic_in[]):sub(topic_in,&WheelSubscriber::wheel_callback, this){
+		target_vel = 0;
+		cur_pwd = 0;
+	}
 
 
 	void set_pins(GPIO_TypeDef* GPIO_REN, uint16_t pin_ren,GPIO_TypeDef* GPIO_LEN, uint16_t pin_len){

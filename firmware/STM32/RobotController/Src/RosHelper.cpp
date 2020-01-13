@@ -57,49 +57,17 @@ void RosHelper::RosTask(void){
 
 void RosHelper::setSpeedTask(void){
 	for(;;){
-		wheel->set_speed();
-		osDelay(5);
+		float cur_speed = encoder->get_speed();
+		wheel->set_speed(cur_speed);
+		osDelay(1);
 	}
 }
 void RosHelper::setSpeedTask2(void){
 	for(;;){
-		wheel2->set_speed();
-		osDelay(5);
-	}
-}
-void RosHelper::readSpeedTask(void){
-	for(;;){
-//		encoder->calculate_ang();
-		osDelay(5);
-	}
-}
-void RosHelper::readSpeedTask2(void){
-	for(;;){
-//		encoder2->calculate_ang();
-		osDelay(5);
+		float cur_speed = encoder2->get_speed();
+		wheel2->set_speed(cur_speed);
+		osDelay(1);
 	}
 }
 
-void RosHelper::exti_Callback(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == GPIO_PIN_4 || GPIO_Pin == GPIO_PIN_10)
-	{
-	  uint8_t gray_code = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4) | HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) << 1;
-//	  encoder->push(gray_code);
-	  encoder->calculate_ang(gray_code);
-	  return;
-	}
-  if (GPIO_Pin == GPIO_PIN_3 || GPIO_Pin == GPIO_PIN_5)
-	{
-	  uint8_t gray_code = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) | HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) << 1;
-//	  encoder2->push(gray_code);
-//	  encoder2->calculate_ang(gray_code);
-	  return;
-	}
-  else
-	{
-	  __NOP();
-
-	}
-}
 

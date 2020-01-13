@@ -5,6 +5,8 @@
 #include <std_msgs/Float32.h>
 
 #define RAD_PER_TICK 0.0174533
+#define RADIUS 0.2
+#define MAX_SPEED 3.8
 
 
 class WheelPublisher
@@ -21,14 +23,15 @@ private:
 	uint16_t delta;
 	uint8_t encoderDirection;
 
-	unsigned graydecode(unsigned gray)
-	{
-	 unsigned bin;
-	 for (bin = 0; gray; gray >>= 1)
-	    bin ^= gray;
-	 return bin;
-	}
+	uint16_t speed_prev_tick;
+	uint16_t speed_cur_tick;
+	uint32_t prev_time;
+	uint32_t cur_time;
+	uint32_t delta_time;
+	uint16_t speed_tick_delta;
+	uint8_t speed_encoder_direction;
 
+	float cur_speed;
 
 public:
 
@@ -40,17 +43,20 @@ public:
 		prev_tick = 0;
 		cur_tick = 0;
 		delta = 0;
+
+		speed_prev_tick = 0;
+		speed_cur_tick = 0;
+		prev_time = 0;
+		cur_time = 0;
+		delta_time = 0;
+		speed_tick_delta = 0;
+		speed_encoder_direction = 0;
+
 		encoder_htim = htim;
 		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
 	}
 
 
-
-//	void publish(){
-//		float_msg.data = ((float)cur_tick - (float)prev_tick) * RAD_PER_TICK;
-//		prev_tick = cur_tick;
-//		pub.publish(&float_msg);
-//	}
 
 	void publish(){
 		cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
@@ -70,27 +76,33 @@ public:
 		pub.publish(&float_msg);
 	}
 
-	void push(uint8_t gray_code){
-		uint8_t code = gray_code;
-//		xQueueSend( q, ( void * ) &code, portMAX_DELAY  );
+	float get_speed(){
+		speed_cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
+		cur_time = HAL_GetTick();
+		delta_time = cur_time - prev_time;
+		speed_encoder_direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim);
+		if(speed_encoder_direction == 0){
+			speed_tick_delta = speed_cur_tick - speed_prev_tick;
+			cur_speed = (speed_tick_delta / 4) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+		} else {
+			speed_tick_delta = speed_prev_tick - speed_cur_tick;
+			cur_speed = (-1) * (speed_tick_delta / 4) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+		}
+
+
+//		float_msg.data = delta ;
+		speed_prev_tick = speed_cur_tick;
+		prev_time = cur_time;
+		uart_helper->printf("\r\nCUR_SPEED=%i\r\n", cur_speed);
+		return cur_speed / MAX_SPEED;
 	}
 
 
 
-	void calculate_ang(uint8_t gray_code){
-			unsigned code = graydecode(gray_code);
-//			if (code == 0)
-//			{
-//			   if (previous_code == 3){
-//	//		     Serial.println("->");
-//				 cur_tick += 1;
-//			   }
-//			   else if (previous_code == 1)
-//	//		     Serial.println("<-");
-//				 cur_tick -= 1;
-//			 }
-//			 previous_code = code;
-		}
+
+
+
+
 
 
 
