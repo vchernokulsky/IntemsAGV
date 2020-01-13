@@ -16,6 +16,11 @@ void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_hel
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
 
+	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
+	 osDelay(100);
+	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
+	 osDelay(100);
+
 	SocketClient::socket_init();
 	(*uart_helper).printf("socket inited\r\n");
 }
@@ -103,9 +108,9 @@ void SocketClient::socket_init(){
     wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
     wiz_NetInfo net_info = {
     	.mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef}, // MAC адрес
-        .ip = {192, 168, 55, 114}, // IP адрес
+        .ip = {192, 168, 2, 114}, // IP адрес
         .sn = {255, 255, 255, 0}, // маска сети
-        .gw = {192, 168, 55, 1}}; // адрес шлюза
+        .gw = {192, 168, 2, 1}}; // адрес шлюза
     wizchip_setnetinfo(&net_info);
     wizchip_getnetinfo(&net_info);
     SocketClient::http_socket = HTTP_SOCKET;

@@ -15,6 +15,9 @@
 #define W5500_CS_Pin GPIO_PIN_6
 #define W5500_CS_GPIO_Port GPIOB
 
+#define W5500_RST_Pin GPIO_PIN_7
+#define W5500_RST_GPIO_Port GPIOC
+
 #define BUFF_SIZE 20
 #include <stdarg.h>
 #include <stdio.h>
@@ -33,7 +36,7 @@ private:
 	UartHelper *uart_helper;
 
 	volatile bool ip_assigned;
-	uint8_t addr[4] = {192, 168, 55, 150};
+	uint8_t addr[4] = {192, 168, 2, 150};
 	uint16_t port = 11411;
 
 	void socket_init();
