@@ -96,6 +96,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  uart_helper.init(huart);
 
 	  socket_client.init(hspi, &uart_helper);
+	  HAL_Delay(500);
 	  socket_client.socket_connect();
 
 
@@ -110,11 +111,11 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(RosTask), NULL);
-//
+
 //	  //**** Wheel1 subscriber ********
 	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask), NULL);
-//
+
 //	  //**** Wheel2 subscriber ********
 	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask2), NULL);

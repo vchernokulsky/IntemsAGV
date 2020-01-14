@@ -17,9 +17,9 @@ void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_hel
 	uart_helper = main_uart_helper;
 
 	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
-	 osDelay(100);
+	 HAL_Delay(100);
 	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
-	 osDelay(100);
+	 HAL_Delay(100);
 
 	SocketClient::socket_init();
 	(*uart_helper).printf("socket inited\r\n");

@@ -9,10 +9,10 @@
 #define MAX_SPEED 1.0
 
 #define PWD_STEP_L 10
-#define SPEED_DELTA_L 0.5
+#define SPEED_DELTA_L 0.3
 
 #define PWD_STEP_M 5
-#define SPEED_DELTA_M 0.1
+#define SPEED_DELTA_M 0.15
 
 #define PWD_STEP_S 1
 #define SPEED_DELTA_S 0.05
@@ -21,7 +21,6 @@
 class WheelSubscriber
 {
 private:
-	xQueueHandle q;
 
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
@@ -38,6 +37,9 @@ public:
 
 	void wheel_callback(const std_msgs::Float32& msg){
 		target_vel = msg.data;
+	}
+	void wheel_callback(float data){
+		target_vel = data;
 	}
 
 	void set_speed(float cur_vel){
@@ -106,12 +108,11 @@ public:
 		htim = main_htim;
 		Channel = main_channel;
 		Channel_rev = main_channel_rev;
-		q = xQueueCreate( 8, sizeof( float ) );
+		HAL_TIM_PWM_Start(htim, Channel);
+		HAL_TIM_PWM_Start(htim, Channel_rev);
 	}
 
 	void subscribe(ros::NodeHandle* nh){
-		HAL_TIM_PWM_Start(htim, Channel);
-		HAL_TIM_PWM_Start(htim, Channel_rev);
 		(*nh).subscribe(sub);
 	}
 

@@ -13,6 +13,7 @@
 #include <std_msgs/String.h>
 #include "WheelSubscriber.h"
 #include "WheelPublisher.h"
+#include "CmdVelSubscriber.h"
 
 class RosHelper {
 private:
@@ -21,6 +22,7 @@ private:
 	ros::Publisher chatter;
 	WheelSubscriber *wheel;
 	WheelSubscriber *wheel2;
+	CmdVelSubscriber *cmd_vel;
 	WheelPublisher *encoder;
 	WheelPublisher *encoder2;
 
