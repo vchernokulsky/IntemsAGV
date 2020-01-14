@@ -37,6 +37,8 @@ void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim, 
 	encoder = new WheelPublisher(&nh, "/my_robot/right_wheel_angle", encoder_htim, uart_helper);
 	encoder2 = new WheelPublisher(&nh, "/my_robot/left_wheel_angle", encoder_htim2, uart_helper);
 
+	odom = new OdometryPublisher(&nh, encoder2, encoder);
+
 }
 
 
@@ -44,8 +46,9 @@ void RosHelper::rosLoop(void)
 {
   str_msg.data = "Hello world!";
   chatter.publish(&str_msg);
-  encoder->publish();
-  encoder2->publish();
+  odom->publish();
+//  encoder->publish();
+//  encoder2->publish();
   nh.spinOnce();
   osDelay(500);
 }
@@ -68,6 +71,20 @@ void RosHelper::setSpeedTask2(void){
 	for(;;){
 		float cur_speed = encoder2->get_speed();
 		wheel2->set_speed(cur_speed);
+		osDelay(1);
+	}
+}
+
+void RosHelper::encoderTask(void){
+	for(;;){
+		encoder->tick_calculate();
+		osDelay(1);
+	}
+}
+
+void RosHelper::encoderTask2(void){
+	for(;;){
+		encoder2->tick_calculate();
 		osDelay(1);
 	}
 }

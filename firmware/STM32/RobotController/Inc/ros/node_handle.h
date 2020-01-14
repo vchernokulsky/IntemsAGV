@@ -407,7 +407,7 @@ public:
     Time current_time;
     current_time.sec = ms / 1000 + sec_offset;
     current_time.nsec = (ms % 1000) * 1000000UL + nsec_offset;
-    normalizeSecNSec(current_time.sec, current_time.nsec);
+//    normalizeSecNSec(current_time.sec, current_time.nsec);
     return current_time;
   }
 

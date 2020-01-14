@@ -48,13 +48,13 @@ class STM32Hardware {
   protected:
     UART_HandleTypeDef *huart;
 
-    const static uint16_t rbuflen = 128;
+    const static uint16_t rbuflen = 1024;
     uint8_t rbuf[rbuflen];
     uint32_t rdmaInd;
     uint32_t rind;
 
 
-    const static uint16_t tbuflen = 256;
+    const static uint16_t tbuflen = 1024;
     uint8_t tbuf[tbuflen];
     uint32_t twind, tfind;
 

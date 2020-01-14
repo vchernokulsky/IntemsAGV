@@ -33,6 +33,14 @@ void StartSetSpeedTask2(void const * argument){
 	ros_helper->setSpeedTask2();
 }
 
+void StartEncoderTask(void const * argument){
+	ros_helper->encoderTask();
+}
+
+void StartEncoderTask2(void const * argument){
+	ros_helper->encoderTask2();
+}
+
 void StartSecondTask(void const * argument)
 {
   for(;;)
@@ -112,13 +120,21 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(RosTask), NULL);
 
-//	  //**** Wheel1 subscriber ********
+	  //**** Wheel1 subscriber ********
 	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask), NULL);
 
-//	  //**** Wheel2 subscriber ********
+	  //**** Wheel2 subscriber ********
 	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(setSpeedTask2), NULL);
+
+	  //**** Wheel1 getting encoder info ********
+	  osThreadDef(encoderInfoTask, StartEncoderTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(encoderInfoTask), NULL);
+
+	  //**** Wheel2 getting encoder info ********
+	  osThreadDef(encoderInfoTask2, StartEncoderTask2, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(encoderInfoTask2), NULL);
 
 	  //==============================
 

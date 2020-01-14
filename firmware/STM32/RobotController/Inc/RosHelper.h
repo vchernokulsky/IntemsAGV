@@ -14,6 +14,7 @@
 #include "WheelSubscriber.h"
 #include "WheelPublisher.h"
 #include "CmdVelSubscriber.h"
+#include "OdometryPublisher.h"
 
 class RosHelper {
 private:
@@ -25,6 +26,7 @@ private:
 	CmdVelSubscriber *cmd_vel;
 	WheelPublisher *encoder;
 	WheelPublisher *encoder2;
+	OdometryPublisher *odom;
 
 	void rosLoop(void);
 public:
@@ -34,6 +36,8 @@ public:
 	void RosTask();
 	void setSpeedTask(void);
 	void setSpeedTask2(void);
+	void encoderTask(void);
+	void encoderTask2(void);
 	void readSpeedTask(void);
 	void readSpeedTask2(void);
 	void exti_Callback(uint16_t GPIO_Pin);
