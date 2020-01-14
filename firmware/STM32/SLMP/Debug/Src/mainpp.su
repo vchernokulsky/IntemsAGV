@@ -1,0 +1,8 @@
+gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+mainpp.cpp:15:6:void StartSecondTask(const void*)	16	static
+mainpp.cpp:25:6:void StartUARTTask(const void*)	16	static
+mainpp.cpp:34:6:void StartSocketSendTask(const void*)	192	static
+mainpp.cpp:51:6:void setup(UART_HandleTypeDef*, SPI_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*)	120	static
+mainpp.cpp:83:1:void __static_initialization_and_destruction_0(int, int)	16	static
+mainpp.cpp:83:1:cpp)	8	static
+mainpp.cpp:83:1:cpp)	8	static

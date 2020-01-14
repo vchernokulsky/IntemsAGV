@@ -1,0 +1,16 @@
+SocketClient.cpp:11:1:SocketClient::SocketClient()	16	static
+SocketClient.cpp:15:6:void SocketClient::init(SPI_HandleTypeDef*, UartHelper*)	24	static
+SocketClient.cpp:28:1:SocketClient::~SocketClient()	16	static
+SocketClient.cpp:28:1:virtual SocketClient::~SocketClient()	16	static
+SocketClient.cpp:32:6:void SocketClient::socket_connect()	24	static
+SocketClient.cpp:42:6:void SocketClient::socket_send(uint8_t*, uint16_t)	32	static
+SocketClient.cpp:58:6:void SocketClient::socket_send(const char*, uint16_t)	32	static
+SocketClient.cpp:74:6:void SocketClient::socket_receive(uint8_t*, uint16_t, uint32_t*)	32	static
+SocketClient.cpp:98:6:void SocketClient::socket_close()	16	static
+SocketClient.cpp:103:6:void SocketClient::socket_init()	48	static
+SocketClient.cpp:126:6:static void SocketClient::W5500_Select()	8	static
+SocketClient.cpp:130:6:static void SocketClient::W5500_Unselect()	8	static
+SocketClient.cpp:134:6:static void SocketClient::W5500_ReadBuff(uint8_t*, uint16_t)	24	static
+SocketClient.cpp:144:6:static void SocketClient::W5500_WriteBuff(uint8_t*, uint16_t)	24	static
+SocketClient.cpp:154:9:static uint8_t SocketClient::W5500_ReadByte()	16	static
+SocketClient.cpp:160:6:static void SocketClient::W5500_WriteByte(uint8_t)	16	static
