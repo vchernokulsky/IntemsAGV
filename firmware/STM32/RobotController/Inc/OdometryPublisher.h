@@ -61,7 +61,8 @@ public:
 		float left_travel = encoder1->get_distance() * RADIUS;
 		float right_travel = encoder2->get_distance() * RADIUS;
 
-		double delta_time = cur_time.toSec() - last_time.toSec();
+//		double delta_time = cur_time.toSec() - last_time.toSec();
+		double delta_time = (encoder1->get_distance_time() + encoder2->get_distance_time()) / 2000.0;
 
 		float pose_x =   odom.pose.pose.position.x;
 		float pose_y =   odom.pose.pose.position.y;

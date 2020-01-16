@@ -50,7 +50,7 @@ void RosHelper::rosLoop(void)
 //  encoder->publish();
 //  encoder2->publish();
   nh.spinOnce();
-  osDelay(500);
+  osDelay(100);
 }
 
 void RosHelper::RosTask(void){
