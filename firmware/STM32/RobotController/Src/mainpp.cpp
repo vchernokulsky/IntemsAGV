@@ -74,8 +74,8 @@ void StartSocketSendTask(void const * argument)
 }
 
 void StartWheelSpeedTask(void const * argument){
-	set_speed1(htim, -128);
-	set_speed2(htim2, -128);
+	set_speed1(htim, 40);
+	set_speed2(htim2, 40);
 	for (;;){
 		osDelay(100);
 	}

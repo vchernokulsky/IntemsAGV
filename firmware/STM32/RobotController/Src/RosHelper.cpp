@@ -64,28 +64,28 @@ void RosHelper::setSpeedTask(void){
 	for(;;){
 		float cur_speed = encoder->get_speed();
 		wheel->set_speed(cur_speed);
-		osDelay(1);
+		osDelay(100);
 	}
 }
 void RosHelper::setSpeedTask2(void){
 	for(;;){
 		float cur_speed = encoder2->get_speed();
 		wheel2->set_speed(cur_speed);
-		osDelay(1);
+		osDelay(100);
 	}
 }
 
 void RosHelper::encoderTask(void){
 	for(;;){
 		encoder->tick_calculate();
-		osDelay(1);
+		osDelay(100);
 	}
 }
 
 void RosHelper::encoderTask2(void){
 	for(;;){
 		encoder2->tick_calculate();
-		osDelay(1);
+		osDelay(100);
 	}
 }
 

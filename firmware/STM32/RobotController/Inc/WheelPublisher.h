@@ -96,7 +96,6 @@ public:
 			}
 			speed_prev_tick = speed_cur_tick;
 			prev_time = cur_time;
-			osDelay(5);
 	}
 
 

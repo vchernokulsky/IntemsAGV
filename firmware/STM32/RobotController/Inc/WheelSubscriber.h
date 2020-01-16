@@ -12,10 +12,10 @@
 #define SPEED_DELTA_L 0.3
 
 #define PWD_STEP_M 5
-#define SPEED_DELTA_M 0.15
+#define SPEED_DELTA_M 0.1
 
 #define PWD_STEP_S 1
-#define SPEED_DELTA_S 0.05
+#define SPEED_DELTA_S 0.02
 
 
 class WheelSubscriber
