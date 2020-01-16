@@ -19,6 +19,8 @@
 #define W5500_RST_GPIO_Port GPIOC
 
 #define BUFF_SIZE 20
+#define MAX_ERROR_COUNT 20
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -32,14 +34,16 @@
 class SocketClient {
 private:
 	static SPI_HandleTypeDef *hspi1;
+	static uint8_t error_count;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
+	xQueueHandle queue;
 
 	volatile bool ip_assigned;
 	uint8_t addr[4] = {192, 168, 2, 150};
 	uint16_t port = 11411;
 
-	void socket_init();
+	bool socket_init();
 
 
 	static void W5500_Select(void);
@@ -50,15 +54,18 @@ private:
 	static void W5500_WriteByte(uint8_t byte);
 //	void UART_Printf(const char* fmt, ...);
 public:
-	SocketClient();
+	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
 	virtual ~SocketClient();
 
-	void init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
 	void socket_connect();
 	void socket_send(uint8_t *pData, uint16_t len);
 	void socket_send(const char *pData, uint16_t len);
 	void socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd);
 	void socket_close();
+	void socket_reset();
+	void socket_error();
+	void socket_success();
+	void SocketStateTask();
 };
 
 #endif /* SOCKETCLIENT_H_ */

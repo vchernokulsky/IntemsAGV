@@ -10,7 +10,7 @@
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
-SocketClient socket_client;
+SocketClient *socket_client;
 RosHelper* ros_helper  = nullptr;
 
 static TIM_HandleTypeDef *htim = nullptr;
@@ -55,6 +55,10 @@ void StartUARTTask(void const * argument)
 {
 	uart_helper.UARTTask();
 }
+void StartSocketStateTask(void const * argument)
+{
+	socket_client->SocketStateTask();
+}
 
 void StartSocketSendTask(void const * argument)
 {
@@ -65,9 +69,9 @@ void StartSocketSendTask(void const * argument)
 	uint32_t* rdmaInd;
 	  for(;;)
 	  {
-		  socket_client.socket_receive(rbuf, Size, rdmaInd);
+		  socket_client->socket_receive(rbuf, Size, rdmaInd);
 		  uart_helper.printf(rbuf);
-		  socket_client.socket_send(str.c_str(), str.length());
+		  socket_client->socket_send(str.c_str(), str.length());
 		  osDelay(100);
 	  }
 //	vTaskDelete( NULL );
@@ -103,14 +107,20 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 
-	  socket_client.init(hspi, &uart_helper);
-	  HAL_Delay(500);
-	  socket_client.socket_connect();
+	  socket_client = new SocketClient(hspi, &uart_helper);
+
+//	  socket_client.init(hspi, &uart_helper);
+//	  HAL_Delay(500);
+//	  socket_client.socket_connect();
 
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
+
+	  //****** Check Socket Errors **********
+	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketErrorTask), NULL);
 
 	  //========== ROS ===============
 //
