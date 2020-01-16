@@ -4,7 +4,7 @@
 #include "stm32f4xx_hal_gpio.h"
 #include <std_msgs/Float32.h>
 
-#define MAX_VALUE 255
+#define MAX_VALUE 127
 #define MIN_VALUE 20
 #define MAX_SPEED 1.0
 

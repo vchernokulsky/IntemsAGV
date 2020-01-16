@@ -32,7 +32,7 @@ private:
 	uint16_t speed_tick_delta;
 	uint8_t speed_encoder_direction;
 
-	uint16_t distance_tick;
+	int32_t distance_tick;
 
 	float cur_speed;
 
@@ -106,13 +106,13 @@ public:
 	}
 
 	float get_distance(){
-		uint16_t ret_dist = distance_tick;
+		int32_t ret_dist = distance_tick;
 		distance_tick = 0;
 		return (float)ret_dist * RAD_PER_TICK / 4.0;
 	}
 
 	double  get_distance_time(){
-		uint16_t ret_time = cur_time - prev_distance_time;
+		int16_t ret_time = cur_time - prev_distance_time;
 		prev_distance_time = cur_time;
 		return (double)ret_time;
 	}
