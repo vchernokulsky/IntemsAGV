@@ -20,6 +20,7 @@
 
 #define BUFF_SIZE 20
 #define MAX_ERROR_COUNT 20
+#define TIMEOUT 10000
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -35,6 +36,7 @@ class SocketClient {
 private:
 	static SPI_HandleTypeDef *hspi1;
 	static uint8_t error_count;
+	uint32_t data_exchange_time;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
 	xQueueHandle queue;
@@ -66,6 +68,7 @@ public:
 	void socket_error();
 	void socket_success();
 	void SocketStateTask();
+	void CheckFreezingTask();
 };
 
 #endif /* SOCKETCLIENT_H_ */

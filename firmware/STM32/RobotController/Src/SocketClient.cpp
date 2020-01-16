@@ -126,6 +126,7 @@ bool SocketClient::socket_init(){
     wizchip_setnetinfo(&net_info);
     wizchip_getnetinfo(&net_info);
     SocketClient::error_count = 0;
+    data_exchange_time = HAL_GetTick();
     /***** OPEN SOCKET *****/
     SocketClient::http_socket = HTTP_SOCKET;
     uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
@@ -150,6 +151,7 @@ void SocketClient::SocketStateTask()
 	{
 		bool err;
 		xQueueReceive( queue, &err, portMAX_DELAY  );
+		data_exchange_time = HAL_GetTick();
 		if (err)
 		{
 			error_count +=1;
@@ -163,6 +165,18 @@ void SocketClient::SocketStateTask()
 					error_count -=1;
 				}
 			}
+		}
+		osDelay(50);
+	}
+}
+void SocketClient::CheckFreezingTask()
+{
+	for(;;)
+	{
+		uint32_t delta_time = HAL_GetTick() - data_exchange_time;
+		if(delta_time > TIMEOUT)
+		{
+			socket_reset();
 		}
 		osDelay(50);
 	}

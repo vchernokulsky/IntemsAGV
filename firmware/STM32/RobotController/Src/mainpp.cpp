@@ -59,6 +59,10 @@ void StartSocketStateTask(void const * argument)
 {
 	socket_client->SocketStateTask();
 }
+void StartCheckFreezingTask(void const * argument)
+{
+	socket_client->CheckFreezingTask();
+}
 
 void StartSocketSendTask(void const * argument)
 {
@@ -118,13 +122,20 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
 
-	  //****** Check Socket Errors **********
+	  //============ SOCKET CHECKING ==========
+
+	  //****** Check Errors **********
 	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(SocketErrorTask), NULL);
 
+	  //****** Check Freezing **********
+	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(CheckFreezingTask), NULL);
+	  //=======================================
+
 	  //========== ROS ===============
-//
-//	  //******** SpinOnce ***********
+
+	  //******** SpinOnce ***********
 	  ros_helper = new RosHelper();
 	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
 	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
