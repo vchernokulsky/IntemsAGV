@@ -6,6 +6,7 @@
 #include "ros/time.h"
 #include "tf/tf.h"
 #include "tf/transform_broadcaster.h"
+#include "geometry_msgs/TransformStamped.h"
 
 #include "WheelPublisher.h"
 
@@ -25,8 +26,9 @@ private:
 	ros::NodeHandle* nh;
 	nav_msgs::Odometry odom;
 	ros::Publisher pub;
+	tf::TransformBroadcaster tf_broadcaster;
+	geometry_msgs::TransformStamped transform;
 
-	tf::TransformBroadcaster tfPub;
 
 	WheelPublisher *encoder1 = nullptr;
 	WheelPublisher *encoder2 = nullptr;
@@ -53,6 +55,10 @@ public:
 
 		odom.header.frame_id = ODOMETRY_FRAME;
 		odom.child_frame_id = BASE_FRAME;
+
+		tf_broadcaster.init(*nh);
+		transform.header.frame_id = BASE_FRAME;
+		transform.child_frame_id = ODOMETRY_FRAME;
 	}
 
 
@@ -105,15 +111,25 @@ public:
 			theta_vel = delta_theta / delta_time;
 		}
 
+		geometry_msgs::Quaternion q = tf::createQuaternionFromYaw(theta);
+
+		transform.header.stamp = cur_time;
+		transform.transform.translation.x = pose_x;
+		transform.transform.translation.y = pose_y;
+		transform.transform.translation.z = 0;
+		transform.transform.rotation = q;
+		tf_broadcaster.sendTransform(transform);
 
 
 		odom.header.stamp = cur_time;
 
 		 odom.pose.pose.position.x = pose_x;
 		 odom.pose.pose.position.y = pose_y;
-		 odom.pose.pose.orientation = tf::createQuaternionFromYaw(theta);
+		 odom.pose.pose.orientation = q;
 		 odom.twist.twist.linear.x = x_vel;
 		 odom.twist.twist.angular.z = theta_vel;
+
+
 
 	}
 
