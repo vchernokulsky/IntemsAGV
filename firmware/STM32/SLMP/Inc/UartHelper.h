@@ -1,12 +1,4 @@
-/*
- * UartHelper.h
- *
- *  Created on: Nov 27, 2019
- *      Author: developer
- */
-
-#ifndef UARTHELPER_H_
-#define UARTHELPER_H_
+#pragma once
 
 #include <stdio.h>
 #include <string.h>
@@ -26,5 +18,3 @@ public:
 	void printf(const uint8_t* buff);
 	void UARTTask();
 };
-
-#endif /* UARTHELPER_H_ */

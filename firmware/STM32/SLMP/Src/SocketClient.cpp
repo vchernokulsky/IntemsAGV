@@ -1,20 +1,13 @@
-/*
- * SocketClient.cpp
- *
- *  Created on: Nov 26, 2019
- *      Author: developer
- */
-
 #include "SocketClient.h"
-SPI_HandleTypeDef *SocketClient::hspi1;
 
-SocketClient::SocketClient() {
+SPI_HandleTypeDef *W5500Chip::hspi;
 
-}
+SocketClient::SocketClient() {}
 
 void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
-	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
+	W5500Chip::hspi = main_hspi1;
+	chip = new CHIP();
 
 	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
 	 HAL_Delay(100);
@@ -72,7 +65,6 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
 }
 
 void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd){
-
 		int32_t nbytes = 0;
 		uint16_t recvsize = getSn_RX_RSR(http_socket);
 		if (recvsize > 0){
@@ -101,18 +93,8 @@ void SocketClient::socket_close(){
 }
 
 void SocketClient::socket_init(){
-    reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
-    reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);
-    reg_wizchip_spiburst_cbfunc(SocketClient::W5500_ReadBuff, SocketClient::W5500_WriteBuff);
-    uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
-    wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
-    wiz_NetInfo net_info = {
-    	.mac = {0x00, 0x08, 0xdc, 0xab, 0x1d, 0xe8}, // MAC адрес
-        .ip = {192, 168, 55, 114}, // IP адрес
-        .sn = {255, 255, 255, 0}, // маска сети
-        .gw = {192, 168,55, 1}}; // адрес шлюза
-    wizchip_setnetinfo(&net_info);
-    wizchip_getnetinfo(&net_info);
+	chip->initChip();
+
     SocketClient::http_socket = HTTP_SOCKET;
     uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
@@ -121,42 +103,4 @@ void SocketClient::socket_init(){
     }
 
     (*uart_helper).printf("Socket created, connecting...\r\n");
-}
-
-void SocketClient::W5500_Select(void) {
-    HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_RESET);
-}
-
-void SocketClient::W5500_Unselect(void) {
-    HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_SET);
-}
-
-void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
-    //HAL_SPI_Receive(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
-	uint32_t begin = HAL_GetTick();
-	HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
-	uint32_t end = HAL_GetTick();
-	if(end - begin > 110) {
-		HAL_Delay(50);
-	}
-}
-
-void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len) {
-    //HAL_SPI_Transmit(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
-	uint32_t begin = HAL_GetTick();
-	HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
-	uint32_t end = HAL_GetTick();
-	if(end - begin > 110) {
-		HAL_Delay(50);
-	}
-}
-
-uint8_t SocketClient::W5500_ReadByte(void) {
-    uint8_t byte;
-    W5500_ReadBuff(&byte, sizeof(byte));
-    return byte;
-}
-
-void SocketClient::W5500_WriteByte(uint8_t byte) {
-    W5500_WriteBuff(&byte, sizeof(byte));
 }

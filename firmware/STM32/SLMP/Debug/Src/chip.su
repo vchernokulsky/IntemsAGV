@@ -1,0 +1,2 @@
+chip.cpp:3:1:Chip::Chip(SPI_HandleTypeDef*)	16	static
+chip.cpp:4:20:SPI_HandleTypeDef* Chip::get_hspi()	16	static

@@ -2,14 +2,10 @@
 #include <string>
 #include "SocketClient.h"
 
-
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient socket_client;
-
-static TIM_HandleTypeDef *htim = nullptr;
-static TIM_HandleTypeDef *htim2 = nullptr;
 
 
 void StartSecondTask(void const * argument)
@@ -26,10 +22,6 @@ void StartUARTTask(void const * argument)
 {
 	uart_helper.UARTTask();
 }
-//void StartSocketTask(void const * argument)
-//{
-//	socket_client.socket_statecheck_task();
-//}
 
 void StartSocketSendTask(void const * argument)
 {
