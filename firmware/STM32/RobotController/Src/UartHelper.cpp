@@ -11,7 +11,7 @@
 UartHelper::UartHelper() {
 	// TODO Auto-generated constructor stub
 	char buff[20];
-	uart_queue = xQueueCreate( 8, sizeof( buff ) );
+	uart_queue = xQueueCreate( 25, sizeof( buff ) );
 }
 
 UartHelper::~UartHelper() {
@@ -49,7 +49,7 @@ void UartHelper::UARTTask()
 	  xQueueReceive( uart_queue, &( buff ), portMAX_DELAY );
 	  int len = strlen(buff);
 	  HAL_UART_Transmit(huart, (uint8_t*)buff, len, HAL_MAX_DELAY);
-	  osDelay(50);
+	  osDelay(10);
   }
 }
 

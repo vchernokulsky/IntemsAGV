@@ -220,7 +220,7 @@ public:
   virtual int spinOnce()
   {
     /* restart if timed out */
-	(*uart_helper).printf("\r\nspinOnce\r\n");
+//	(*uart_helper).printf("\r\nspinOnce\r\n");
     uint32_t c_time = hardware_.time();
     if ((c_time - last_sync_receive_time) > (SYNC_SECONDS * 2200))
     {
@@ -256,7 +256,7 @@ public:
       int data = hardware_.read();
 
       if (data < 0){
-    	  (*uart_helper).printf("\r\ndata finished\r\n");
+//    	  (*uart_helper).printf("\r\ndata finished\r\n");
     	  break;
       }
       checksum_ += data;

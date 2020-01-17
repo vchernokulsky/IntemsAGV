@@ -13,7 +13,7 @@ SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
 	bool buff;
-	queue = xQueueCreate( 20, sizeof( buff ) );
+	queue = xQueueCreate( 30, sizeof( buff ) );
 	SocketClient::socket_reset();
 }
 
@@ -22,13 +22,19 @@ SocketClient::~SocketClient() {
 	SocketClient::socket_close();
 }
 void SocketClient::socket_connect(){
-	uint8_t code = connect(http_socket, addr, port);
-    if(code < 0) {
-    	(*uart_helper).printf("connect() failed, code = %d\r\n", code);
-        close(http_socket);
-        return;
+	int8_t code = connect(http_socket, addr, port);
+    if(code > 0)
+    {
+    	(*uart_helper).printf("socket connected\r\n");
     }
-    (*uart_helper).printf("socket connected\r\n");
+    else
+    {
+    	(*uart_helper).printf("\r\nconnect() failed\r\n");
+    	(*uart_helper).printf("\r\ncode = %d\r\n", code);
+    	if (code < 0){
+    		close(http_socket);
+    	}
+    }
 }
 
 void SocketClient::socket_reset()
@@ -89,12 +95,12 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
 			return;
 		}
-		socket_success();
 		if (nbytes > 0){
-//			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
+			socket_success();
+			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
 			return;
 		} else {
-			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
+//			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
 			return;
 		}
 }
@@ -131,19 +137,22 @@ bool SocketClient::socket_init(){
     SocketClient::http_socket = HTTP_SOCKET;
     uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
-    	(*uart_helper).printf("socket() failed, code = %d\r\n", code);
+    	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
         return false;
     }
+    (*uart_helper).printf("\r\nSocket opened\r\n");
     return true;
 }
 
 void SocketClient::socket_error()
 {
-	xQueueSend( queue, ( void * ) true, portMAX_DELAY  );
+	bool state = true;
+	xQueueSend( queue, ( void * ) &state, portMAX_DELAY  );
 }
 void SocketClient::socket_success()
 {
-	xQueueSend( queue, ( void * ) false, portMAX_DELAY  );
+	bool state = false;
+	xQueueSend( queue, ( void * ) &state, portMAX_DELAY  );
 }
 void SocketClient::SocketStateTask()
 {
@@ -157,6 +166,7 @@ void SocketClient::SocketStateTask()
 			error_count +=1;
 			if(error_count > MAX_ERROR_COUNT)
 			{
+				(*uart_helper).printf("\r\nToo much socketErrors. Reseting\r\n");
 				socket_reset();
 			}
 			else
@@ -176,6 +186,7 @@ void SocketClient::CheckFreezingTask()
 		uint32_t delta_time = HAL_GetTick() - data_exchange_time;
 		if(delta_time > TIMEOUT)
 		{
+			(*uart_helper).printf("\r\nSocket freeze. Reseting\r\n");
 			socket_reset();
 		}
 		osDelay(50);
