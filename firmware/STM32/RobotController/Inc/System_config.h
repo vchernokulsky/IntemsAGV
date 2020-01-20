@@ -1,5 +1,11 @@
 #pragma once
 
+/********************UART************************/
+#define UART_BUF_SIZE 20
+#define UART_QUEUE_LEN 25
+#define UART_TRANSMIT_DELAY 10
+/************************************************/
+
 /******************* IBT-1 *********************/
 #define GPIO_REN1 GPIOB
 #define PIN_REN1 GPIO_PIN_14
