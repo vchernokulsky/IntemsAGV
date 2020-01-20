@@ -5,8 +5,6 @@
 #include <std_msgs/Float32.h>
 
 #define MAX_VALUE 127
-#define MIN_VALUE 20
-#define MAX_SPEED 1.0
 
 #define PWD_STEP_L 10
 #define SPEED_DELTA_L 0.3
@@ -27,17 +25,10 @@ private:
 	uint32_t Channel_rev;
 
 	float target_vel;
-
-
 	int16_t cur_pwd;
-
-	ros::Subscriber<std_msgs::Float32,WheelSubscriber> sub;
 
 public:
 
-	void wheel_callback(const std_msgs::Float32& msg){
-		target_vel = msg.data;
-	}
 	void wheel_callback(float data){
 		target_vel = data;
 	}
@@ -92,16 +83,14 @@ public:
 	}
 
 
-
-	WheelSubscriber(char topic_in[]):sub(topic_in,&WheelSubscriber::wheel_callback, this){
+	WheelSubscriber(){
 		target_vel = 0;
 		cur_pwd = 0;
 	}
 
-
-	void set_pins(GPIO_TypeDef* GPIO_REN, uint16_t pin_ren,GPIO_TypeDef* GPIO_LEN, uint16_t pin_len){
-		HAL_GPIO_WritePin(GPIO_REN, pin_ren, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIO_LEN, pin_len, GPIO_PIN_SET);
+	void set_pins(GPIO_TypeDef* gpio_ren, uint16_t pin_ren,GPIO_TypeDef* gpio_len, uint16_t pin_len){
+		HAL_GPIO_WritePin(gpio_ren, pin_ren, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(gpio_len, pin_len, GPIO_PIN_SET);
 	}
 
 	void set_timers(TIM_HandleTypeDef *main_htim, uint32_t main_channel, uint32_t main_channel_rev){
@@ -110,10 +99,6 @@ public:
 		Channel_rev = main_channel_rev;
 		HAL_TIM_PWM_Start(htim, Channel);
 		HAL_TIM_PWM_Start(htim, Channel_rev);
-	}
-
-	void subscribe(ros::NodeHandle* nh){
-		(*nh).subscribe(sub);
 	}
 
 };

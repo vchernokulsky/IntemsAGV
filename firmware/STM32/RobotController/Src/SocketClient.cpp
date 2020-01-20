@@ -169,11 +169,11 @@ void SocketClient::SocketStateTask()
 				(*uart_helper).printf("\r\nToo much socketErrors. Reseting\r\n");
 				socket_reset();
 			}
-			else
-			{
-				if(error_count > 0){
-					error_count -=1;
-				}
+		}
+		else
+		{
+			if(error_count > 0){
+				error_count -=1;
 			}
 		}
 		osDelay(50);
@@ -202,7 +202,6 @@ void SocketClient::W5500_Unselect(void) {
 }
 
 void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
-    //HAL_SPI_Receive(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
 	uint32_t begin = HAL_GetTick();
 	HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
 	uint32_t end = HAL_GetTick();
@@ -212,7 +211,6 @@ void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
 }
 
 void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len) {
-    //HAL_SPI_Transmit(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
 	uint32_t begin = HAL_GetTick();
 	HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
 	uint32_t end = HAL_GetTick();

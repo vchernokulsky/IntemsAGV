@@ -90,8 +90,6 @@ void StartWheelSpeedTask(void const * argument){
 }
 
 void StartEncoderTestTask(void const * argument){
-//	  HAL_TIM_Encoder_Start_IT(encoder_htim,TIM_CHANNEL_1 | TIM_CHANNEL_2);
-//	  HAL_TIM_Base_Start(encoder_htim);
 	HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
 	for(;;){
 		encoderCount = __HAL_TIM_GET_COUNTER(encoder_htim);
@@ -112,11 +110,6 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  uart_helper.init(huart);
 
 	  socket_client = new SocketClient(hspi, &uart_helper);
-
-//	  socket_client.init(hspi, &uart_helper);
-//	  HAL_Delay(500);
-//	  socket_client.socket_connect();
-
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
