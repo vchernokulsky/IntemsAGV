@@ -12,15 +12,7 @@
 #define DNS_SOCKET      1
 #define HTTP_SOCKET     2
 
-#define W5500_CS_Pin GPIO_PIN_6
-#define W5500_CS_GPIO_Port GPIOB
 
-#define W5500_RST_Pin GPIO_PIN_7
-#define W5500_RST_GPIO_Port GPIOC
-
-#define BUFF_SIZE 20
-#define MAX_ERROR_COUNT 20
-#define TIMEOUT 10000
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -32,6 +24,9 @@
 #include "socket.h"
 #include "UartHelper.h"
 
+#include "System_config.h"
+#include "User_config.h"
+
 class SocketClient {
 private:
 	static SPI_HandleTypeDef *hspi1;
@@ -41,9 +36,8 @@ private:
 	UartHelper *uart_helper;
 	xQueueHandle queue;
 
-	volatile bool ip_assigned;
-	uint8_t addr[4] = {192, 168, 2, 150};
-	uint16_t port = 11411;
+	uint8_t addr[4] = SERVER_IP_ADRESS;
+	uint16_t port = SERVER_PORT;
 
 	bool socket_init();
 
@@ -54,7 +48,7 @@ private:
 	static void W5500_WriteBuff(uint8_t* buff, uint16_t len);
 	static uint8_t W5500_ReadByte(void);
 	static void W5500_WriteByte(uint8_t byte);
-//	void UART_Printf(const char* fmt, ...);
+
 public:
 	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
 	virtual ~SocketClient();

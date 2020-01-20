@@ -6,6 +6,15 @@
 #define UART_TRANSMIT_DELAY 10
 /************************************************/
 
+/********************WIZNET************************/
+#define W5500_CS_Pin GPIO_PIN_6
+#define W5500_CS_GPIO_Port GPIOB
+#define W5500_RST_Pin GPIO_PIN_7
+#define W5500_RST_GPIO_Port GPIOC
+#define WIZNET_MAX_ERROR_COUNT 20
+#define WIZNET_FREEZE_TIMEOUT 10000
+/************************************************/
+
 /******************* IBT-1 *********************/
 #define GPIO_REN1 GPIOB
 #define PIN_REN1 GPIO_PIN_14

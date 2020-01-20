@@ -51,9 +51,7 @@ void SocketClient::socket_send(uint8_t *pData, uint16_t len){
     while(len > 0) {
         int32_t nbytes = send(http_socket, pData, len);
         if(nbytes <= 0) {
-        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
-//            close(http_socket);
-//            return;
+        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);;
         	osDelay(50);
         } else{
 			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
@@ -69,8 +67,6 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
         if(nbytes <= 0) {
         	socket_error();
         	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
-//            close(http_socket);
-//            return;
         	osDelay(50);
         } else{
         	socket_success();
@@ -88,7 +84,6 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 			nbytes = recv(http_socket, pData, Size);
 		}
 		*rdmaInd = nbytes;
-
 
 		if(nbytes < 0) {
 			socket_error();
@@ -125,17 +120,17 @@ bool SocketClient::socket_init(){
     uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
     wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
     wiz_NetInfo net_info = {
-    	.mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef}, // MAC адрес
-        .ip = {192, 168, 2, 114}, // IP адрес
-        .sn = {255, 255, 255, 0}, // маска сети
-        .gw = {192, 168, 2, 1}}; // адрес шлюза
+    	.mac = WIZNET_MAC_ADRESS, // MAC адрес
+        .ip = WIZNET_IP_ADRESS, // IP адрес
+        .sn = WIZNET_MASK, // маска сети
+        .gw = WIZNET_GATEAWAY}; // адрес шлюза
     wizchip_setnetinfo(&net_info);
     wizchip_getnetinfo(&net_info);
     SocketClient::error_count = 0;
     data_exchange_time = HAL_GetTick();
     /***** OPEN SOCKET *****/
     SocketClient::http_socket = HTTP_SOCKET;
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
+    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, WIZNET_PORT, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
     	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
         return false;
@@ -164,7 +159,7 @@ void SocketClient::SocketStateTask()
 		if (err)
 		{
 			error_count +=1;
-			if(error_count > MAX_ERROR_COUNT)
+			if(error_count > WIZNET_MAX_ERROR_COUNT)
 			{
 				(*uart_helper).printf("\r\nToo much socketErrors. Reseting\r\n");
 				socket_reset();
@@ -176,7 +171,7 @@ void SocketClient::SocketStateTask()
 				error_count -=1;
 			}
 		}
-		osDelay(50);
+		osDelay(WIZNET_CHECK_ERRORS_DELAY);
 	}
 }
 void SocketClient::CheckFreezingTask()
@@ -184,12 +179,12 @@ void SocketClient::CheckFreezingTask()
 	for(;;)
 	{
 		uint32_t delta_time = HAL_GetTick() - data_exchange_time;
-		if(delta_time > TIMEOUT)
+		if(delta_time > WIZNET_FREEZE_TIMEOUT)
 		{
 			(*uart_helper).printf("\r\nSocket freeze. Reseting\r\n");
 			socket_reset();
 		}
-		osDelay(50);
+		osDelay(WIZNET_CHECK_FREEZING_DELAY);
 	}
 }
 
