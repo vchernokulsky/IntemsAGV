@@ -63,7 +63,7 @@ void RosHelper::rosLoop(void)
 	chatter.publish(&str_msg);
 	odom->publish();
 	nh.spinOnce();
-	osDelay(100);
+	osDelay(ROS_SPINONCE_DELAY);
 }
 
 void RosHelper::RosTask(void)
@@ -79,7 +79,7 @@ void RosHelper::setSpeedTask(void)
 	for(;;)
 	{
 		wheel->set_speed(encoder->get_speed());
-		osDelay(100);
+		osDelay(SET_SPEED_DELAY);
 	}
 }
 
@@ -88,7 +88,7 @@ void RosHelper::setSpeedTask2(void)
 	for(;;)
 	{
 		wheel2->set_speed(encoder2->get_speed());
-		osDelay(100);
+		osDelay(SET_SPEED_DELAY);
 	}
 }
 
@@ -97,7 +97,7 @@ void RosHelper::encoderTask(void)
 	for(;;)
 	{
 		encoder->tick_calculate();
-		osDelay(100);
+		osDelay(GET_TICK_DELAY);
 	}
 }
 
@@ -106,7 +106,7 @@ void RosHelper::encoderTask2(void)
 	for(;;)
 	{
 		encoder2->tick_calculate();
-		osDelay(100);
+		osDelay(GET_TICK_DELAY);
 	}
 }
 

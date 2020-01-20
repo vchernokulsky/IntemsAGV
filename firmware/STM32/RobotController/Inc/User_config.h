@@ -15,3 +15,38 @@
 #define SERVER_IP_ADRESS {192, 168, 2, 150}
 #define SERVER_PORT 11411
 /************************************************/
+
+/*******************CONTROL****************/
+#define ROS_SPINONCE_DELAY 100
+#define SET_SPEED_DELAY 100
+#define GET_TICK_DELAY 100
+#define CMDVEL_TIMEOUT 3000
+
+#define MAX_PWD_ALLOWED 127
+
+#define PWD_STEP_L 10
+#define SPEED_DELTA_L 0.3
+
+#define PWD_STEP_M 5
+#define SPEED_DELTA_M 0.1
+
+#define PWD_STEP_S 1
+#define SPEED_DELTA_S 0.02
+/************************************************/
+
+/***************ROBOT***************************/
+#define CMDVEL_TOPIC "/cmd_vel"
+#define ODOMETRY_TOPIC "/odom"
+#define BASE_FRAME "base_link"
+#define ODOMETRY_FRAME "odom"
+
+#define RAD_PER_TICK 0.0174533
+#define RADIUS 0.1
+#define WHEEL_SEPARATION 0.45
+
+#define MAX_LIN_SPEED 1.9
+#define MIN_LIN_SPEED -1.9
+
+#define ANG_VEL_MIN -3.8
+#define ANG_VEL_MAX 3.8
+/************************************************/

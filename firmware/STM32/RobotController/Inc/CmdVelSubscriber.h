@@ -5,18 +5,7 @@
 #include <geometry_msgs/Twist.h>
 
 #include "WheelSubscriber.h"
-
-#define CMDVEL_TOPIC "/cmd_vel"
-
-#define LINEAR_VEL_MIN -3.8
-#define LINEAR_VEL_MAX 3.8
-
-#define ANG_VEL_MIN -3.8
-#define ANG_VEL_MAX 3.8
-
-#define WHEEL_SEPARATION 0.45
-#define CMDVEL_TIMEOUT 3000
-
+#include "User_config.h"
 
 class CmdVelSubscriber
 {
@@ -49,7 +38,7 @@ private:
     }
     float check_linear_limit_velocity(float vel)
     {
-    	float ret = constrain(vel, LINEAR_VEL_MIN, LINEAR_VEL_MAX);
+    	float ret = constrain(vel, MIN_LIN_SPEED, MAX_LIN_SPEED);
         return ret;
     }
     float check_angular_limit_velocity(float vel){
@@ -73,13 +62,13 @@ private:
     }
     void adjust_speeds()
     {
-    	if ((left_linear > LINEAR_VEL_MAX)or(right_linear > LINEAR_VEL_MAX)){
-            float factor = LINEAR_VEL_MAX / max(left_linear, right_linear);
+    	if ((left_linear > MAX_LIN_SPEED)or(right_linear > MAX_LIN_SPEED)){
+            float factor = MAX_LIN_SPEED / max(left_linear, right_linear);
             left_linear *= factor;
 			right_linear *= factor;
     	}
-    	if ((left_linear < -LINEAR_VEL_MAX)or(right_linear < -LINEAR_VEL_MAX)){
-			float factor = LINEAR_VEL_MAX / min(left_linear, right_linear);
+    	if ((left_linear < -MAX_LIN_SPEED)or(right_linear < -MAX_LIN_SPEED)){
+			float factor = MAX_LIN_SPEED / min(left_linear, right_linear);
 			left_linear *= factor;
 			right_linear *= factor;
 		}

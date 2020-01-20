@@ -12,14 +12,6 @@
 
 #define PI 3.14
 
-#define ODOMETRY_TOPIC "/odom"
-#define BASE_FRAME "base_link"
-#define ODOMETRY_FRAME "odom"
-
-#define RADIUS 0.1
-#define WHEEL_SEPARATION 0.45
-
-
 class OdometryPublisher
 {
 private:

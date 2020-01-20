@@ -3,11 +3,7 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include <std_msgs/Float32.h>
-
-#define RAD_PER_TICK 0.0174533
-#define RADIUS 0.1
-#define MAX_LIN_SPEED 1.9
-
+#include "User_config.h"
 
 class WheelPublisher
 {
@@ -67,10 +63,12 @@ public:
 
 
 	float get_speed(){
+		// speed in %
 		return cur_speed / MAX_LIN_SPEED;
 	}
 
 	float get_distance(){
+		// distance in rad
 		int32_t ret_dist = distance_tick;
 		distance_tick = 0;
 		return (float)ret_dist * RAD_PER_TICK / 4.0;

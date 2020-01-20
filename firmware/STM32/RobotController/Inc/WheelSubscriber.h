@@ -4,18 +4,6 @@
 #include "stm32f4xx_hal_gpio.h"
 #include <std_msgs/Float32.h>
 
-#define MAX_VALUE 127
-
-#define PWD_STEP_L 10
-#define SPEED_DELTA_L 0.3
-
-#define PWD_STEP_M 5
-#define SPEED_DELTA_M 0.1
-
-#define PWD_STEP_S 1
-#define SPEED_DELTA_S 0.02
-
-
 class WheelSubscriber
 {
 private:
@@ -63,15 +51,15 @@ public:
 		}
 
 		if(cur_pwd > 0){
-			if (cur_pwd > MAX_VALUE){
-				cur_pwd = MAX_VALUE;
+			if (cur_pwd > MAX_PWD_ALLOWED){
+				cur_pwd = MAX_PWD_ALLOWED;
 			}
 			speed = cur_pwd;
 
 		}
 		if(cur_pwd < 0){
-			if (cur_pwd < -MAX_VALUE){
-				cur_pwd = -MAX_VALUE;
+			if (cur_pwd < -MAX_PWD_ALLOWED){
+				cur_pwd = -MAX_PWD_ALLOWED;
 			}
 			speed_rev = (-1) * cur_pwd;
 		}

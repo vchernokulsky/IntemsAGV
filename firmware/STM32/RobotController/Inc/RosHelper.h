@@ -16,6 +16,8 @@
 #include "CmdVelSubscriber.h"
 #include "OdometryPublisher.h"
 
+#include "User_config.h"
+
 //#include "Test.h"
 
 class RosHelper {
