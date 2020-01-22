@@ -36,7 +36,7 @@ class _CounterState extends State<Counter> {
     int minValue = 1;
     int num = int.parse(numStr);
     setState(() {
-      if(num >= minValue && num <= maxValue){
+      if (num >= minValue && num <= maxValue) {
         radiusErrorMsg = "";
       } else {
         radiusErrorMsg = RADIUS_ERROR_MSG;
@@ -56,23 +56,26 @@ class _CounterState extends State<Counter> {
       appBar: AppBar(
         title: Text("DiffDriveSTM"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Visibility(
-              visible: curItem == ROBOT_GEOM,
-              child:  RobotGeometry(),
-            ),
-            Visibility(
-              visible: curItem == ROBOT_DRIVE,
-              child:  RobotDrive(),
-            ),
-            Visibility(
-              visible: curItem == ROS_TOPICS,
-              child:  RosTopic(),
-            ),
-          ],
+      body: Scrollbar(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Visibility(
+                visible: curItem == ROBOT_GEOM,
+                child: RobotGeometry(),
+              ),
+              Visibility(
+                visible: curItem == ROBOT_DRIVE,
+                child: RobotDrive(),
+              ),
+              Visibility(
+                visible: curItem == ROS_TOPICS,
+                child: RosTopic(),
+              ),
+            ],
+          ),
         ),
       ),
       drawer: Drawer(
