@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import 'DecimalInput.dart';
-import 'NumericInput.dart';
+import 'Inputs/DecimalInput.dart';
+import 'Inputs/NumericInput.dart';
 
 class RobotDrive extends StatelessWidget {
   @override

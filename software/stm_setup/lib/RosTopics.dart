@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:stm_setup/TopicNameInput.dart';
+import 'package:stm_setup/Inputs/TopicNameInput.dart';
 
 class RosTopic extends StatelessWidget {
   @override
