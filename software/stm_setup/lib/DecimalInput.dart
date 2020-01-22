@@ -9,8 +9,8 @@ class DecimalInput extends StatefulWidget {
 
   const DecimalInput({Key key, this.title, this.minValue, this.maxValue})
       : super(key: key);
-  _DecimalInput createState() =>
-      _DecimalInput(title, minValue, maxValue);
+
+  _DecimalInput createState() => _DecimalInput(title, minValue, maxValue);
 }
 
 class _DecimalInput extends State<DecimalInput> {
@@ -43,8 +43,7 @@ class _DecimalInput extends State<DecimalInput> {
         } else {
           errorMsg = "out of range(should be between $minValue and $maxValue)";
         }
-      }
-      else{
+      } else {
         errorMsg = "wrong format(should be decimal)";
       }
     });
@@ -55,7 +54,10 @@ class _DecimalInput extends State<DecimalInput> {
       child: Column(
         children: <Widget>[
           TextField(
-            decoration: InputDecoration(labelText: "$title"),
+            decoration: InputDecoration(
+              labelText: "$title",
+              border: OutlineInputBorder(),
+            ),
             keyboardType: TextInputType.number,
             onSubmitted: (text) {
               numberValidate(text);
@@ -64,11 +66,14 @@ class _DecimalInput extends State<DecimalInput> {
               WhitelistingTextInputFormatter(RegExp(r'\d+|.|,'))
             ], // Only numbers can be entered
           ),
-          Text(
-            "$errorMsg",
-            style: TextStyle(
-                color: Colors.red.withOpacity(1.0),
-                fontWeight: FontWeight.bold),
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              "$errorMsg",
+              style: TextStyle(
+                  color: Colors.red.withOpacity(1.0),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

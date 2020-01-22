@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'DecimalInput.dart';
-import 'NumericInput.dart';
+import 'package:stm_setup/RobotGeometry.dart';
 
 class Counter extends StatefulWidget {
   _CounterState createState() => _CounterState();
@@ -61,30 +59,7 @@ class _CounterState extends State<Counter> {
           children: <Widget>[
             Visibility(
               visible: curItem == ROBOT_GEOM,
-              child:  Column(
-                children: <Widget>[
-                  NumericInput(
-                    title: "Wheel radius(mm)",
-                    minValue: 10,
-                    maxValue: 100,
-                  ),
-                  NumericInput(
-                    title: "Wheel separation(mm)",
-                    minValue: 10,
-                    maxValue: 100,
-                  ),
-                  DecimalInput(
-                    title: "max linear velocity",
-                    minValue: 0.1,
-                    maxValue: 15.0,
-                  ),
-                  DecimalInput(
-                    title: "max angular velocity",
-                    minValue: 0.1,
-                    maxValue: 15.0,
-                  ),
-                ],
-              ),
+              child:  RobotGeometry(),
             ),
           ],
         ),
