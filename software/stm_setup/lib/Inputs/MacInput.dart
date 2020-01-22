@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class DecimalInput extends StatefulWidget {
+class MacInput extends StatefulWidget {
   final String title;
-  final double minValue;
-  final double maxValue;
 
-  const DecimalInput({Key key, this.title, this.minValue, this.maxValue})
+  const MacInput({Key key, this.title})
       : super(key: key);
 
-  _DecimalInput createState() => _DecimalInput(title, minValue, maxValue);
+  _MacInput createState() => _MacInput(title);
 }
 
-class _DecimalInput extends State<DecimalInput> {
-  _DecimalInput(this.title, this.minValue, this.maxValue);
+class _MacInput extends State<MacInput> {
+  _MacInput(this.title);
 
   final String title;
-
-  final double minValue;
-  final double maxValue;
 
   String errorMsg;
 
@@ -30,26 +25,15 @@ class _DecimalInput extends State<DecimalInput> {
 
   void numberValidate(String numStr) {
     RegExp regExp = new RegExp(
-      r'^(\d*\.)?\d+$',
+      r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
       caseSensitive: false,
       multiLine: false,
     );
     setState(() {
-      if(numStr.isEmpty){
+      if (numStr.isEmpty || regExp.hasMatch(numStr)) {
         errorMsg = "";
       } else {
-        if (regExp.hasMatch(numStr)) {
-          double num = double.parse(numStr);
-
-          if (num >= minValue && num <= maxValue) {
-            errorMsg = "";
-          } else {
-            errorMsg =
-            "out of range(should be between $minValue and $maxValue)";
-          }
-        } else {
-          errorMsg = "wrong format(should be decimal)";
-        }
+        errorMsg = "wrong mac address";
       }
     });
   }
@@ -63,12 +47,12 @@ class _DecimalInput extends State<DecimalInput> {
               labelText: "$title",
               border: OutlineInputBorder(),
             ),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.text,
             onSubmitted: (text) {
               numberValidate(text);
             },
             inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter(RegExp(r'\d+|\.|,'))
+              WhitelistingTextInputFormatter(RegExp(r'[0-9a-fA-F]|:|-'))
             ], // Only numbers can be entered
           ),
           Padding(
