@@ -35,16 +35,21 @@ class _DecimalInput extends State<DecimalInput> {
       multiLine: false,
     );
     setState(() {
-      if (regExp.hasMatch(numStr)) {
-        double num = double.parse(numStr);
-
-        if (num >= minValue && num <= maxValue) {
-          errorMsg = "";
-        } else {
-          errorMsg = "out of range(should be between $minValue and $maxValue)";
-        }
+      if(numStr.isEmpty){
+        errorMsg = "";
       } else {
-        errorMsg = "wrong format(should be decimal)";
+        if (regExp.hasMatch(numStr)) {
+          double num = double.parse(numStr);
+
+          if (num >= minValue && num <= maxValue) {
+            errorMsg = "";
+          } else {
+            errorMsg =
+            "out of range(should be between $minValue and $maxValue)";
+          }
+        } else {
+          errorMsg = "wrong format(should be decimal)";
+        }
       }
     });
   }

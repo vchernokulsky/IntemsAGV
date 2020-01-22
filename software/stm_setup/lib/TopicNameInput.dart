@@ -30,7 +30,7 @@ class _TopicNameInput extends State<TopicNameInput> {
       multiLine: false,
     );
     setState(() {
-      if (regExp.hasMatch(numStr)) {
+      if (numStr.isEmpty || regExp.hasMatch(numStr)) {
         errorMsg = "";
       } else {
         errorMsg = "wrong topic name";
