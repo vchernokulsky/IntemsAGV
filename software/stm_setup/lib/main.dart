@@ -4,6 +4,8 @@ import 'package:stm_setup/RobotGeometry.dart';
 import 'package:stm_setup/RosTopics.dart';
 import 'package:stm_setup/Wiznet.dart';
 
+import 'Delay.dart';
+
 class Counter extends StatefulWidget {
   _CounterState createState() => _CounterState();
 }
@@ -13,6 +15,7 @@ class _CounterState extends State<Counter> {
   static const int ROBOT_DRIVE = 1;
   static const int ROS_TOPICS = 2;
   static const int WIZNET = 3;
+  static const int DELAY = 4;
 
   static const String RADIUS_ERROR_MSG = "Wrong radius value";
 
@@ -80,6 +83,10 @@ class _CounterState extends State<Counter> {
                 visible: curItem == WIZNET,
                 child: Wiznet(),
               ),
+              Visibility(
+                visible: curItem == DELAY,
+                child: Delay(),
+              ),
             ],
           ),
         ),
@@ -113,6 +120,10 @@ class _CounterState extends State<Counter> {
             ListTile(
               title: Text('Wiznet'),
               onTap: () => setWidgets(WIZNET),
+            ),
+            ListTile(
+              title: Text('Delay'),
+              onTap: () => setWidgets(DELAY),
             ),
           ],
         ),
