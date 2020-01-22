@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stm_setup/RobotDrive.dart';
 import 'package:stm_setup/RobotGeometry.dart';
 
 class Counter extends StatefulWidget {
@@ -60,6 +61,10 @@ class _CounterState extends State<Counter> {
             Visibility(
               visible: curItem == ROBOT_GEOM,
               child:  RobotGeometry(),
+            ),
+            Visibility(
+              visible: curItem == ROBOT_DRIVE,
+              child:  RobotDrive(),
             ),
           ],
         ),
