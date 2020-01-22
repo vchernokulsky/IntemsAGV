@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stm_setup/RobotDrive.dart';
 import 'package:stm_setup/RobotGeometry.dart';
+import 'package:stm_setup/RosTopics.dart';
 
 class Counter extends StatefulWidget {
   _CounterState createState() => _CounterState();
@@ -9,6 +10,7 @@ class Counter extends StatefulWidget {
 class _CounterState extends State<Counter> {
   static const int ROBOT_GEOM = 0;
   static const int ROBOT_DRIVE = 1;
+  static const int ROS_TOPICS = 2;
 
   static const String RADIUS_ERROR_MSG = "Wrong radius value";
 
@@ -66,6 +68,10 @@ class _CounterState extends State<Counter> {
               visible: curItem == ROBOT_DRIVE,
               child:  RobotDrive(),
             ),
+            Visibility(
+              visible: curItem == ROS_TOPICS,
+              child:  RosTopic(),
+            ),
           ],
         ),
       ),
@@ -90,6 +96,10 @@ class _CounterState extends State<Counter> {
             ListTile(
               title: Text('Robot drive'),
               onTap: () => setWidgets(ROBOT_DRIVE),
+            ),
+            ListTile(
+              title: Text('Ros topics'),
+              onTap: () => setWidgets(ROS_TOPICS),
             ),
           ],
         ),
