@@ -13,6 +13,7 @@ SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient *socket_client;
 RosHelper* ros_helper  = nullptr;
+static Settings *settings = nullptr;
 
 static TIM_HandleTypeDef *htim = nullptr;
 static TIM_HandleTypeDef *htim2 = nullptr;
@@ -106,9 +107,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2, I2C_HandleTypeDef *hi2c1)
 {
 
-	set_default(hi2c1, false);
-	uint8_t default_settings[OUTPUT_SIZE];
-	read_all_default(hi2c1, default_settings);
+	settings = new Settings(hi2c1);
 
 	  huart = main_huart;
 	  hspi = main_hspi1;
