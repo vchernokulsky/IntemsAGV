@@ -6,15 +6,18 @@
  */
 
 #include "SocketClient.h"
-SPI_HandleTypeDef *SocketClient::hspi1;
-uint8_t SocketClient::error_count;
 
-SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings) {
+SPI_HandleTypeDef *SocketClient::hspi1;
+bool SocketClient::wiznet_inited = false;
+
+
+SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode) {
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
 	bool buff;
 	queue = xQueueCreate( 30, sizeof( buff ) );
 	settings = main_settings;
+	SocketClient::http_socket = socket_mode;
 	SocketClient::socket_reset();
 }
 
@@ -40,11 +43,13 @@ void SocketClient::socket_connect(){
 
 void SocketClient::socket_reset()
 {
-	if (SocketClient::socket_init())
-	{
-		HAL_Delay(500);
+	SocketClient::wiznet_init();
+	HAL_Delay(500);
+	if (http_socket == HTTP_SOCKET_CLIENT){
+		SocketClient::socket_open();
 		SocketClient::socket_connect();
 	}
+
 }
 
 void SocketClient::socket_send(uint8_t *pData, uint16_t len){
@@ -101,37 +106,9 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 		}
 }
 
-
-void SocketClient::socket_close(){
-	  close(http_socket);
-	  (*uart_helper).printf("Closing socket.\r\n");
-}
-
-bool SocketClient::socket_init(){
-	/******* RESET WIZNET**********/
-	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
-	 HAL_Delay(100);
-	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
-	 HAL_Delay(100);
-	/****** REGISTER SOCKET CALLBACKS ******/
-    reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
-    reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);
-    reg_wizchip_spiburst_cbfunc(SocketClient::W5500_ReadBuff, SocketClient::W5500_WriteBuff);
-    /****** INIT SOCKET ******/
-    uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
-    wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
-    wiz_NetInfo net_info;
-    memcpy(net_info.mac, settings->wiznet_mac_address, MAC_ADDRESS_SIZE);
-    memcpy(net_info.ip, settings->wiznet_ip_address, IP_SIZE);
-    memcpy(net_info.sn, settings->wiznet_mask, IP_SIZE);
-    memcpy(net_info.gw, settings->wiznet_gateaway, IP_SIZE);
-
-    wizchip_setnetinfo(&net_info);
-    wizchip_getnetinfo(&net_info);
-    SocketClient::error_count = 0;
-    data_exchange_time = HAL_GetTick();
+bool SocketClient::socket_open()
+{
     /***** OPEN SOCKET *****/
-    SocketClient::http_socket = HTTP_SOCKET;
     uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, settings->wiznet_port, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
     	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
@@ -139,6 +116,40 @@ bool SocketClient::socket_init(){
     }
     (*uart_helper).printf("\r\nSocket opened\r\n");
     return true;
+}
+
+void SocketClient::socket_close()
+{
+	  close(http_socket);
+	  (*uart_helper).printf("Closing socket.\r\n");
+}
+
+void SocketClient::wiznet_init(){
+	if(http_socket == HTTP_SOCKET_CLIENT || !SocketClient::wiznet_inited){
+		/******* RESET WIZNET**********/
+		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
+		 HAL_Delay(100);
+		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
+		 HAL_Delay(100);
+		/****** REGISTER SOCKET CALLBACKS ******/
+		reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
+		reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);
+		reg_wizchip_spiburst_cbfunc(SocketClient::W5500_ReadBuff, SocketClient::W5500_WriteBuff);
+		/****** INIT SOCKET ******/
+		uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
+		wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
+		wiz_NetInfo net_info;
+		memcpy(net_info.mac, settings->wiznet_mac_address, MAC_ADDRESS_SIZE);
+		memcpy(net_info.ip, settings->wiznet_ip_address, IP_SIZE);
+		memcpy(net_info.sn, settings->wiznet_mask, IP_SIZE);
+		memcpy(net_info.gw, settings->wiznet_gateaway, IP_SIZE);
+
+		wizchip_setnetinfo(&net_info);
+		wizchip_getnetinfo(&net_info);
+		SocketClient::error_count = 0;
+		data_exchange_time = HAL_GetTick();
+		SocketClient::wiznet_inited = true;
+	}
 }
 
 void SocketClient::socket_error()
@@ -187,6 +198,26 @@ void SocketClient::CheckFreezingTask()
 			socket_reset();
 		}
 		osDelay(WIZNET_CHECK_FREEZING_DELAY);
+	}
+}
+
+void SocketClient::socketServerTestTask()
+{
+	uint8_t buff[] = {1,2,3,4,5};
+	for(;;)
+	{
+		while(!socket_open()){
+			osDelay(50);
+		}
+		listen(http_socket);
+		while(getSn_SR(http_socket) != SOCK_ESTABLISHED)
+		{
+			osDelay(50);
+		}
+		socket_send(buff, 6);
+		socket_close();
+		osDelay(50);
+
 	}
 }
 

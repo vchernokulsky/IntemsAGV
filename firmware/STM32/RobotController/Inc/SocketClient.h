@@ -10,7 +10,8 @@
 
 #define DHCP_SOCKET     0
 #define DNS_SOCKET      1
-#define HTTP_SOCKET     2
+#define HTTP_SOCKET_CLIENT    2
+#define HTTP_SOCKET_SERVER    3
 
 
 
@@ -30,8 +31,9 @@
 
 class SocketClient {
 private:
+	static bool wiznet_inited;
 	static SPI_HandleTypeDef *hspi1;
-	static uint8_t error_count;
+	uint8_t error_count;
 	uint32_t data_exchange_time;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
@@ -42,7 +44,7 @@ private:
 	uint8_t addr[4] = SERVER_IP_ADRESS;
 	uint16_t port = SERVER_PORT;
 
-	bool socket_init();
+	void wiznet_init();
 
 
 	static void W5500_Select(void);
@@ -53,9 +55,9 @@ private:
 	static void W5500_WriteByte(uint8_t byte);
 
 public:
-	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings);
+	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode);
 	virtual ~SocketClient();
-
+	bool socket_open();
 	void socket_connect();
 	void socket_send(uint8_t *pData, uint16_t len);
 	void socket_send(const char *pData, uint16_t len);
@@ -66,6 +68,7 @@ public:
 	void socket_success();
 	void SocketStateTask();
 	void CheckFreezingTask();
+	void socketServerTestTask();
 };
 
 #endif /* SOCKETCLIENT_H_ */

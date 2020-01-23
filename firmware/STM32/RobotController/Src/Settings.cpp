@@ -2,7 +2,7 @@
 
 Settings::Settings(I2C_HandleTypeDef *main_hi2c1){
 	hi2c1 = main_hi2c1;
-	set_default(false);
+	set_default(true);
 	HAL_Delay(100);
 	read_all();
 }

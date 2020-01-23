@@ -11,7 +11,8 @@
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
-SocketClient *socket_client;
+SocketClient *socket_client = nullptr;
+static SocketClient *socket_server = nullptr;
 RosHelper* ros_helper  = nullptr;
 static Settings *settings = nullptr;
 
@@ -19,6 +20,8 @@ static TIM_HandleTypeDef *htim = nullptr;
 static TIM_HandleTypeDef *htim2 = nullptr;
 
 static TIM_HandleTypeDef *encoder_htim = nullptr;
+
+
 
 uint64_t encoderCount;
 uint8_t encoderDirection;
@@ -82,6 +85,11 @@ void StartSocketSendTask(void const * argument)
 	  }
 //	vTaskDelete( NULL );
 }
+void StartSocketServerTestTask(void const * argument)
+{
+	socket_server->socketServerTestTask();
+//	vTaskDelete( NULL );
+}
 
 void StartWheelSpeedTask(void const * argument){
 	set_speed1(htim, 40);
@@ -113,46 +121,47 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 
-	  socket_client = new SocketClient(hspi, &uart_helper, settings);
+	  socket_client = new SocketClient(hspi, &uart_helper, settings, HTTP_SOCKET_CLIENT);
+	  socket_server = new SocketClient(hspi, &uart_helper, settings, HTTP_SOCKET_SERVER);
 
 	  //****** UART **********
-	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(UartTask), NULL);
+//	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(UartTask), NULL);
 
 	  //============ SOCKET CHECKING ==========
 
-	  //****** Check Errors **********
-	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(SocketErrorTask), NULL);
-
-	  //****** Check Freezing **********
-	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(CheckFreezingTask), NULL);
+//	  //****** Check Errors **********
+//	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(SocketErrorTask), NULL);
+//
+//	  //****** Check Freezing **********
+//	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(CheckFreezingTask), NULL);
 	  //=======================================
 
 	  //========== ROS ===============
 
-	  //******** SpinOnce ***********
-	  ros_helper = new RosHelper();
-	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
-	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(RosTask), NULL);
-
-	  //**** Wheel1 subscriber ********
-	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(setSpeedTask), NULL);
-
-	  //**** Wheel2 subscriber ********
-	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(setSpeedTask2), NULL);
-
-	  //**** Wheel1 getting encoder info ********
-	  osThreadDef(encoderInfoTask, StartEncoderTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(encoderInfoTask), NULL);
-
-	  //**** Wheel2 getting encoder info ********
-	  osThreadDef(encoderInfoTask2, StartEncoderTask2, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(encoderInfoTask2), NULL);
+//	  //******** SpinOnce ***********
+//	  ros_helper = new RosHelper();
+//	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
+//	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(RosTask), NULL);
+//
+//	  //**** Wheel1 subscriber ********
+//	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(setSpeedTask), NULL);
+//
+//	  //**** Wheel2 subscriber ********
+//	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(setSpeedTask2), NULL);
+//
+//	  //**** Wheel1 getting encoder info ********
+//	  osThreadDef(encoderInfoTask, StartEncoderTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(encoderInfoTask), NULL);
+//
+//	  //**** Wheel2 getting encoder info ********
+//	  osThreadDef(encoderInfoTask2, StartEncoderTask2, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(encoderInfoTask2), NULL);
 
 	  //==============================
 
@@ -163,6 +172,10 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  //******* Socket Test *************
 //	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
 //	  osThreadCreate(osThread(SocketSendTask), NULL);
+
+	  //******* Socket Server Test *************
+	  osThreadDef(SocketServerTestTask, StartSocketServerTestTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketServerTestTask), NULL);
 
 	  //******* Wheel Speed Test ***********
 //	  htim = main_htim;
