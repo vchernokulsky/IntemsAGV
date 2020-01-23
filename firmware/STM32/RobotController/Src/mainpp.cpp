@@ -3,6 +3,7 @@
 #include "UartHelper.h"
 #include "SocketClient.h"
 #include "RosHelper.h"
+#include "Settings.h"
 
 #include "SetSpeedTest.h"
 
@@ -102,8 +103,12 @@ void StartEncoderTestTask(void const * argument){
 
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 		TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2,
-		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2)
+		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2, I2C_HandleTypeDef *hi2c1)
 {
+
+	set_default(hi2c1, false);
+	uint8_t default_settings[OUTPUT_SIZE];
+	read_all_default(hi2c1, default_settings);
 
 	  huart = main_huart;
 	  hspi = main_hspi1;
