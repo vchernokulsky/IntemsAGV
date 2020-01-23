@@ -113,7 +113,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 
-	  socket_client = new SocketClient(hspi, &uart_helper);
+	  socket_client = new SocketClient(hspi, &uart_helper, settings);
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);

@@ -23,6 +23,7 @@
 
 #include "socket.h"
 #include "UartHelper.h"
+#include "Settings.h"
 
 #include "System_config.h"
 #include "User_config.h"
@@ -35,6 +36,8 @@ private:
 	uint8_t http_socket;
 	UartHelper *uart_helper;
 	xQueueHandle queue;
+
+	Settings *settings;
 
 	uint8_t addr[4] = SERVER_IP_ADRESS;
 	uint16_t port = SERVER_PORT;
@@ -50,7 +53,7 @@ private:
 	static void W5500_WriteByte(uint8_t byte);
 
 public:
-	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
+	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings);
 	virtual ~SocketClient();
 
 	void socket_connect();

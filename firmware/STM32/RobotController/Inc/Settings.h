@@ -4,7 +4,9 @@
 #include "stm32f4xx_hal_gpio.h"
 #include <string.h>
 
-#define OUTPUT_SIZE 24
+#include "User_config.h"
+
+#define SETTING_SIZE 24
 
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
@@ -23,7 +25,7 @@
 class Settings {
 private:
 	I2C_HandleTypeDef *hi2c1;
-	uint8_t message_out[OUTPUT_SIZE];
+	uint8_t message_out[SETTING_SIZE];
 	bool is_set();
 	void wait_for_readiness();
 	void extract_variables();

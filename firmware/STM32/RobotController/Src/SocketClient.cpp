@@ -9,11 +9,12 @@
 SPI_HandleTypeDef *SocketClient::hspi1;
 uint8_t SocketClient::error_count;
 
-SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
+SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings) {
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
 	bool buff;
 	queue = xQueueCreate( 30, sizeof( buff ) );
+	settings = main_settings;
 	SocketClient::socket_reset();
 }
 
@@ -119,18 +120,19 @@ bool SocketClient::socket_init(){
     /****** INIT SOCKET ******/
     uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
     wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
-    wiz_NetInfo net_info = {
-    	.mac = WIZNET_MAC_ADRESS, // MAC адрес
-        .ip = WIZNET_IP_ADRESS, // IP адрес
-        .sn = WIZNET_MASK, // маска сети
-        .gw = WIZNET_GATEAWAY}; // адрес шлюза
+    wiz_NetInfo net_info;
+    memcpy(net_info.mac, settings->wiznet_mac_address, MAC_ADDRESS_SIZE);
+    memcpy(net_info.ip, settings->wiznet_ip_address, IP_SIZE);
+    memcpy(net_info.sn, settings->wiznet_mask, IP_SIZE);
+    memcpy(net_info.gw, settings->wiznet_gateaway, IP_SIZE);
+
     wizchip_setnetinfo(&net_info);
     wizchip_getnetinfo(&net_info);
     SocketClient::error_count = 0;
     data_exchange_time = HAL_GetTick();
     /***** OPEN SOCKET *****/
     SocketClient::http_socket = HTTP_SOCKET;
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, WIZNET_PORT, SF_IO_NONBLOCK );
+    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, settings->wiznet_port, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
     	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
         return false;

@@ -51,34 +51,34 @@ void Settings::set_default(bool force){
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
 		offset = MAC_ADDRESS_OFFSET;
-		uint8_t mac[] = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef};
+		uint8_t mac[] = WIZNET_MAC_ADRESS;
 		memcpy(message_out + offset, mac, sizeof(mac));
 
 		offset = WIZNET_IP_OFFSET;
-		uint8_t ip[] = {192, 168, 2, 114};
+		uint8_t ip[] = WIZNET_IP_ADRESS;
 		memcpy(message_out + offset, ip, sizeof(ip));
 
 		offset = WIZNET_PORT_OFFSET;
-		uint16_t port = 10888;
+		uint16_t port = WIZNET_PORT;
 		 message_out[offset] = port & 0xFF;
 		 message_out[offset+1] = port >> 8;
 
 		offset = WIZNET_MASK_OFFSET;
-		uint8_t mask[] = {255, 255, 255, 0};
+		uint8_t mask[] = WIZNET_MASK;
 		memcpy(message_out + offset, mask, sizeof(mask));
 
 		offset = WIZET_GATE_AWAY_OFFSET;
-		uint8_t gw[] = {192, 168, 2, 1};
+		uint8_t gw[] = WIZNET_GATEAWAY;
 		memcpy(message_out + offset, gw, sizeof(gw));
 
-		HAL_I2C_Mem_Write(hi2c1, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, OUTPUT_SIZE, HAL_MAX_DELAY);
+		HAL_I2C_Mem_Write(hi2c1, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 	}
 }
 
 void Settings::read_all()
 {
 	 wait_for_readiness();
-	 HAL_StatusTypeDef status = HAL_I2C_Mem_Read(hi2c1, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, OUTPUT_SIZE, HAL_MAX_DELAY);
+	 HAL_StatusTypeDef status = HAL_I2C_Mem_Read(hi2c1, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 	 if (status == HAL_OK){
 		 extract_variables();
 	 }
