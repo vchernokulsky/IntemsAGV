@@ -32,7 +32,8 @@ private:
 public:
 	uint8_t wiznet_mac_address[MAC_ADDRESS_SIZE];
 	uint8_t wiznet_ip_address[IP_SIZE];
-	uint16_t wiznet_port;
+	uint16_t wiznet_client_port;
+	uint16_t wiznet_server_port;
 	uint8_t wiznet_mask[IP_SIZE];
 	uint8_t wiznet_gateaway[IP_SIZE];
 	Settings(I2C_HandleTypeDef *main_hi2c1);

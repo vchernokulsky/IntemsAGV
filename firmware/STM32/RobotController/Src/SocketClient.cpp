@@ -9,6 +9,7 @@
 
 SPI_HandleTypeDef *SocketClient::hspi1;
 bool SocketClient::wiznet_inited = false;
+bool SocketClient::wiznet_restarted = false;
 
 
 SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode) {
@@ -57,10 +58,10 @@ void SocketClient::socket_send(uint8_t *pData, uint16_t len){
     while(len > 0) {
         int32_t nbytes = send(http_socket, pData, len);
         if(nbytes <= 0) {
-        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);;
+//        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);;
         	osDelay(50);
         } else{
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -72,11 +73,11 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
         int32_t nbytes = send(http_socket, (uint8_t*)pData, len);
         if(nbytes <= 0) {
         	socket_error();
-        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
+//        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
         	osDelay(50);
         } else{
         	socket_success();
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -93,12 +94,12 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 
 		if(nbytes < 0) {
 			socket_error();
-			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
+//			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
 			return;
 		}
 		if (nbytes > 0){
 			socket_success();
-			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
+//			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
 			return;
 		} else {
 //			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
@@ -109,7 +110,11 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 bool SocketClient::socket_open()
 {
     /***** OPEN SOCKET *****/
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, settings->wiznet_port, SF_IO_NONBLOCK );
+	uint16_t port = settings->wiznet_client_port;
+	if (http_socket == HTTP_SOCKET_SERVER){
+		port = settings->wiznet_server_port;
+	}
+    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, port, SF_IO_NONBLOCK );
     if(code != SocketClient::http_socket) {
     	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
         return false;
@@ -149,6 +154,11 @@ void SocketClient::wiznet_init(){
 		SocketClient::error_count = 0;
 		data_exchange_time = HAL_GetTick();
 		SocketClient::wiznet_inited = true;
+		if(http_socket == HTTP_SOCKET_CLIENT){
+			wiznet_restarted = true;
+		} else {
+			wiznet_restarted = false;
+		}
 	}
 }
 
@@ -200,24 +210,36 @@ void SocketClient::CheckFreezingTask()
 		osDelay(WIZNET_CHECK_FREEZING_DELAY);
 	}
 }
+void SocketClient::server_loop()
+{
+	while(!socket_open())
+	{
+		if(SocketClient::wiznet_restarted){
+			SocketClient::wiznet_restarted = false;
+			return;
+		}
+		osDelay(50);
+	}
+	listen(http_socket);
+	while(getSn_SR(http_socket) != SOCK_ESTABLISHED)
+	{
+		if(SocketClient::wiznet_restarted){
+			SocketClient::wiznet_restarted = false;
+			return;
+		}
+		osDelay(50);
+	}
+	uint8_t buff[] = {1,2,3,4,5};
+	socket_send(buff, 6);
+	socket_close();
+}
 
 void SocketClient::socketServerTestTask()
 {
-	uint8_t buff[] = {1,2,3,4,5};
 	for(;;)
 	{
-		while(!socket_open()){
-			osDelay(50);
-		}
-		listen(http_socket);
-		while(getSn_SR(http_socket) != SOCK_ESTABLISHED)
-		{
-			osDelay(50);
-		}
-		socket_send(buff, 6);
-		socket_close();
+		server_loop();
 		osDelay(50);
-
 	}
 }
 

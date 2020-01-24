@@ -125,43 +125,43 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  socket_server = new SocketClient(hspi, &uart_helper, settings, HTTP_SOCKET_SERVER);
 
 	  //****** UART **********
-//	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(UartTask), NULL);
+	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(UartTask), NULL);
 
 	  //============ SOCKET CHECKING ==========
 
-//	  //****** Check Errors **********
-//	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(SocketErrorTask), NULL);
-//
-//	  //****** Check Freezing **********
-//	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(CheckFreezingTask), NULL);
+	  //****** Check Errors **********
+	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketErrorTask), NULL);
+
+	  //****** Check Freezing **********
+	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(CheckFreezingTask), NULL);
 	  //=======================================
 
 	  //========== ROS ===============
 
-//	  //******** SpinOnce ***********
-//	  ros_helper = new RosHelper();
-//	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
-//	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(RosTask), NULL);
-//
-//	  //**** Wheel1 subscriber ********
-//	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(setSpeedTask), NULL);
-//
-//	  //**** Wheel2 subscriber ********
-//	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(setSpeedTask2), NULL);
-//
-//	  //**** Wheel1 getting encoder info ********
-//	  osThreadDef(encoderInfoTask, StartEncoderTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(encoderInfoTask), NULL);
-//
-//	  //**** Wheel2 getting encoder info ********
-//	  osThreadDef(encoderInfoTask2, StartEncoderTask2, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(encoderInfoTask2), NULL);
+	  //******** SpinOnce ***********
+	  ros_helper = new RosHelper();
+	  ros_helper->setupRos(&uart_helper, main_htim, main_htim2, main_encoder_htim1, main_encoder_htim2);
+	  osThreadDef(RosTask, StartRosTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(RosTask), NULL);
+
+	  //**** Wheel1 subscriber ********
+	  osThreadDef(setSpeedTask, StartSetSpeedTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask), NULL);
+
+	  //**** Wheel2 subscriber ********
+	  osThreadDef(setSpeedTask2, StartSetSpeedTask2, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(setSpeedTask2), NULL);
+
+	  //**** Wheel1 getting encoder info ********
+	  osThreadDef(encoderInfoTask, StartEncoderTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(encoderInfoTask), NULL);
+
+	  //**** Wheel2 getting encoder info ********
+	  osThreadDef(encoderInfoTask2, StartEncoderTask2, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(encoderInfoTask2), NULL);
 
 	  //==============================
 

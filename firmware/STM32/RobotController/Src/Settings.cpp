@@ -2,6 +2,7 @@
 
 Settings::Settings(I2C_HandleTypeDef *main_hi2c1){
 	hi2c1 = main_hi2c1;
+	wiznet_server_port = 10999;
 	set_default(true);
 	HAL_Delay(100);
 	read_all();
@@ -27,7 +28,7 @@ void Settings::extract_variables()
 {
 	memcpy(wiznet_mac_address, message_out + MAC_ADDRESS_OFFSET, MAC_ADDRESS_SIZE);
 	memcpy(wiznet_ip_address, message_out + WIZNET_IP_OFFSET, IP_SIZE);
-	wiznet_port = (message_out[WIZNET_PORT_OFFSET + 1] << 8) | message_out[WIZNET_PORT_OFFSET];
+	wiznet_client_port = (message_out[WIZNET_PORT_OFFSET + 1] << 8) | message_out[WIZNET_PORT_OFFSET];
 	memcpy(wiznet_mask, message_out + WIZNET_MASK_OFFSET, IP_SIZE);
 	memcpy(wiznet_gateaway, message_out + WIZET_GATE_AWAY_OFFSET, IP_SIZE);
 }
