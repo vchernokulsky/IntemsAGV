@@ -31,6 +31,8 @@
 
 class SocketClient {
 private:
+	static SemaphoreHandle_t spi_read;
+	static SemaphoreHandle_t spi_write;
 	static bool wiznet_inited;
 	static bool wiznet_restarted;
 	static SPI_HandleTypeDef *hspi1;

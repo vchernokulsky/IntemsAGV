@@ -10,6 +10,8 @@
 SPI_HandleTypeDef *SocketClient::hspi1;
 bool SocketClient::wiznet_inited = false;
 bool SocketClient::wiznet_restarted = false;
+SemaphoreHandle_t SocketClient::spi_read = xSemaphoreCreateMutex() ;
+SemaphoreHandle_t SocketClient::spi_write = xSemaphoreCreateMutex() ;
 
 
 SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode) {
@@ -227,7 +229,7 @@ void SocketClient::server_loop()
 			SocketClient::wiznet_restarted = false;
 			return;
 		}
-		osDelay(50);
+		osDelay(500);
 	}
 	uint8_t buff[] = {1,2,3,4,5};
 	socket_send(buff, 6);
@@ -251,31 +253,43 @@ void SocketClient::W5500_Unselect(void) {
     HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_SET);
 }
 
-void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
-	uint32_t begin = HAL_GetTick();
-	HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
-	uint32_t end = HAL_GetTick();
-	if(end - begin > 110) {
-		osDelay(50);
+void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len)
+{
+    if( xSemaphoreTake( SocketClient::spi_read, portMAX_DELAY) == pdTRUE )
+	{
+		uint32_t begin = HAL_GetTick();
+		HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
+		uint32_t end = HAL_GetTick();
+		if(end - begin > 110) {
+			osDelay(50);
+		}
+		xSemaphoreGive( SocketClient::spi_read );
 	}
 }
 
-void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len) {
-	uint32_t begin = HAL_GetTick();
-	HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
-	uint32_t end = HAL_GetTick();
-	if(end - begin > 110) {
-		osDelay(50);
+void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len)
+{
+	if( xSemaphoreTake( SocketClient::spi_read, portMAX_DELAY) == pdTRUE )
+	{
+		uint32_t begin = HAL_GetTick();
+		HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
+		uint32_t end = HAL_GetTick();
+		if(end - begin > 110)
+		{
+			osDelay(50);
+		}
+		xSemaphoreGive( SocketClient::spi_read );
 	}
 }
 
 uint8_t SocketClient::W5500_ReadByte(void) {
-    uint8_t byte;
-    W5500_ReadBuff(&byte, sizeof(byte));
-    return byte;
+	uint8_t byte;
+	W5500_ReadBuff(&byte, sizeof(byte));
+	return byte;
 }
 
-void SocketClient::W5500_WriteByte(uint8_t byte) {
-    W5500_WriteBuff(&byte, sizeof(byte));
+void SocketClient::W5500_WriteByte(uint8_t byte)
+{
+	W5500_WriteBuff(&byte, sizeof(byte));
 }
 
