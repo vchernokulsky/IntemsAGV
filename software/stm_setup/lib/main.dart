@@ -5,6 +5,7 @@ import 'package:stm_setup/RosTopics.dart';
 import 'package:stm_setup/Wiznet.dart';
 
 import 'Delay.dart';
+import 'SocketData.dart';
 
 class Counter extends StatefulWidget {
   _CounterState createState() => _CounterState();
@@ -19,15 +20,27 @@ class _CounterState extends State<Counter> {
 
   static const String RADIUS_ERROR_MSG = "Wrong radius value";
 
+  final model = SocketData();
+
   int curItem;
   String radiusErrorMsg;
   double val;
+  String macAddress;
 
   void initState() {
     super.initState();
     val = 0;
     curItem = ROBOT_GEOM;
     radiusErrorMsg = "";
+
+    model.addListener(updateState);
+    model.getInfo();
+  }
+
+  void updateState() {
+    setState(() {
+      macAddress = model.macAddress;
+    });
   }
 
   void change() {
@@ -81,7 +94,7 @@ class _CounterState extends State<Counter> {
               ),
               Visibility(
                 visible: curItem == WIZNET,
-                child: Wiznet(),
+                child: Wiznet(macAddress: macAddress),
               ),
               Visibility(
                 visible: curItem == DELAY,

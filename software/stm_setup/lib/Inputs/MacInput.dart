@@ -5,30 +5,26 @@ import 'package:stm_setup/SocketData.dart';
 
 class MacInput extends StatefulWidget {
   final String title;
+  final String value;
+  final controller;
 
-  const MacInput({Key key, this.title})
+  const MacInput({Key key, this.title, this.value, this.controller})
       : super(key: key);
 
-  _MacInput createState() => _MacInput(title);
+  _MacInput createState() => _MacInput(title, value, controller);
 }
 
 class _MacInput extends State<MacInput> {
-  _MacInput(this.title);
-
-  final model = SocketData();
-
-
-
   final String title;
+  final String value;
   String errorMsg;
-  var txt = TextEditingController();
+  final controller;
+
+  _MacInput(this.title, this.value, this.controller);
 
   void initState() {
     super.initState();
     errorMsg = "";
-    model.addListener(updateState);
-    model.getInfo();
-
   }
 
   void numberValidate(String numStr) {
@@ -47,11 +43,12 @@ class _MacInput extends State<MacInput> {
   }
 
   Widget build(BuildContext context) {
+    numberValidate(controller.text);
     return Center(
       child: Column(
         children: <Widget>[
           TextField(
-            controller: txt,
+            controller: controller,
             decoration: InputDecoration(
               labelText: "$title",
 
@@ -79,9 +76,5 @@ class _MacInput extends State<MacInput> {
     );
   }
 
-  void updateState() {
-    setState(() {
-      txt.text = model.macAddress;
-    });
-  }
+
 }
