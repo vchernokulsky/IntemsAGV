@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:stm_setup/SocketData.dart';
 
 class MacInput extends StatefulWidget {
   final String title;
@@ -14,13 +15,20 @@ class MacInput extends StatefulWidget {
 class _MacInput extends State<MacInput> {
   _MacInput(this.title);
 
-  final String title;
+  final model = SocketData();
 
+
+
+  final String title;
   String errorMsg;
+  var txt = TextEditingController();
 
   void initState() {
     super.initState();
     errorMsg = "";
+    model.addListener(updateState);
+    model.getInfo();
+
   }
 
   void numberValidate(String numStr) {
@@ -43,8 +51,10 @@ class _MacInput extends State<MacInput> {
       child: Column(
         children: <Widget>[
           TextField(
+            controller: txt,
             decoration: InputDecoration(
               labelText: "$title",
+
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.text,
@@ -67,5 +77,11 @@ class _MacInput extends State<MacInput> {
         ],
       ),
     );
+  }
+
+  void updateState() {
+    setState(() {
+      txt.text = model.macAddress;
+    });
   }
 }
