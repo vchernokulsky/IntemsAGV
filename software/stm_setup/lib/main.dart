@@ -94,7 +94,7 @@ class _CounterState extends State<Counter> {
               ),
               Visibility(
                 visible: curItem == WIZNET,
-                child: Wiznet(macAddress: macAddress),
+                child: Wiznet(),
               ),
               Visibility(
                 visible: curItem == DELAY,

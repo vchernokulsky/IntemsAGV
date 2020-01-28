@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:stm_setup/SocketData.dart';
 
 class MacInput extends StatefulWidget {
   final String title;

@@ -8,6 +8,7 @@ class SocketData extends ChangeNotifier{
   static String _macAddress = "";
 
   String get macAddress => SocketData._macAddress;
+  set macAddress(String string) => _macAddress = string;
 
 
 

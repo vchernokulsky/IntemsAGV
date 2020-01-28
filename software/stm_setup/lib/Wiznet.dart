@@ -2,34 +2,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stm_setup/Inputs/IpInput.dart';
 import 'package:stm_setup/Inputs/MacInput.dart';
+import 'package:stm_setup/SocketData.dart';
 
 import 'Inputs/NumericInput.dart';
 
 class Wiznet extends StatefulWidget {
-  final String macAddress;
 
-  const Wiznet({Key key, this.macAddress}) : super(key: key);
+  const Wiznet({Key key}) : super(key: key);
 
-  _Wiznet createState() => _Wiznet(macAddress);
+  _Wiznet createState() => _Wiznet();
 }
 
 class _Wiznet extends State<Wiznet> {
-  final String macAddress;
   var macAddressController;
+  SocketData socketData;
 
-  _Wiznet(this.macAddress) {
+  _Wiznet() {
     macAddressController = TextEditingController();
+    socketData = SocketData();
   }
 
   void initState() {
     super.initState();
-    macAddressController.text = macAddress;
+    macAddressController.text = socketData.macAddress;
   }
 
-  void updateState() {
+  void reset() {
     setState(() {
-      macAddressController.text = macAddress;
+      macAddressController.text = socketData.macAddress;
     });
+  }
+
+  void save(){
+
   }
 
   @override
@@ -45,7 +50,7 @@ class _Wiznet extends State<Wiznet> {
         ),
         IpInput(title: "network mask"),
         IpInput(title: "gate away"),
-        RaisedButton(child: Text("Reset"), onPressed: updateState),
+        RaisedButton(child: Text("Reset"), onPressed: reset),
       ],
     );
   }
