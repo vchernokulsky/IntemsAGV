@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stm_setup/Inputs/IpInput.dart';
 import 'package:stm_setup/Inputs/MacInput.dart';
 import 'package:stm_setup/SocketData.dart';
@@ -26,14 +27,44 @@ class _Wiznet extends State<Wiznet> {
     macAddressController.text = SocketData.macAddress;
   }
 
+  void showGoodToast(String text){
+    Fluttertoast.showToast(
+        msg: "$text",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.blueGrey,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
+
+  void showBadToast(String text){
+    Fluttertoast.showToast(
+        msg: "$text",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.redAccent[700],
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
+
   void reset() {
     setState(() {
       macAddressController.text = SocketData.macAddress;
+      showGoodToast("Data reseted");
     });
   }
 
   void save(){
-
+    if(MacInput.isCorrect(macAddressController.text)){
+      SocketData.macAddress = macAddressController.text;
+      showGoodToast("Data saved");
+    } else {
+      showBadToast("Can not save: wrong mac address");
+    }
   }
 
   @override
@@ -49,7 +80,14 @@ class _Wiznet extends State<Wiznet> {
         ),
         IpInput(title: "network mask"),
         IpInput(title: "gate away"),
-        RaisedButton(child: Text("Reset"), onPressed: reset),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            RaisedButton(child: Text("Reset"), onPressed: reset),
+            RaisedButton(child: Text("Save"), onPressed: save),
+          ],
+        ),
+
       ],
     );
   }

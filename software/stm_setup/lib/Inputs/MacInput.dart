@@ -11,6 +11,20 @@ class MacInput extends StatefulWidget {
       : super(key: key);
 
   _MacInput createState() => _MacInput(title, value, controller);
+
+  static bool isCorrect(String numStr){
+    RegExp regExp = new RegExp(
+      r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+    if (regExp.hasMatch(numStr)) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
 }
 
 class _MacInput extends State<MacInput> {
@@ -26,14 +40,11 @@ class _MacInput extends State<MacInput> {
     errorMsg = "";
   }
 
+
+
   void numberValidate(String numStr) {
-    RegExp regExp = new RegExp(
-      r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
-      caseSensitive: false,
-      multiLine: false,
-    );
     setState(() {
-      if (numStr.isEmpty || regExp.hasMatch(numStr)) {
+      if (numStr.isEmpty || MacInput.isCorrect(numStr)) {
         errorMsg = "";
       } else {
         errorMsg = "wrong mac address";
