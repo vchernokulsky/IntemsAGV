@@ -8,13 +8,14 @@ import 'package:stm_setup/SocketData.dart';
 import 'Inputs/NumericInput.dart';
 
 class Wiznet extends StatefulWidget {
-
   const Wiznet({Key key}) : super(key: key);
 
   _Wiznet createState() => _Wiznet();
 }
 
 class _Wiznet extends State<Wiznet> {
+
+
   var macAddressController;
 
 
@@ -24,7 +25,6 @@ class _Wiznet extends State<Wiznet> {
 
   void initState() {
     super.initState();
-    macAddressController.text = SocketData.macAddress;
   }
 
   void showGoodToast(String text){
@@ -53,7 +53,6 @@ class _Wiznet extends State<Wiznet> {
 
   void reset() {
     setState(() {
-      macAddressController.text = SocketData.macAddress;
       showGoodToast("Data reseted");
     });
   }
@@ -69,6 +68,7 @@ class _Wiznet extends State<Wiznet> {
 
   @override
   Widget build(BuildContext context) {
+    macAddressController.text = SocketData.macAddress;
     return Column(
       children: <Widget>[
         MacInput(title: "STM MAC address", controller: macAddressController),

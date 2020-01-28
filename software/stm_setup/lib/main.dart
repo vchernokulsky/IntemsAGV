@@ -25,7 +25,7 @@ class _CounterState extends State<Counter> {
   int curItem;
   String radiusErrorMsg;
   double val;
-  String macAddress;
+
 
   void initState() {
     super.initState();
@@ -39,7 +39,6 @@ class _CounterState extends State<Counter> {
 
   void updateState() {
     setState(() {
-      macAddress = SocketData.macAddress;
     });
   }
 
