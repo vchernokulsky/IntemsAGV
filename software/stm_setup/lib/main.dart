@@ -26,7 +26,6 @@ class _CounterState extends State<Counter> {
   String radiusErrorMsg;
   double val;
 
-
   void initState() {
     super.initState();
     val = 0;
@@ -38,8 +37,7 @@ class _CounterState extends State<Counter> {
   }
 
   void updateState() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   void change() {
@@ -70,9 +68,18 @@ class _CounterState extends State<Counter> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("DiffDriveSTM"),
-      ),
+      appBar: AppBar(title: Text("DiffDriveSTM"), actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.cloud_download),
+          tooltip: 'get settings from STM',
+          onPressed: ()  => model.getInfo(force: true),
+        ),
+        IconButton(
+          icon: const Icon(Icons.cloud_upload),
+          tooltip: 'Send settings to STM',
+          onPressed: ()  => model.sendInfo(),
+        )
+      ]),
       body: Scrollbar(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),

@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hex/hex.dart';
 
 class MacInput extends StatefulWidget {
   final String title;
@@ -23,7 +26,20 @@ class MacInput extends StatefulWidget {
     } else {
       return false;
     }
+  }
 
+  static Uint8List stringToBytes(String string){
+    Uint8List ret = HEX.decode( string.replaceAll(":", ""));
+    return ret;
+  }
+
+  static String bytesToString(Uint8List data){
+    String mac = "";
+    if(data.length == 6) {
+      data.forEach((i) => mac += '${HEX.encode([i])}:');
+      mac = mac.substring(0, mac.length - 1);
+    }
+    return mac;
   }
 }
 
