@@ -15,21 +15,20 @@ class Wiznet extends StatefulWidget {
 
 class _Wiznet extends State<Wiznet> {
   var macAddressController;
-  SocketData socketData;
+
 
   _Wiznet() {
     macAddressController = TextEditingController();
-    socketData = SocketData();
   }
 
   void initState() {
     super.initState();
-    macAddressController.text = socketData.macAddress;
+    macAddressController.text = SocketData.macAddress;
   }
 
   void reset() {
     setState(() {
-      macAddressController.text = socketData.macAddress;
+      macAddressController.text = SocketData.macAddress;
     });
   }
 

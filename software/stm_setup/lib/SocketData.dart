@@ -5,11 +5,7 @@ import "package:hex/hex.dart";
 
 class SocketData extends ChangeNotifier{
   static bool getData = false;
-  static String _macAddress = "";
-
-  String get macAddress => SocketData._macAddress;
-  set macAddress(String string) => _macAddress = string;
-
+  static String macAddress = "";
 
 
   void getInfo({bool force = false}) async {
@@ -41,7 +37,7 @@ class SocketData extends ChangeNotifier{
       String mac = "";
       data.sublist(4,10).forEach((i)=> mac+='${HEX.encode([i])}:');
       mac = mac.substring(0,mac.length-1);
-      _macAddress = mac;
+      macAddress = mac;
     }
   }
 

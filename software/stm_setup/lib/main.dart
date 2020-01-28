@@ -39,7 +39,7 @@ class _CounterState extends State<Counter> {
 
   void updateState() {
     setState(() {
-      macAddress = model.macAddress;
+      macAddress = SocketData.macAddress;
     });
   }
 
