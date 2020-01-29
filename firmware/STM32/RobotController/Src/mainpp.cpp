@@ -55,10 +55,7 @@ void StartUARTTask(void const * argument)
 {
 	uart_helper.UARTTask();
 }
-void StartSocketStateTask(void const * argument)
-{
-	socket_client->SocketStateTask();
-}
+
 void StartCheckFreezingTask(void const * argument)
 {
 	socket_client->CheckFreezingTask();
@@ -117,9 +114,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 
 	  //============ SOCKET CHECKING ==========
 
-	  //****** Check Errors **********
-	  osThreadDef(SocketErrorTask, StartSocketStateTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(SocketErrorTask), NULL);
+
 
 	  //****** Check Freezing **********
 	  osThreadDef(CheckFreezingTask, StartCheckFreezingTask, osPriorityNormal, 1, 256);

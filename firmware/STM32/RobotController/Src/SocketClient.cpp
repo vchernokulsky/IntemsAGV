@@ -7,13 +7,13 @@
 
 #include "SocketClient.h"
 SPI_HandleTypeDef *SocketClient::hspi1;
-uint8_t SocketClient::error_count;
+uint8_t SocketClient::error_count = 0;
+
+SemaphoreHandle_t SocketClient::error_semaphore = xSemaphoreCreateMutex() ;
 
 SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
-	bool buff;
-	queue = xQueueCreate( 30, sizeof( buff ) );
 	SocketClient::socket_reset();
 }
 
@@ -51,10 +51,12 @@ void SocketClient::socket_send(uint8_t *pData, uint16_t len){
     while(len > 0) {
         int32_t nbytes = send(http_socket, pData, len);
         if(nbytes <= 0) {
+        	socket_error();
         	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);;
         	osDelay(50);
         } else{
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+        	socket_success();
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -70,7 +72,7 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
         	osDelay(50);
         } else{
         	socket_success();
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -92,7 +94,7 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 		}
 		if (nbytes > 0){
 			socket_success();
-			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
+//			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
 			return;
 		} else {
 //			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
@@ -141,48 +143,42 @@ bool SocketClient::socket_init(){
 
 void SocketClient::socket_error()
 {
-	bool state = true;
-	xQueueSend( queue, ( void * ) &state, portMAX_DELAY  );
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		++SocketClient::error_count;
+		data_exchange_time = HAL_GetTick();
+		xSemaphoreGive( SocketClient::error_semaphore );
+	}
 }
 void SocketClient::socket_success()
 {
-	bool state = false;
-	xQueueSend( queue, ( void * ) &state, portMAX_DELAY  );
-}
-void SocketClient::SocketStateTask()
-{
-	for(;;)
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 	{
-		bool err;
-		xQueueReceive( queue, &err, portMAX_DELAY  );
+		if(SocketClient::error_count > 0)
+		{
+			--SocketClient::error_count;
+		}
 		data_exchange_time = HAL_GetTick();
-		if (err)
-		{
-			error_count +=1;
-			if(error_count > WIZNET_MAX_ERROR_COUNT)
-			{
-				(*uart_helper).printf("\r\nToo much socketErrors. Reseting\r\n");
-				socket_reset();
-			}
-		}
-		else
-		{
-			if(error_count > 0){
-				error_count -=1;
-			}
-		}
-		osDelay(WIZNET_CHECK_ERRORS_DELAY);
+		xSemaphoreGive( SocketClient::error_semaphore );
 	}
+
 }
+
 void SocketClient::CheckFreezingTask()
 {
 	for(;;)
 	{
-		uint32_t delta_time = HAL_GetTick() - data_exchange_time;
-		if(delta_time > WIZNET_FREEZE_TIMEOUT)
+		if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 		{
-			(*uart_helper).printf("\r\nSocket freeze. Reseting\r\n");
-			socket_reset();
+			if(SocketClient::error_count > WIZNET_MAX_ERROR_COUNT || (uint32_t)(HAL_GetTick() - data_exchange_time) > WIZNET_FREEZE_TIMEOUT)
+			{
+				xSemaphoreGive( SocketClient::error_semaphore );
+				(*uart_helper).printf("\r\nSocket Reseting\r\n");
+				socket_reset();
+			} else {
+				xSemaphoreGive( SocketClient::error_semaphore );
+			}
+
 		}
 		osDelay(WIZNET_CHECK_FREEZING_DELAY);
 	}

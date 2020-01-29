@@ -29,11 +29,15 @@
 
 class SocketClient {
 private:
+	static SemaphoreHandle_t error_semaphore;
 	static SPI_HandleTypeDef *hspi1;
 	static uint8_t error_count;
 	uint32_t data_exchange_time;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
+
+	const bool success_state = false;
+	const bool error_state = true;
 	xQueueHandle queue;
 
 	uint8_t addr[4] = SERVER_IP_ADRESS;

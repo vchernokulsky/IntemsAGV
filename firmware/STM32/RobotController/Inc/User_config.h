@@ -7,8 +7,8 @@
 #define WIZNET_MASK {255, 255, 255, 0}
 #define WIZNET_GATEAWAY {192, 168, 2, 1}
 
-#define WIZNET_CHECK_ERRORS_DELAY 50
-#define WIZNET_CHECK_FREEZING_DELAY 50
+#define WIZNET_CHECK_ERRORS_DELAY 5
+#define WIZNET_CHECK_FREEZING_DELAY 100
 /************************************************/
 
 /********************SERVER************************/
@@ -17,7 +17,7 @@
 /************************************************/
 
 /*******************CONTROL****************/
-#define ROS_SPINONCE_DELAY 100
+#define ROS_SPINONCE_DELAY 200
 #define SET_SPEED_DELAY 100
 #define GET_TICK_DELAY 100
 #define CMDVEL_TIMEOUT 3000
