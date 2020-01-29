@@ -1,9 +1,9 @@
 #pragma once
 
 /********************UART************************/
-#define UART_BUF_SIZE 20
+#define UART_BUF_SIZE 30
 #define UART_QUEUE_LEN 25
-#define UART_TRANSMIT_DELAY 10
+#define UART_TRANSMIT_DELAY 5
 /************************************************/
 
 /********************WIZNET************************/

@@ -3,6 +3,7 @@
 #include "UartHelper.h"
 #include "SocketClient.h"
 #include "RosHelper.h"
+#include "Settings.h"
 
 #include "SetSpeedTest.h"
 
@@ -10,13 +11,17 @@
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
-SocketClient *socket_client;
+SocketClient *socket_client = nullptr;
+static SocketClient *socket_server = nullptr;
 RosHelper* ros_helper  = nullptr;
+static Settings *settings = nullptr;
 
 static TIM_HandleTypeDef *htim = nullptr;
 static TIM_HandleTypeDef *htim2 = nullptr;
 
 static TIM_HandleTypeDef *encoder_htim = nullptr;
+
+
 
 uint64_t encoderCount;
 uint8_t encoderDirection;
@@ -77,6 +82,11 @@ void StartSocketSendTask(void const * argument)
 	  }
 //	vTaskDelete( NULL );
 }
+void StartSocketServerTestTask(void const * argument)
+{
+	socket_server->socketServerTestTask();
+//	vTaskDelete( NULL );
+}
 
 void StartWheelSpeedTask(void const * argument){
 	set_speed1(htim, 40);
@@ -99,14 +109,17 @@ void StartEncoderTestTask(void const * argument){
 
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 		TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2,
-		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2)
+		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2, I2C_HandleTypeDef *hi2c1)
 {
+
+	settings = new Settings(hi2c1);
 
 	  huart = main_huart;
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
 
-	  socket_client = new SocketClient(hspi, &uart_helper);
+	  socket_client = new SocketClient(hspi, &uart_helper, settings, HTTP_SOCKET_CLIENT);
+	  socket_server = new SocketClient(hspi, &uart_helper, settings, HTTP_SOCKET_SERVER);
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
@@ -154,6 +167,10 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  //******* Socket Test *************
 //	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
 //	  osThreadCreate(osThread(SocketSendTask), NULL);
+
+	  //******* Socket Server Test *************
+	  osThreadDef(SocketServerTestTask, StartSocketServerTestTask, osPriorityNormal, 1, 256);
+	  osThreadCreate(osThread(SocketServerTestTask), NULL);
 
 	  //******* Wheel Speed Test ***********
 //	  htim = main_htim;

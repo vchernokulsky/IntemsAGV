@@ -43,6 +43,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim1;
@@ -63,6 +65,7 @@ static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_I2C1_Init(void);
 static void MX_TIM1_Init(void);
 void StartDefaultTask(void const * argument);
 
@@ -108,6 +111,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_I2C1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
@@ -136,7 +140,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  setup(&huart2, &hspi1, &htim3, &htim3, &htim2, &htim1);
+  setup(&huart2, &hspi1, &htim3, &htim3, &htim2, &htim1, &hi2c1);
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
@@ -195,6 +199,40 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
 
 /**
@@ -517,24 +555,45 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
+    
   /* USER CODE BEGIN 5 */
-//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
-//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-//	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2, 128);
-//	HAL_TIM_PWM_Start(htim, CHANNEL_REV1);
-//	if (speed > 0){
-//		__HAL_TIM_SetCompare(htim, CHANNEL1, speed);
-//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, 0);
-//	} else {
-//		__HAL_TIM_SetCompare(htim, CHANNEL1, 0);
-//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, speed * (-1));
-//	}
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+//    const char wmsg[] = "Some data";
+//    char rmsg[sizeof(wmsg)];
+//    // HAL expects address to be shifted one bit to the left
+//    uint16_t devAddr = (0x50 << 1);
+//    uint16_t memAddr = 0x0100;
+//    HAL_StatusTypeDef status;
+//    char xBuffer[1];
+//    // Hint: try to comment this line
+////    status = HAL_I2C_Mem_Write(&hi2c1, devAddr, memAddr, I2C_MEMADD_SIZE_16BIT,
+////        (uint8_t*)wmsg, sizeof(wmsg), HAL_MAX_DELAY);
+////
+////    for(;;) { // wait...
+////        status = HAL_I2C_IsDeviceReady(&hi2c1, devAddr, 1,
+////                                       HAL_MAX_DELAY);
+////        if(status == HAL_OK)
+////            break;
+////    }
+//
+//    status = HAL_I2C_Mem_Read(&hi2c1, devAddr, memAddr+1, I2C_MEMADD_SIZE_16BIT,
+//    		(uint8_t*)xBuffer, 1, HAL_MAX_DELAY);
+//
+////    status = HAL_I2C_Mem_Read(&hi2c1, devAddr, memAddr, I2C_MEMADD_SIZE_16BIT,
+////        (uint8_t*)rmsg, sizeof(rmsg), HAL_MAX_DELAY);
+//
+//
+////    if(memcmp(rmsg, wmsg, sizeof(rmsg)) == 0) {
+////        const char result[] = "Test passed!\r\n";
+////        HAL_UART_Transmit(&huart2, (uint8_t*)result, sizeof(result)-1,
+////                          HAL_MAX_DELAY);
+////    } else {
+////        const char result[] = "Test failed :(\r\n";
+////        HAL_UART_Transmit(&huart2, (uint8_t*)result, sizeof(result)-1,
+////                          HAL_MAX_DELAY);
+////    }
+    for(;;){
+    	osDelay(5);
+    }
   /* USER CODE END 5 */ 
 }
 
