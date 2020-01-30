@@ -39,7 +39,7 @@ private:
 	static bool wiznet_restarted;
 
 	static SPI_HandleTypeDef *hspi1;
-	uint8_t error_count;
+	static uint8_t error_count;
 	uint32_t data_exchange_time;
 	uint8_t http_socket;
 	UartHelper *uart_helper;

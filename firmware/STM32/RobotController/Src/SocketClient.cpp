@@ -19,8 +19,6 @@ SemaphoreHandle_t SocketClient::spi_write = xSemaphoreCreateMutex() ;
 SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode) {
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
-	bool buff;
-	queue = xQueueCreate( 30, sizeof( buff ) );
 	settings = main_settings;
 	SocketClient::http_socket = socket_mode;
 	SocketClient::socket_reset();
@@ -49,9 +47,10 @@ void SocketClient::socket_connect(){
 void SocketClient::socket_reset()
 {
 	SocketClient::wiznet_init();
-	HAL_Delay(500);
+	HAL_Delay(1000);
 	if (http_socket == HTTP_SOCKET_CLIENT){
 		SocketClient::socket_open();
+		HAL_Delay(1000);
 		SocketClient::socket_connect();
 	}
 
@@ -139,9 +138,9 @@ void SocketClient::wiznet_init(){
 	if(http_socket == HTTP_SOCKET_CLIENT || !SocketClient::wiznet_inited){
 		/******* RESET WIZNET**********/
 		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
-		 HAL_Delay(100);
+		 HAL_Delay(500);
 		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
-		 HAL_Delay(100);
+		 HAL_Delay(500);
 		/****** REGISTER SOCKET CALLBACKS ******/
 		reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
 		reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);

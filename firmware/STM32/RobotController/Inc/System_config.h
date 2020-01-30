@@ -11,7 +11,7 @@
 #define W5500_CS_GPIO_Port GPIOB
 #define W5500_RST_Pin GPIO_PIN_7
 #define W5500_RST_GPIO_Port GPIOC
-#define WIZNET_MAX_ERROR_COUNT 20
+#define WIZNET_MAX_ERROR_COUNT 50
 #define WIZNET_FREEZE_TIMEOUT 10000
 /************************************************/
 
