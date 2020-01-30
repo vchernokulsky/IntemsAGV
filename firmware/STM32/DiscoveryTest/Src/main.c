@@ -308,14 +308,14 @@ static void recv_thread(void *arg)
   }
 }
 
-static void recv_func_c(struct_recv_socket *arg_recv_socket)
+static void recv_func_c(int sock)
 {
 //  struct_out *qstruct;
 
 	int recv_data;
 	char data_buffer[30] = {};
 
-	recv_data = recv(arg_recv_socket->sock,data_buffer,sizeof(data_buffer),0);
+	recv_data = recv(sock,data_buffer,sizeof(data_buffer),0);
 	if(recv_data > 0)
 	{
 		//====DATA RECEIVED====
@@ -345,10 +345,10 @@ static void recv_func_s(struct_client_socket *arg_client_socket)
 //---------------------------------------------------------------
 static void client_thread(void *arg)
 {
-  struct_sock *arg_sock;
+
   int sock;
+  int ret;
   struct sockaddr_in localhost, remotehost;
-  arg_sock = (struct_sock*) arg;
   uint32_t syscnt = 0;
   char buf[] = "12345678901234567890123456789012345678901234567890"
 		  "12345678901234567890123456789012345678901234567890"
@@ -359,7 +359,7 @@ static void client_thread(void *arg)
 
   memset(&localhost, 0, sizeof(struct sockaddr_in));
   localhost.sin_family = AF_INET;
-  localhost.sin_port = htons(arg_sock->port);
+  localhost.sin_port = htons(11411);
   localhost.sin_addr.s_addr = INADDR_ANY;
 
   memset(&remotehost, 0, sizeof(struct sockaddr_in));
@@ -380,12 +380,11 @@ static void client_thread(void *arg)
 //    	osDelay(100);
 		  if (connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in)) >= 0)
 		  {
-			recv_socket01.y_pos = arg_sock->y_pos;
-			recv_socket01.sock = sock;
-			for(;;){
-			recv_func_c(&recv_socket01);
 
-			write(sock,(void *) buf,strlen(buf));
+			for(;;){
+			recv_func_c(sock);
+
+			ret = write(sock,(void *) buf,strlen(buf));
 			osDelay(500);
 			}
 //			close(sock);
@@ -404,11 +403,11 @@ static void client_thread(void *arg)
 //---------------------------------------------------------------
 static void server_thread(void *arg)
 {
-  struct_sock *arg_sock;
+
   int sock, accept_sock;
   struct sockaddr_in localhost, remotehost;
   socklen_t sockaddrsize;
-  arg_sock = (struct_sock*) arg;
+
   char buf[] = "12345678901234567890123456789012345678901234567890"
 		  "12345678901234567890123456789012345678901234567890"
 		  "12345678901234567890123456789012345678901234567890"
@@ -418,35 +417,35 @@ static void server_thread(void *arg)
 
   memset(&localhost, 0, sizeof(struct sockaddr_in));
   localhost.sin_family = AF_INET;
-  localhost.sin_port = htons(arg_sock->port);
+  localhost.sin_port = htons(11511);
   localhost.sin_addr.s_addr = INADDR_ANY;
 
   osDelay(100);
-  for(;;)
-  {
+
 	  if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
 	  {
 		osDelay(100);
 		if (bind(sock, (struct sockaddr *)&localhost, sizeof(struct sockaddr_in)) ==  0)
 		{
+
 			listen(sock, 5);
-			  client_socket01.remotehost = remotehost;
-			  client_socket01.sockaddrsize = sockaddrsize;
-			  client_socket01.y_pos = arg_sock->y_pos;
-				for(;;){
-					accept_sock = accept(sock, (struct sockaddr *)&remotehost, (socklen_t *)&sockaddrsize);
-					client_socket01.accept_sock = accept_sock;
-					recv_func_s(&client_socket01);
+			for(;;)
+			{
+				accept_sock = accept(sock, (struct sockaddr *)&remotehost, (socklen_t *)&sockaddrsize);
+				if(accept_sock >= 0)
+				{
+					recv_func_c(accept_sock);
 					write(accept_sock,(void *) buf,strlen(buf));
 					osDelay(500);
 				}
+				int ret = close(accept_sock);
+			}
+
 
 		}
-
-		}
-	  close(sock);
+	  int ret = close(accept_sock);
 	  osDelay(1000);
-  }
+	  }
 }
 //---------------------------------------------------------------
 
@@ -469,10 +468,8 @@ void StartDefaultTask(void const * argument)
   MX_LWIP_Init();
 
   /* USER CODE BEGIN 5 */
-  sock01.port = 11411;
-  sock01.y_pos = 60;
-//  sys_thread_new("client_thread", client_thread, (void*)&sock01, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
-  sys_thread_new("server_thread", server_thread, (void*)&sock01, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+  sys_thread_new("client_thread", client_thread, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+  sys_thread_new("server_thread", server_thread, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
   /* Infinite loop */
   for(;;)
   {
