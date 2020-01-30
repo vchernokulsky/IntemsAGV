@@ -369,35 +369,57 @@ static void client_thread(void *arg)
   ip4addr_aton("192.168.55.10",(ip4_addr_t*)&remotehost.sin_addr);
 
   osDelay(100);
-  for(;;){
-  if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
-  {
 
-	  osDelay(100);
-//    if (bind(sock, (struct sockaddr *)&localhost, sizeof(struct sockaddr_in)) ==  0)
-//    {
-//
-//    	osDelay(100);
-		  if (connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in)) >= 0)
-		  {
+	for(;;){
+		if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
+		{
 
-			for(;;){
-				osDelay(500);
-			recv_func_c(sock);
-			ret = write(sock,(void *) buf,strlen(buf));
+			osDelay(100);
+			lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
+			connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
+			if (errno== EINPROGRESS || errno == 0)
+			{
+				for(;;){
+					osDelay(500);
+					recv_func_c(sock);
+					if (errno != EINPROGRESS && errno != 0){
+						if(errno == ECONNRESET)
+						{
+							break;
+						}
+						if(errno == EAGAIN)
+						{
+							osDelay(50);
+						}
+						else
+						{
+							break;
+						}
+					}
 
+
+					ret = write(sock,(void *) buf,strlen(buf));
+					if (errno != EINPROGRESS && errno != 0){
+						if(errno == ECONNRESET)
+						{
+							break;
+						}
+						if(errno == EAGAIN)
+						{
+							osDelay(50);
+						}
+						else
+						{
+							break;
+						}
+					}
+
+				}
 			}
-//			close(sock);
-//			osDelay(1000);
-
-		  }
-
-//    }
-
-    }
-  close(sock);
-  osDelay(1000);
-  }
+			close(sock);
+			osDelay(1000);
+		}
+	}
 }
 //---------------------------------------------------------------
 //---------------------------------------------------------------
