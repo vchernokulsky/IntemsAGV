@@ -66,8 +66,18 @@ typedef struct struct_recv_socket_t {
   int sock;
   uint16_t y_pos;
 } struct_recv_socket;
-
 struct_recv_socket recv_socket01;
+
+typedef struct struct_client_socket_t {
+  struct sockaddr_in remotehost;
+  socklen_t sockaddrsize;
+  int accept_sock;
+  uint16_t y_pos;
+} struct_client_socket;
+struct_client_socket client_socket01;
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -298,7 +308,7 @@ static void recv_thread(void *arg)
   }
 }
 
-static void recv_func(struct_recv_socket *arg_recv_socket)
+static void recv_func_c(struct_recv_socket *arg_recv_socket)
 {
 //  struct_out *qstruct;
 
@@ -313,8 +323,27 @@ static void recv_func(struct_recv_socket *arg_recv_socket)
 	}
 
 }
+static void recv_func_s(struct_client_socket *arg_client_socket)
+{
+	char out_buffer[30] = {};
+	  int buflen = 30;
+	  int ret, accept_sock;
+	  struct sockaddr_in remotehost;
+	  socklen_t sockaddrsize;
+	  remotehost = arg_client_socket->remotehost;
+	  sockaddrsize  = arg_client_socket->sockaddrsize;
+	  accept_sock = arg_client_socket->accept_sock;
+
+	    ret = recvfrom( accept_sock,out_buffer, buflen, 0, (struct sockaddr *)&remotehost, &sockaddrsize);
+
+	    if(ret > 0)
+	    	{
+	    		//====DATA RECEIVED====
+	    	out_buffer[ret-1] = 0;
+	    	}
+}
 //---------------------------------------------------------------
-static void send_thread(void *arg)
+static void client_thread(void *arg)
 {
   struct_sock *arg_sock;
   int sock;
@@ -354,7 +383,7 @@ static void send_thread(void *arg)
 			recv_socket01.y_pos = arg_sock->y_pos;
 			recv_socket01.sock = sock;
 			for(;;){
-			recv_func(&recv_socket01);
+			recv_func_c(&recv_socket01);
 
 			write(sock,(void *) buf,strlen(buf));
 			osDelay(500);
@@ -372,6 +401,56 @@ static void send_thread(void *arg)
   }
 }
 //---------------------------------------------------------------
+//---------------------------------------------------------------
+static void server_thread(void *arg)
+{
+  struct_sock *arg_sock;
+  int sock, accept_sock;
+  struct sockaddr_in localhost, remotehost;
+  socklen_t sockaddrsize;
+  arg_sock = (struct_sock*) arg;
+  char buf[] = "12345678901234567890123456789012345678901234567890"
+		  "12345678901234567890123456789012345678901234567890"
+		  "12345678901234567890123456789012345678901234567890"
+		  "12345678901234567890123456789012345678901234567890"
+		  "12345678901234567890123456789012345678901234567890"
+		  "12345678901234567890123456789012345678901234567890";
+
+  memset(&localhost, 0, sizeof(struct sockaddr_in));
+  localhost.sin_family = AF_INET;
+  localhost.sin_port = htons(arg_sock->port);
+  localhost.sin_addr.s_addr = INADDR_ANY;
+
+  osDelay(100);
+  for(;;)
+  {
+	  if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
+	  {
+		osDelay(100);
+		if (bind(sock, (struct sockaddr *)&localhost, sizeof(struct sockaddr_in)) ==  0)
+		{
+			listen(sock, 5);
+			  client_socket01.remotehost = remotehost;
+			  client_socket01.sockaddrsize = sockaddrsize;
+			  client_socket01.y_pos = arg_sock->y_pos;
+				for(;;){
+					accept_sock = accept(sock, (struct sockaddr *)&remotehost, (socklen_t *)&sockaddrsize);
+					client_socket01.accept_sock = accept_sock;
+					recv_func_s(&client_socket01);
+					write(accept_sock,(void *) buf,strlen(buf));
+					osDelay(500);
+				}
+
+		}
+
+		}
+	  close(sock);
+	  osDelay(1000);
+  }
+}
+//---------------------------------------------------------------
+
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -392,7 +471,8 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
   sock01.port = 11411;
   sock01.y_pos = 60;
-  sys_thread_new("send_thread", send_thread, (void*)&sock01, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+//  sys_thread_new("client_thread", client_thread, (void*)&sock01, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+  sys_thread_new("server_thread", server_thread, (void*)&sock01, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
   /* Infinite loop */
   for(;;)
   {
