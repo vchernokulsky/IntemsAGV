@@ -382,10 +382,10 @@ static void client_thread(void *arg)
 		  {
 
 			for(;;){
+				osDelay(500);
 			recv_func_c(sock);
-
 			ret = write(sock,(void *) buf,strlen(buf));
-			osDelay(500);
+
 			}
 //			close(sock);
 //			osDelay(1000);
@@ -436,7 +436,7 @@ static void server_thread(void *arg)
 				{
 					recv_func_c(accept_sock);
 					write(accept_sock,(void *) buf,strlen(buf));
-					osDelay(500);
+					osDelay(100);
 				}
 				int ret = close(accept_sock);
 			}
