@@ -25,13 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stdint.h"
-#include "string.h"
-#include "lwip/opt.h"
-#include "lwip/arch.h"
-#include "lwip/api.h"
-#include "lwip/inet.h"
-#include "lwip/sockets.h"
+#include "mainpp.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,39 +46,17 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+RTC_HandleTypeDef hrtc;
+
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
-static __attribute__ ((used,section(".user_heap_stack"))) uint8_t heap_sram1[32*1024];
-
-osThreadId ThreadRecvHandle;
-
-typedef struct struct_sock_t {
-  uint16_t y_pos;
-  uint16_t port;
-} struct_sock;
-struct_sock sock01;
-
-typedef struct struct_recv_socket_t {
-  int sock;
-  uint16_t y_pos;
-} struct_recv_socket;
-struct_recv_socket recv_socket01;
-
-typedef struct struct_client_socket_t {
-  struct sockaddr_in remotehost;
-  socklen_t sockaddrsize;
-  int accept_sock;
-  uint16_t y_pos;
-} struct_client_socket;
-struct_client_socket client_socket01;
-
-
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_RTC_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -101,12 +75,7 @@ void StartDefaultTask(void const * argument);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	  HeapRegion_t xHeapRegions[] =
-	  {
-	      {  heap_sram1, sizeof(heap_sram1) },
-	      { NULL, 0 }
-	  };
-	  vPortDefineHeapRegions( xHeapRegions );
+	memory_setup();
   /* USER CODE END 1 */
   
 
@@ -128,6 +97,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -155,6 +125,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
@@ -181,6 +152,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
   /** Configure the main internal regulator output voltage 
   */
@@ -188,8 +160,9 @@ void SystemClock_Config(void)
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
   /** Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 8;
@@ -213,6 +186,46 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+  /** Initialize RTC Only 
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
+
 }
 
 /**
@@ -284,192 +297,9 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 //---------------------------------------------------------------
-static void recv_thread(void *arg)
-{
-//  struct_out *qstruct;
-  struct_recv_socket *arg_recv_socket;
-  arg_recv_socket = (struct_recv_socket*) arg;
-  int recv_data;
-  char data_buffer[30] = {};
-  for(;;)
-  {
-    recv_data = recv(arg_recv_socket->sock,data_buffer,sizeof(data_buffer),0);
-    if(recv_data > 0)
-    {
-    	//====DATA RECEIVED====
-      data_buffer[recv_data-1] = 0;
-//      qstruct = osMailAlloc(strout_Queue, osWaitForever);
-//      sprintf(qstruct->str,"%-20s", (char*)data_buffer);
-//      qstruct->y_pos = arg_recv_socket->y_pos;
-//      qstruct->x_pos = 10;
-//      qstruct->sfont = Font24;
-//      osMailPut(strout_Queue, qstruct);
-    }
-  }
-}
-
-static void recv_func_c(int sock)
-{
-//  struct_out *qstruct;
-
-	int recv_data;
-	char data_buffer[30] = {};
-
-	recv_data = recv(sock,data_buffer,sizeof(data_buffer),0);
-	if(recv_data > 0)
-	{
-		//====DATA RECEIVED====
-	  data_buffer[recv_data-1] = 0;
-	}
-
-}
-static void recv_func_s(struct_client_socket *arg_client_socket)
-{
-	char out_buffer[30] = {};
-	  int buflen = 30;
-	  int ret, accept_sock;
-	  struct sockaddr_in remotehost;
-	  socklen_t sockaddrsize;
-	  remotehost = arg_client_socket->remotehost;
-	  sockaddrsize  = arg_client_socket->sockaddrsize;
-	  accept_sock = arg_client_socket->accept_sock;
-
-	    ret = recvfrom( accept_sock,out_buffer, buflen, 0, (struct sockaddr *)&remotehost, &sockaddrsize);
-
-	    if(ret > 0)
-	    	{
-	    		//====DATA RECEIVED====
-	    	out_buffer[ret-1] = 0;
-	    	}
-}
-//---------------------------------------------------------------
-static void client_thread(void *arg)
-{
-
-  int sock;
-  int ret;
-  struct sockaddr_in localhost, remotehost;
-  uint32_t syscnt = 0;
-  char buf[] = "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890";
-
-  memset(&localhost, 0, sizeof(struct sockaddr_in));
-  localhost.sin_family = AF_INET;
-  localhost.sin_port = htons(11411);
-  localhost.sin_addr.s_addr = INADDR_ANY;
-
-  memset(&remotehost, 0, sizeof(struct sockaddr_in));
-  remotehost.sin_family = AF_INET;
-  remotehost.sin_port = htons(11511);
-
-  ip4addr_aton("192.168.55.10",(ip4_addr_t*)&remotehost.sin_addr);
-
-  osDelay(100);
-
-	for(;;){
-		if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
-		{
-
-			osDelay(100);
-			lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
-			connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
-			if (errno== EINPROGRESS || errno == 0)
-			{
-				for(;;){
-					osDelay(500);
-					recv_func_c(sock);
-					if (errno != EINPROGRESS && errno != 0){
-						if(errno == ECONNRESET)
-						{
-							break;
-						}
-						if(errno == EAGAIN)
-						{
-							osDelay(50);
-						}
-						else
-						{
-							break;
-						}
-					}
 
 
-					ret = write(sock,(void *) buf,strlen(buf));
-					if (errno != EINPROGRESS && errno != 0){
-						if(errno == ECONNRESET)
-						{
-							break;
-						}
-						if(errno == EAGAIN)
-						{
-							osDelay(50);
-						}
-						else
-						{
-							break;
-						}
-					}
 
-				}
-			}
-			close(sock);
-			osDelay(1000);
-		}
-	}
-}
-//---------------------------------------------------------------
-//---------------------------------------------------------------
-static void server_thread(void *arg)
-{
-
-  int sock, accept_sock;
-  struct sockaddr_in localhost, remotehost;
-  socklen_t sockaddrsize;
-
-  char buf[] = "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890"
-		  "12345678901234567890123456789012345678901234567890";
-
-  memset(&localhost, 0, sizeof(struct sockaddr_in));
-  localhost.sin_family = AF_INET;
-  localhost.sin_port = htons(11511);
-  localhost.sin_addr.s_addr = INADDR_ANY;
-
-  osDelay(100);
-
-	  if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
-	  {
-		osDelay(100);
-		if (bind(sock, (struct sockaddr *)&localhost, sizeof(struct sockaddr_in)) ==  0)
-		{
-
-			listen(sock, 5);
-			for(;;)
-			{
-				accept_sock = accept(sock, (struct sockaddr *)&remotehost, (socklen_t *)&sockaddrsize);
-				if(accept_sock >= 0)
-				{
-					recv_func_c(accept_sock);
-					write(accept_sock,(void *) buf,strlen(buf));
-					osDelay(100);
-				}
-				int ret = close(accept_sock);
-			}
-
-
-		}
-	  int ret = close(accept_sock);
-	  osDelay(1000);
-	  }
-}
-//---------------------------------------------------------------
 
 
 /* USER CODE END 4 */
@@ -490,12 +320,11 @@ void StartDefaultTask(void const * argument)
   MX_LWIP_Init();
 
   /* USER CODE BEGIN 5 */
-  sys_thread_new("client_thread", client_thread, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
-  sys_thread_new("server_thread", server_thread, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+  sys_thread_new("client_thread", StartSocetClientTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END 5 */ 
 }

@@ -1,0 +1,106 @@
+/*
+ * SocketHelper.cpp
+ *
+ *  Created on: Jan 31, 2020
+ *      Author: developer
+ */
+
+#include "SocketClient.h"
+
+SocketClient::SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
+{
+	// TODO Auto-generated constructor stub
+
+	memset(&localhost, 0, sizeof(struct sockaddr_in));
+	localhost.sin_family = AF_INET;
+	localhost.sin_port = htons(local_port);
+	localhost.sin_addr.s_addr = INADDR_ANY;
+
+	memset(&remotehost, 0, sizeof(struct sockaddr_in));
+	remotehost.sin_family = AF_INET;
+	remotehost.sin_port = htons(remote_port);
+	ip4addr_aton(remote_ip,(ip4_addr_t*)&remotehost.sin_addr);
+
+
+}
+
+SocketClient::~SocketClient() {
+	// TODO Auto-generated destructor stub
+}
+
+void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd)
+{
+
+	recv_data = recv(sock, pData, size, 0);
+	*rdmaInd = (recv_data > 0)? recv_data : 0;
+
+	if( check_errno() == ERROR_STATUS){
+		++err_count;
+	} else {
+		if (err_count > 0){
+			--err_count;
+		}
+	}
+
+}
+
+void SocketClient::socket_send(uint8_t *pData, uint16_t len)
+{
+	send_data = write(sock,(void *) pData, len);
+	if( check_errno() == ERROR_STATUS){
+			++err_count;
+		} else {
+			if (err_count > 0){
+				--err_count;
+			}
+		}
+}
+
+void SocketClient::SocketClientTask()
+{
+	for(;;)
+	{
+		if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
+		{
+			err_count = 0;
+			osDelay(100);
+
+			lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
+			connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
+			if (check_errno() == OK_STATUS)
+			{
+				for(;;){
+					if(err_count > MAX_ERROR_COUNT){
+						break;
+					}
+					osDelay(100);
+				}
+			}
+			close(sock);
+		}
+		osDelay(100);
+	}
+}
+
+uint8_t SocketClient::check_errno()
+{
+
+	if(errno == EINPROGRESS || errno == 0)
+	{
+		return OK_STATUS;
+	}
+	if(errno == EAGAIN)
+	{
+		osDelay(50);
+		return WARNING_STATUS;
+	}
+	if(errno == ECONNRESET)
+	{
+		return ERROR_STATUS;
+	}
+	return UNKNOWN_STATUS;
+}
+
+
+
+
