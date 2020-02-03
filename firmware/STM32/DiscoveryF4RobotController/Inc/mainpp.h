@@ -12,14 +12,9 @@
 
 #include "stm32f4xx_hal.h"
 
-//main_htim - timer for RPWM1/LPWM1
-//main_htim2 - timer for RPWM2/LPWM2
-//main_encoder_htim1 - timer for encoder1
-//main_encoder_htim2 - timer for encoder2
 
 void memory_setup();
-void threds_setup();
-void StartSocetClientTask(void *arg);
+void threds_setup(UART_HandleTypeDef *main_huart);
 
 #ifdef __cplusplus
 }
