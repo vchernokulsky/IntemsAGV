@@ -24,6 +24,26 @@ SocketClient::SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t
 
 }
 
+void SocketClient::init(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
+{
+	// TODO Auto-generated constructor stub
+
+	memset(&localhost, 0, sizeof(struct sockaddr_in));
+	localhost.sin_family = AF_INET;
+	localhost.sin_port = htons(local_port);
+	localhost.sin_addr.s_addr = INADDR_ANY;
+
+	memset(&remotehost, 0, sizeof(struct sockaddr_in));
+	remotehost.sin_family = AF_INET;
+	remotehost.sin_port = htons(remote_port);
+	ip4addr_aton(remote_ip,(ip4_addr_t*)&remotehost.sin_addr);
+
+
+}
+SocketClient::SocketClient() {
+	// TODO Auto-generated destructor stub
+}
+
 SocketClient::~SocketClient() {
 	// TODO Auto-generated destructor stub
 }

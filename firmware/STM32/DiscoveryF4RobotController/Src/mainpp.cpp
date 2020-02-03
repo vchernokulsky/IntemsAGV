@@ -3,6 +3,7 @@
 #include "SocketServer.h"
 #include "UartHelper.h"
 
+SocketClient socket_client;
 UartHelper uart_helper;
 
 static __attribute__ ((used,section(".user_heap_stack"))) uint8_t heap_sram1[32*1024];
@@ -32,21 +33,22 @@ void memory_setup()
 void threds_setup(UART_HandleTypeDef *main_huart)
 {
 
-	memset(&uart_helper, 0, sizeof(struct UartHelper));
-//	uart_helper = new UartHelper();
 	uart_helper.init(main_huart);
+	socket_client.init(10888, "192.168.55.10", 11511);
+
 	//****** Client Task **********
 	sys_thread_new("client_thread", StartSocetClientTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	sys_thread_new("server_thread", StartSocetServerTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	sys_thread_new("uart_thread", StartUARTTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	sys_thread_new("uart_test_thread", StartSecondTask, 0, 256, osPriorityNormal);
+
 }
 /***************************************************************************/
 
 void StartSocetClientTask(void *arg)
 {
-	SocketClient client(10888, "192.168.55.10", 11511);
-	client.SocketClientTask();
+
+	socket_client.SocketClientTask();
 }
 
 void StartSocetServerTask(void *arg)
