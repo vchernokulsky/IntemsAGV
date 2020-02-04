@@ -111,7 +111,7 @@ uint8_t SocketClient::check_errno()
 	}
 	if(errno == EAGAIN)
 	{
-		osDelay(50);
+//		osDelay(50);
 		return WARNING_STATUS;
 	}
 	if(errno == ECONNRESET)

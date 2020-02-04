@@ -100,9 +100,19 @@ public:
 		right_wheel->wheel_callback(right_linear);
 
 	}
+	CmdVelSubscriber():sub(CMDVEL_TOPIC,&CmdVelSubscriber::cmdvel_callback, this){
 
+	}
 
 	CmdVelSubscriber(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2):sub(CMDVEL_TOPIC,&CmdVelSubscriber::cmdvel_callback, this){
+		(*nh).subscribe(sub);
+		left_wheel = wheel;
+		right_wheel = wheel2;
+		cur_time = HAL_GetTick();
+		last_time = cur_time;
+	}
+
+	void init(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2){
 		(*nh).subscribe(sub);
 		left_wheel = wheel;
 		right_wheel = wheel2;

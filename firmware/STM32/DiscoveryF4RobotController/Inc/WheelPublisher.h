@@ -24,8 +24,29 @@ private:
 	int32_t distance_tick;
 
 public:
+	WheelPublisher(){
+	}
 
 	WheelPublisher(TIM_HandleTypeDef *htim, UartHelper *main_uart_helper){
+		uart_helper = main_uart_helper;
+
+		prev_tick = 0;
+		cur_tick = 0;
+		delta_tick = 0;
+
+		prev_time = 0;
+		cur_time = 0;
+		delta_time = 0;
+		prev_distance_time = 0;
+
+		cur_speed = 0.0;
+		distance_tick = 0;
+
+		encoder_htim = htim;
+		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
+	}
+
+	void init(TIM_HandleTypeDef *htim, UartHelper *main_uart_helper){
 		uart_helper = main_uart_helper;
 
 		prev_tick = 0;

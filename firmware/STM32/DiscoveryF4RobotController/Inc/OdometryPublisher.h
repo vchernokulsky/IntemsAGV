@@ -31,6 +31,9 @@ private:
 	float theta;
 
 public:
+	OdometryPublisher():pub(ODOMETRY_TOPIC,&odom){
+
+	}
 
 	OdometryPublisher(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel):pub(ODOMETRY_TOPIC,&odom){
 		nh = n;
@@ -52,6 +55,27 @@ public:
 		transform.header.frame_id = BASE_FRAME;
 		transform.child_frame_id = ODOMETRY_FRAME;
 	}
+
+	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel){
+			nh = n;
+			(*nh).advertise(pub);
+
+			encoder1 = leftWheel;
+			encoder2 = rightWheel;
+
+
+			cur_time = nh->now();
+			last_time = cur_time;
+
+			theta = 0;
+
+			odom.header.frame_id = ODOMETRY_FRAME;
+			odom.child_frame_id = BASE_FRAME;
+
+			tf_broadcaster.init(*nh);
+			transform.header.frame_id = BASE_FRAME;
+			transform.child_frame_id = ODOMETRY_FRAME;
+		}
 
 
 

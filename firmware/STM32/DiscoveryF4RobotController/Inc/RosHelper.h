@@ -25,12 +25,12 @@ private:
 	ros::NodeHandle nh;
 	std_msgs::String str_msg;
 	ros::Publisher chatter;
-	WheelSubscriber *wheel;
-	WheelSubscriber *wheel2;
-	CmdVelSubscriber *cmd_vel;
-	WheelPublisher *encoder;
-	WheelPublisher *encoder2;
-	OdometryPublisher *odom;
+	WheelSubscriber wheel;
+	WheelSubscriber wheel2;
+	CmdVelSubscriber cmd_vel;
+	WheelPublisher encoder;
+	WheelPublisher encoder2;
+	OdometryPublisher odom;
 
 	void rosLoop(void);
 public:
