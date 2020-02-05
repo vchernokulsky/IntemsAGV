@@ -63,7 +63,6 @@ public:
 			}
 			speed_rev = (-1) * cur_pwd;
 		}
-
 		__HAL_TIM_SetCompare(htim, Channel, speed);
 		__HAL_TIM_SetCompare(htim, Channel_rev, speed_rev);
 

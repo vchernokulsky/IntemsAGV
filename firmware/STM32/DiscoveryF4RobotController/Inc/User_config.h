@@ -22,7 +22,7 @@
 #define GET_TICK_DELAY 100
 #define CMDVEL_TIMEOUT 3000
 
-#define MAX_PWD_ALLOWED 127
+#define MAX_PWD_ALLOWED 255
 
 #define PWD_STEP_L 10
 #define SPEED_DELTA_L 0.3

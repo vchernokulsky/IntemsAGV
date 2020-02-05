@@ -80,6 +80,7 @@ public:
 
 
 	void set_pose(){
+
 		float left_travel = encoder1->get_distance() * RADIUS;
 		float right_travel = encoder2->get_distance() * RADIUS;
 

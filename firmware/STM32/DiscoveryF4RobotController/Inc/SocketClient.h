@@ -38,6 +38,8 @@ private:
 	struct sockaddr_in localhost, remotehost;
 	socklen_t sockaddrsize;
 
+	SemaphoreHandle_t send_semaphore;
+
 	uint8_t check_errno();
 public:
 	SocketClient();

@@ -21,6 +21,7 @@ private:
 	uint32_t prev_distance_time;
 
 	float cur_speed; // Speed in m/s
+	float tick_per_sek;
 	int32_t distance_tick;
 
 public:
@@ -72,10 +73,12 @@ public:
 			if(__HAL_TIM_IS_TIM_COUNTING_DOWN(encoder_htim) == 0){
 				delta_tick = cur_tick - prev_tick;
 				distance_tick += delta_tick;
+				tick_per_sek = ((float)delta_tick / 4.0)  /  ((float)delta_time / 1000.0);
 				cur_speed = ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
 			} else {
 				delta_tick = prev_tick - cur_tick;
 				distance_tick -= delta_tick;
+				tick_per_sek = (-1) * ((float)delta_tick / 4.0)   /  ((float)delta_time / 1000.0);
 				cur_speed = (-1) * ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
 			}
 			prev_tick = cur_tick;
@@ -86,6 +89,11 @@ public:
 	float get_speed(){
 		// speed in %
 		return cur_speed / MAX_LIN_SPEED;
+	}
+
+	float get_tick_per_sek(){
+		// speed in %
+		return tick_per_sek;
 	}
 
 	float get_distance(){

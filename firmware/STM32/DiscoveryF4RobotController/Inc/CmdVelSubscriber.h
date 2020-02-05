@@ -76,18 +76,18 @@ private:
     void calculate_speeds(){
     	cur_time = HAL_GetTick();
     	delta_time = cur_time - last_time;
-    	if(delta_time <  CMDVEL_TIMEOUT)
-    	{
+//    	if(delta_time <  CMDVEL_TIMEOUT)
+//    	{
 			left_linear = (2 * linear + WHEEL_SEPARATION * angular) / 2;
 			right_linear = (2 * linear - WHEEL_SEPARATION * angular) / 2;
 			adjust_speeds();
 
-    	}
-    	else
-    	{
-    		left_linear = 0;
-    		right_linear = 0;
-    	}
+//    	}
+//    	else
+//    	{
+//    		left_linear = 0;
+//    		right_linear = 0;
+//    	}
     	last_time = cur_time;
     }
 public:
