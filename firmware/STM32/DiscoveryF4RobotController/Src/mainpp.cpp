@@ -54,7 +54,7 @@ void threds_setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim, 
 	sys_thread_new("wheel1_thread", StartSetSpeedTask, 0, 256, osPriorityNormal);
 	sys_thread_new("wheel2_thread", StartSetSpeedTask2, 0, 256, osPriorityNormal);
 	sys_thread_new("encoder1_thread", StartEncoderTask, 0, 256, osPriorityNormal);
-//	sys_thread_new("encoder2_thread", StartEncoderTask2, 0, 256, osPriorityNormal);
+	sys_thread_new("encoder2_thread", StartEncoderTask2, 0, 256, osPriorityNormal);
 
 }
 /***************************************************************************/
