@@ -107,7 +107,8 @@ public:
         }
         else
         {
-            float radius = delta_travel / delta_theta;
+
+            float radius = (delta_theta == 0)? 0 : delta_travel / delta_theta;
 
             float icc_x = pose_x - radius * sin(theta);
             float icc_y = pose_y + radius * cos(theta);

@@ -69,7 +69,7 @@ void RosHelper::setupRos(UartHelper *uart_helper)
 void RosHelper::rosLoop(void)
 {
 	str_msg.data = test_string;
-	chatter.publish(&str_msg);
+//	chatter.publish(&str_msg);
 	odom.publish();
 	nh.spinOnce();
 	osDelay(ROS_SPINONCE_DELAY);

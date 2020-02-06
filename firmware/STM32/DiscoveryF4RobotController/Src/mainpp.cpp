@@ -47,9 +47,9 @@ void threds_setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim, 
 
 	//****** Client Task **********
 	sys_thread_new("client_thread", StartSocetClientTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
-	sys_thread_new("server_thread", StartSocetServerTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+//	sys_thread_new("server_thread", StartSocetServerTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	sys_thread_new("uart_thread", StartUARTTask, 0, 256, osPriorityNormal);
-	sys_thread_new("uart_test_thread", StartSecondTask, 0, 256, osPriorityNormal);
+//	sys_thread_new("uart_test_thread", StartSecondTask, 0, 256, osPriorityNormal);
 	sys_thread_new("ros_thread", StartRosTask, 0, 256, osPriorityNormal);
 	sys_thread_new("wheel1_thread", StartSetSpeedTask, 0, 256, osPriorityNormal);
 	sys_thread_new("wheel2_thread", StartSetSpeedTask2, 0, 256, osPriorityNormal);
