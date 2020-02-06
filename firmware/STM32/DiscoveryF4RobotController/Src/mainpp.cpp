@@ -41,7 +41,7 @@ void memory_setup()
 void threds_setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
 	uart_helper.init(main_huart);
-	socket_client.init(10888, "192.168.55.10", 11411);
+	socket_client.init(10888, "192.168.2.150", 11411);
 	ros_helper.setupRos(&uart_helper, main_htim, main_htim2, encoder_htim, encoder_htim2);
 
 
