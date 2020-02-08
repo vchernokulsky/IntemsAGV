@@ -1,12 +1,14 @@
 #include <mainpp.h>
 #include <string>
 #include "SocketClient.h"
+#include "SLMPRequestBuilder.h"
+#include "SLMPPacket.h"
 
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
 UartHelper uart_helper;
 SocketClient socket_client;
-
+SLMPPacket packet;
 
 void StartSecondTask(void const * argument)
 {
@@ -25,8 +27,9 @@ void StartUARTTask(void const * argument)
 
 void StartSocketSendTask(void const * argument)
 {
-	std::string str = "1234";
-	 const static uint16_t rbuflen = 128;
+	Msg msg = buildRequest(&packet);
+
+	const static uint16_t rbuflen = 128;
 	uint8_t rbuf[rbuflen];
 	uint16_t Size = 5;
 	uint32_t* rdmaInd;
@@ -34,9 +37,11 @@ void StartSocketSendTask(void const * argument)
 	  {
 		  socket_client.socket_receive(rbuf, Size, rdmaInd);
 		  uart_helper.printf(rbuf);
-		  socket_client.socket_send(str.c_str(), str.length());
+		  socket_client.socket_send(msg.content, msg.len);
 		  osDelay(100);
 	  }
+
+	  delete msg.content;
 //	vTaskDelete( NULL );
 }
 
@@ -53,6 +58,43 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  HAL_Delay(1000 * 2);
 	  socket_client.socket_connect();
 
+	  packet = SLMPPacket();
+
+	  packet.is_serial_no = Field<unsigned short, 2>(0x0050, 1);
+	  packet.is_serial_no.exist = true;
+
+	  packet.request_dest_net_no = Field<unsigned char, 1>(0, 1);
+	  packet.request_dest_net_no.exist = true;
+
+	  packet.request_dest_station_no = Field<unsigned char, 1>(0xff, 1);
+	  packet.request_dest_station_no.exist = true;
+
+	  packet.request_processor = Field<unsigned short, 2>(0x3ff, 1);
+	  packet.request_processor.exist = true;
+
+	  packet.data_length = Field<unsigned short, 2>(14, 1);
+	  packet.data_length.exist = true;
+
+	  packet.monitoring_time = Field<unsigned short, 2>(10, 2);
+	  packet.monitoring_time.exist = true;
+
+	  packet.command = Field<unsigned short, 2>(0x1401, 1);
+	  packet.command.exist = true;
+
+	  packet.subcommand = Field<unsigned short, 2>(0, 1);
+	  packet.subcommand.exist = true;
+
+	  packet.head_device_no = Field<unsigned short, 2>(0x100, 1);
+	  packet.head_device_no.exist = true;
+
+	  packet.device_code = Field<unsigned char, 1>(0xa8, 1);
+	  packet.device_code.exist = true;
+
+	  packet.no_of_device_points = Field<unsigned int, 3>(1, 1);
+	  packet.no_of_device_points.exist = true;
+
+	  packet.value = ValueField({'a'});
+	  packet.value.exist = true;
 
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
