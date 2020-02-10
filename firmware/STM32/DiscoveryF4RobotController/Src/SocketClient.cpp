@@ -54,7 +54,7 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaI
 	recv_data = recv(sock, pData, size, 0);
 	*rdmaInd = (recv_data > 0)? recv_data : 0;
 
-	if( check_errno() == ERROR_STATUS){
+	if( check_errno(recv_data) == ERROR_STATUS){
 		++err_count;
 	} else {
 		if (err_count > 0){
@@ -67,7 +67,7 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaI
 void SocketClient::socket_send(uint8_t *pData, uint16_t len)
 {
 	send_data = write(sock,(void *) pData, len);
-	if( check_errno() == ERROR_STATUS){
+	if( check_errno(send_data) == ERROR_STATUS){
 			++err_count;
 		} else {
 			if (err_count > 0){
@@ -101,7 +101,12 @@ void SocketClient::SocketClientTask()
 		osDelay(100);
 	}
 }
-
+uint8_t SocketClient::check_errno(int bytes){
+	if (bytes < 0){
+		return ERROR_STATUS;
+	}
+	return check_errno();
+}
 uint8_t SocketClient::check_errno()
 {
 

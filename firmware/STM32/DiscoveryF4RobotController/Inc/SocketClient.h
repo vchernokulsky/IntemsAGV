@@ -41,6 +41,7 @@ private:
 	SemaphoreHandle_t send_semaphore;
 
 	uint8_t check_errno();
+	uint8_t check_errno(int bytes);
 public:
 	SocketClient();
 	SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port);
