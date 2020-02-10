@@ -27,17 +27,17 @@ private:
 	ros::Publisher chatter;
 	WheelSubscriber wheel;
 	WheelSubscriber wheel2;
-	CmdVelSubscriber cmd_vel;
 	WheelPublisher encoder;
 	WheelPublisher encoder2;
+	CmdVelSubscriber cmd_vel;
 	OdometryPublisher odom;
 
 	void rosLoop(void);
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(UartHelper *uart_helper,TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
-	void setupRos(UartHelper *uart_helper);
+	void setupRos(TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
+	void setupRos();
 	void RosTask();
 	void setSpeedTask(void);
 	void setSpeedTask2(void);

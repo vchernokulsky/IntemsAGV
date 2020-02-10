@@ -62,7 +62,7 @@ public:
 #include "ros/service_server.h"
 #include "ros/service_client.h"
 
-#include "UartHelper.h"
+
 
 namespace ros
 {
@@ -206,21 +206,17 @@ protected:
   uint32_t last_sync_receive_time;
   uint32_t last_msg_timeout_time;
 
-  UartHelper *uart_helper;
 
 public:
   /* This function goes in your loop() function, it handles
    *  serial input and callbacks for subscribers.
    */
 
-  void setUARTHelper(UartHelper *main_uart_helper){
-	  uart_helper = main_uart_helper;
-  }
+
 
   virtual int spinOnce()
   {
     /* restart if timed out */
-//	(*uart_helper).printf("\r\nspinOnce\r\n");
     uint32_t c_time = hardware_.time();
     if ((c_time - last_sync_receive_time) > (SYNC_SECONDS * 2200))
     {
@@ -238,11 +234,9 @@ public:
     /* while available buffer, read data */
     while (true)
     {
-//    (*uart_helper).printf("\r\nWhile True\r\n");
       // If a timeout has been specified, check how long spinOnce has been running.
       if (spin_timeout_ > 0)
       {
-    	  (*uart_helper).printf("\r\nspin_timeout_\r\n");
         // If the maximum processing timeout has been exceeded, exit with error.
         // The next spinOnce can continue where it left off, or optionally
         // based on the application in use, the hardware buffer could be flushed
@@ -256,7 +250,6 @@ public:
       int data = hardware_.read_stm32hw();
 
       if (data < 0){
-//    	  (*uart_helper).printf("\r\ndata finished\r\n");
     	  break;
       }
       checksum_ += data;

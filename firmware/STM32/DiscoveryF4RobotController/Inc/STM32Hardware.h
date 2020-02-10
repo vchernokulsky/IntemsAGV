@@ -36,7 +36,6 @@
 #define ROS_STM32_HARDWARE_H_
 
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_uart.h"
 
 #include "SocketClient.h"
 
@@ -45,7 +44,7 @@ extern SocketClient socket_client;
 
 class STM32Hardware {
   protected:
-    UART_HandleTypeDef *huart;
+
 
     const static uint16_t rbuflen = 1024;
     uint8_t rbuf[rbuflen];
@@ -96,11 +95,11 @@ class STM32Hardware {
       }
     }
 
-    void write_stm32hw(uint8_t* data, int length){
-      int n = length;
+    void write_stm32hw(uint8_t* data, uint16_t length){
+    	uint16_t n = length;
       n = n <= tbuflen ? n : tbuflen;
 
-      int n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
+      uint16_t n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
       memcpy(&(tbuf[twind]), data, n_tail);
       twind = (twind + n) & (tbuflen - 1);
 

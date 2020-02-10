@@ -9,7 +9,6 @@ class WheelPublisher
 {
 private:
 	TIM_HandleTypeDef *encoder_htim = nullptr;
-	UartHelper *uart_helper = nullptr;
 
 	uint16_t prev_tick;
 	uint16_t cur_tick;
@@ -28,8 +27,8 @@ public:
 	WheelPublisher(){
 	}
 
-	WheelPublisher(TIM_HandleTypeDef *htim, UartHelper *main_uart_helper){
-		uart_helper = main_uart_helper;
+	WheelPublisher(TIM_HandleTypeDef *htim){
+
 
 		prev_tick = 0;
 		cur_tick = 0;
@@ -47,8 +46,7 @@ public:
 		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
 	}
 
-	void init(TIM_HandleTypeDef *htim, UartHelper *main_uart_helper){
-		uart_helper = main_uart_helper;
+	void init(TIM_HandleTypeDef *htim){
 
 		prev_tick = 0;
 		cur_tick = 0;

@@ -30,11 +30,10 @@ RosHelper::~RosHelper() {
 	// TODO Auto-generated destructor stub
 }
 
-void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
+void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
 	nh.initNode();
 	nh.advertise(chatter);
-	nh.setUARTHelper(uart_helper);
 
 	//===Right wheel===
 //	wheel = new WheelSubscriber();
@@ -47,22 +46,20 @@ void RosHelper::setupRos(UartHelper *uart_helper, TIM_HandleTypeDef *main_htim, 
 	wheel2.set_timers(main_htim2, CHANNEL2, CHANNEL_REV2);
 
 	//===Right encoder===
-	encoder.init(encoder_htim, uart_helper);
+	encoder.init(encoder_htim);
 
 	//===Left encoder===
-	encoder2.init(encoder_htim2, uart_helper);
+	encoder2.init(encoder_htim2);
 
 	cmd_vel.init(&nh, &wheel2, &wheel);
 	odom.init(&nh, &encoder2, &encoder);
 
 }
 
-void RosHelper::setupRos(UartHelper *uart_helper)
+void RosHelper::setupRos()
 {
 	nh.initNode();
-//	chatter = ros::Publisher("chatter",&str_msg);
 	nh.advertise(chatter);
-	nh.setUARTHelper(uart_helper);
 }
 
 

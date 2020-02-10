@@ -53,8 +53,6 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim8;
 
-UART_HandleTypeDef huart1;
-
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
@@ -66,7 +64,6 @@ static void MX_GPIO_Init(void);
 static void MX_RTC_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM8_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 void StartDefaultTask(void const * argument);
@@ -112,7 +109,6 @@ int main(void)
   MX_RTC_Init();
   MX_TIM1_Init();
   MX_TIM8_Init();
-  MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
@@ -472,39 +468,6 @@ static void MX_TIM8_Init(void)
 }
 
 /**
-  * @brief USART1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART1_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART1_Init 0 */
-
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 9600;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
-
-}
-
-/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -606,28 +569,13 @@ void StartDefaultTask(void const * argument)
   MX_LWIP_Init();
 
   /* USER CODE BEGIN 5 */
-  threds_setup(&huart1, &htim3, &htim4, &htim8, &htim1);
+  threds_setup(&htim3, &htim4, &htim8, &htim1);
 
-//  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-//  __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, 100);
-//
-//  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-//  __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, 100);
-//
-//  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
-//  __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3, 100);
-//
-//  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, 100);
 
-  /* Infinite loop */
-//  int cur_tick;
-//  int dir;
   for(;;)
   {
 
-//	  cur_tick = __HAL_TIM_GET_COUNTER(&htim8);
-//	  dir = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim8);
+
 
 
 

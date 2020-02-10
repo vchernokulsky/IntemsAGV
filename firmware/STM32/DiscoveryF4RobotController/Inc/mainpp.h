@@ -14,7 +14,7 @@
 
 
 void memory_setup();
-void threds_setup(UART_HandleTypeDef *main_huart, TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
+void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
 
 #ifdef __cplusplus
 }
