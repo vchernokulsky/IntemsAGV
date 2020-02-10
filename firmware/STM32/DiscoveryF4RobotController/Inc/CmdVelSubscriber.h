@@ -38,11 +38,11 @@ private:
     }
     float check_linear_limit_velocity(float vel)
     {
-    	float ret = constrain(vel, MIN_LIN_SPEED, MAX_LIN_SPEED);
+    	float ret = constrain(vel, -MAX_LIN_SPEED, MAX_LIN_SPEED);
         return ret;
     }
     float check_angular_limit_velocity(float vel){
-    	float ret = constrain(vel, ANG_VEL_MIN, ANG_VEL_MAX);
+    	float ret = constrain(vel, -ANG_VEL_MAX, ANG_VEL_MAX);
         return ret;
     }
 

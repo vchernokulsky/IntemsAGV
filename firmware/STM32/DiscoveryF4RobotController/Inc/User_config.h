@@ -45,8 +45,5 @@
 #define WHEEL_SEPARATION 0.45
 
 #define MAX_LIN_SPEED 1.9
-#define MIN_LIN_SPEED -1.9
-
-#define ANG_VEL_MIN -3.8
 #define ANG_VEL_MAX 3.8
 /************************************************/
