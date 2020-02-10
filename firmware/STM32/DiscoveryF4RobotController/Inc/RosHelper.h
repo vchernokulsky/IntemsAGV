@@ -45,7 +45,7 @@ public:
 	void encoderTask2(void);
 	void readSpeedTask(void);
 	void readSpeedTask2(void);
-	void exti_Callback(uint16_t GPIO_Pin);
+	void cmdvelTimeoutTask();
 };
 
 #endif /* ROSHELPER_H_ */

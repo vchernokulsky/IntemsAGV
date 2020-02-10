@@ -25,6 +25,7 @@ private:
 	WheelSubscriber *left_wheel;
 	WheelSubscriber *right_wheel;
 
+
     float constrain(float vel, float low, float high)
     {
     	float ret = vel;
@@ -74,30 +75,29 @@ private:
 		}
     }
     void calculate_speeds(){
-    	cur_time = HAL_GetTick();
-    	delta_time = cur_time - last_time;
-//    	if(delta_time <  CMDVEL_TIMEOUT)
-//    	{
-			left_linear = (2 * linear + WHEEL_SEPARATION * angular) / 2;
-			right_linear = (2 * linear - WHEEL_SEPARATION * angular) / 2;
-			adjust_speeds();
-
-//    	}
-//    	else
-//    	{
-//    		left_linear = 0;
-//    		right_linear = 0;
-//    	}
-    	last_time = cur_time;
+		left_linear = (2 * linear + WHEEL_SEPARATION * angular) / 2;
+		right_linear = (2 * linear - WHEEL_SEPARATION * angular) / 2;
+		adjust_speeds();
     }
 public:
 
 	void cmdvel_callback(const geometry_msgs::Twist& msg){
+		last_time = HAL_GetTick();
 		linear = check_linear_limit_velocity(msg.linear.x);
 		angular = check_angular_limit_velocity(msg.angular.z);
 		calculate_speeds();
 		left_wheel->wheel_callback(left_linear);
 		right_wheel->wheel_callback(right_linear);
+
+	}
+
+	void check_timeout(){
+		cur_time = HAL_GetTick();
+		delta_time = cur_time - last_time;
+		if(delta_time >  CMDVEL_TIMEOUT){
+			left_wheel->wheel_callback(0.0);
+			right_wheel->wheel_callback(0.0);
+		}
 
 	}
 	CmdVelSubscriber():sub(CMDVEL_TOPIC,&CmdVelSubscriber::cmdvel_callback, this){

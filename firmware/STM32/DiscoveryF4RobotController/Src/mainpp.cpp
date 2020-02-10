@@ -19,6 +19,7 @@ void StartSetSpeedTask(void *arg);
 void StartSetSpeedTask2(void *arg);
 void StartEncoderTask(void *arg);
 void StartEncoderTask2(void *arg);
+void StartCmdvelTimeoutRask(void *arg);
 
 /***** CALL IN 'USER CODE BEGIN(END) 1' *****/
 void memory_setup()
@@ -48,6 +49,7 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 	sys_thread_new("wheel2_thread", StartSetSpeedTask2, 0, 256, osPriorityNormal);
 	sys_thread_new("encoder1_thread", StartEncoderTask, 0, 256, osPriorityNormal);
 	sys_thread_new("encoder2_thread", StartEncoderTask2, 0, 256, osPriorityNormal);
+	sys_thread_new("cmdvel_timeout_thread", StartCmdvelTimeoutRask, 0, 128, osPriorityNormal);
 
 }
 /***************************************************************************/
@@ -87,5 +89,9 @@ void StartEncoderTask2(void *arg)
 	ros_helper.encoderTask2();
 }
 
+void StartCmdvelTimeoutRask(void *arg)
+{
+	ros_helper.cmdvelTimeoutTask();
+}
 
 
