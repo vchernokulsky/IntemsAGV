@@ -41,20 +41,20 @@
 #include "SocketClient.h"
 
 extern UART_HandleTypeDef huart2;
-extern SocketClient socket_client;
+extern SocketClient *socket_client;
 
 
 class STM32Hardware {
   protected:
     UART_HandleTypeDef *huart;
 
-    const static uint16_t rbuflen = 128;
+    const static uint16_t rbuflen = 1024;
     uint8_t rbuf[rbuflen];
     uint32_t rdmaInd;
     uint32_t rind;
 
 
-    const static uint16_t tbuflen = 256;
+    const static uint16_t tbuflen = 1024;
     uint8_t tbuf[tbuflen];
     uint32_t twind, tfind;
 
@@ -85,7 +85,7 @@ class STM32Hardware {
 //      }
 //      return c;
     	uint8_t c = -1;
-		socket_client.socket_receive(&c, (uint16_t)1, &rdmaInd);
+		socket_client->socket_receive(&c, (uint16_t)1, &rdmaInd);
 		if(rdmaInd > 0){
 			return c;
 		} else{
@@ -102,7 +102,7 @@ class STM32Hardware {
         if(twind != tfind){
           uint16_t len = tfind < twind ? twind - tfind : tbuflen - tfind;
 //          HAL_UART_Transmit_DMA(huart, &(tbuf[tfind]), len);
-          socket_client.socket_send( &(tbuf[tfind]), len);
+          socket_client->socket_send( &(tbuf[tfind]), len);
           tfind = (tfind + len) & (tbuflen - 1);
         }
         mutex = false;

@@ -6,18 +6,22 @@
  */
 
 #include "SocketClient.h"
+
 SPI_HandleTypeDef *SocketClient::hspi1;
+uint8_t SocketClient::error_count = 0;
 
-SocketClient::SocketClient() {
+SemaphoreHandle_t SocketClient::error_semaphore = xSemaphoreCreateMutex() ;
+bool SocketClient::wiznet_inited = false;
+bool SocketClient::wiznet_restarted = false;
+SemaphoreHandle_t SocketClient::spi_read = xSemaphoreCreateMutex() ;
+SemaphoreHandle_t SocketClient::spi_write = xSemaphoreCreateMutex() ;
 
-}
-
-void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
+SocketClient::SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode) {
 	hspi1 = main_hspi1;
 	uart_helper = main_uart_helper;
-
-	SocketClient::socket_init();
-	(*uart_helper).printf("socket inited\r\n");
+	settings = main_settings;
+	SocketClient::http_socket = socket_mode;
+	SocketClient::socket_reset();
 }
 
 SocketClient::~SocketClient() {
@@ -25,13 +29,31 @@ SocketClient::~SocketClient() {
 	SocketClient::socket_close();
 }
 void SocketClient::socket_connect(){
-	uint8_t code = connect(http_socket, addr, port);
-    if(code < 0) {
-    	(*uart_helper).printf("connect() failed, code = %d\r\n", code);
-        close(http_socket);
-        return;
+	int8_t code = connect(http_socket, addr, port);
+    if(code > 0)
+    {
+    	(*uart_helper).printf("socket connected\r\n");
     }
-    (*uart_helper).printf("socket connected\r\n");
+    else
+    {
+    	(*uart_helper).printf("\r\nconnect() failed\r\n");
+    	(*uart_helper).printf("\r\ncode = %d\r\n", code);
+    	if (code < 0){
+    		close(http_socket);
+    	}
+    }
+}
+
+void SocketClient::socket_reset()
+{
+	SocketClient::wiznet_init();
+	HAL_Delay(1000);
+	if (http_socket == HTTP_SOCKET_CLIENT){
+		SocketClient::socket_open();
+		HAL_Delay(1000);
+		SocketClient::socket_connect();
+	}
+
 }
 
 void SocketClient::socket_send(uint8_t *pData, uint16_t len){
@@ -39,12 +61,12 @@ void SocketClient::socket_send(uint8_t *pData, uint16_t len){
     while(len > 0) {
         int32_t nbytes = send(http_socket, pData, len);
         if(nbytes <= 0) {
-        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
-//            close(http_socket);
-//            return;
+        	socket_error();
+        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);;
         	osDelay(50);
         } else{
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+        	socket_success();
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -55,12 +77,12 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
     while(len > 0) {
         int32_t nbytes = send(http_socket, (uint8_t*)pData, len);
         if(nbytes <= 0) {
-        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
-//            close(http_socket);
-//            return;
+        	socket_error();
+//        	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
         	osDelay(50);
         } else{
-			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
+        	socket_success();
+//			(*uart_helper).printf("%d bytes sent!\r\n", nbytes);
 			len -= nbytes;
         }
     }
@@ -68,53 +90,156 @@ void SocketClient::socket_send(const char *pData, uint16_t len){
 
 void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd){
 
-		int32_t nbytes = recv(http_socket, pData, Size);
+		int32_t nbytes = 0;
+		uint16_t recvsize = getSn_RX_RSR(http_socket);
+		if (recvsize > 0){
+			nbytes = recv(http_socket, pData, Size);
+		}
 		*rdmaInd = nbytes;
-//		if(nbytes == SOCKERR_SOCKSTATUS) {
-//			(*uart_helper).printf("\r\nConnection closed.\r\n");
-//			return;
-//		}
 
 		if(nbytes < 0) {
-			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
+			socket_error();
+//			(*uart_helper).printf("\r\nrecv() failed, %d returned\r\n", nbytes);
 			return;
 		}
 		if (nbytes > 0){
-			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
+			socket_success();
+//			(*uart_helper).printf("\r\nrecv() %d returned\r\n", nbytes);
 			return;
 		} else {
-			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
+//			(*uart_helper).printf("\r\nrecv() socket busy\r\n");
 			return;
 		}
 }
 
+bool SocketClient::socket_open()
+{
+    /***** OPEN SOCKET *****/
+	uint16_t port = settings->wiznet_client_port;
+	if (http_socket == HTTP_SOCKET_SERVER){
+		port = settings->wiznet_server_port;
+	}
+    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, port, SF_IO_NONBLOCK );
+    if(code != SocketClient::http_socket) {
+    	(*uart_helper).printf("socket open failed, code = %d\r\n", code);
+        return false;
+    }
+    (*uart_helper).printf("\r\nSocket opened\r\n");
+    return true;
+}
 
-void SocketClient::socket_close(){
+void SocketClient::socket_close()
+{
 	  close(http_socket);
 	  (*uart_helper).printf("Closing socket.\r\n");
 }
 
-void SocketClient::socket_init(){
-    reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
-    reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);
-    reg_wizchip_spiburst_cbfunc(SocketClient::W5500_ReadBuff, SocketClient::W5500_WriteBuff);
-    uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
-    wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
-    wiz_NetInfo net_info = {
-    	.mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef}, // MAC адрес
-        .ip = {192, 168, 55, 114}, // IP адрес
-        .sn = {255, 255, 255, 0}, // маска сети
-        .gw = {192, 168, 55, 1}}; // адрес шлюза
-    wizchip_setnetinfo(&net_info);
-    wizchip_getnetinfo(&net_info);
-    SocketClient::http_socket = HTTP_SOCKET;
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
-    if(code != SocketClient::http_socket) {
-    	(*uart_helper).printf("socket() failed, code = %d\r\n", code);
-        return;
-    }
+void SocketClient::wiznet_init(){
+	if(http_socket == HTTP_SOCKET_CLIENT || !SocketClient::wiznet_inited){
+		/******* RESET WIZNET**********/
+		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
+		 HAL_Delay(500);
+		 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
+		 HAL_Delay(500);
+		/****** REGISTER SOCKET CALLBACKS ******/
+		reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
+		reg_wizchip_spi_cbfunc(SocketClient::W5500_ReadByte, SocketClient::W5500_WriteByte);
+		reg_wizchip_spiburst_cbfunc(SocketClient::W5500_ReadBuff, SocketClient::W5500_WriteBuff);
+		/****** INIT SOCKET ******/
+		uint8_t rx_tx_buff_sizes[] = {2, 2, 2, 2};
+		wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
+		wiz_NetInfo net_info;
+		memcpy(net_info.mac, settings->wiznet_mac_address, MAC_ADDRESS_SIZE);
+		memcpy(net_info.ip, settings->wiznet_ip_address, IP_SIZE);
+		memcpy(net_info.sn, settings->wiznet_mask, IP_SIZE);
+		memcpy(net_info.gw, settings->wiznet_gateaway, IP_SIZE);
 
-//    (*uart_helper).printf("Socket created, connecting...\r\n");
+		wizchip_setnetinfo(&net_info);
+		wizchip_getnetinfo(&net_info);
+		SocketClient::error_count = 0;
+		data_exchange_time = HAL_GetTick();
+		SocketClient::wiznet_inited = true;
+		if(http_socket == HTTP_SOCKET_CLIENT){
+			wiznet_restarted = true;
+		} else {
+			wiznet_restarted = false;
+		}
+	}
+}
+
+void SocketClient::socket_error()
+{
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		++SocketClient::error_count;
+		data_exchange_time = HAL_GetTick();
+		xSemaphoreGive( SocketClient::error_semaphore );
+	}
+}
+void SocketClient::socket_success()
+{
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		if(SocketClient::error_count > 0)
+		{
+			--SocketClient::error_count;
+		}
+		data_exchange_time = HAL_GetTick();
+		xSemaphoreGive( SocketClient::error_semaphore );
+	}
+
+}
+
+void SocketClient::CheckFreezingTask()
+{
+	for(;;)
+	{
+		if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+		{
+			if(SocketClient::error_count > WIZNET_MAX_ERROR_COUNT || (uint32_t)(HAL_GetTick() - data_exchange_time) > WIZNET_FREEZE_TIMEOUT)
+			{
+				xSemaphoreGive( SocketClient::error_semaphore );
+				(*uart_helper).printf("\r\nSocket Reseting\r\n");
+				socket_reset();
+			} else {
+				xSemaphoreGive( SocketClient::error_semaphore );
+			}
+
+		}
+		osDelay(WIZNET_CHECK_FREEZING_DELAY);
+	}
+}
+void SocketClient::server_loop()
+{
+	while(!socket_open())
+	{
+		if(SocketClient::wiznet_restarted){
+			SocketClient::wiznet_restarted = false;
+			return;
+		}
+		osDelay(50);
+	}
+	listen(http_socket);
+	while(getSn_SR(http_socket) != SOCK_ESTABLISHED)
+	{
+		if(SocketClient::wiznet_restarted){
+			SocketClient::wiznet_restarted = false;
+			return;
+		}
+		osDelay(500);
+	}
+	uint8_t buff[] = {1,2,3,4,5};
+	socket_send(buff, 6);
+	socket_close();
+}
+
+void SocketClient::socketServerTestTask()
+{
+	for(;;)
+	{
+		server_loop();
+		osDelay(50);
+	}
 }
 
 void SocketClient::W5500_Select(void) {
@@ -125,21 +250,43 @@ void SocketClient::W5500_Unselect(void) {
     HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_SET);
 }
 
-void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
-    HAL_SPI_Receive(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+void SocketClient::W5500_ReadBuff(uint8_t* buff, uint16_t len)
+{
+    if( xSemaphoreTake( SocketClient::spi_read, portMAX_DELAY) == pdTRUE )
+	{
+		uint32_t begin = HAL_GetTick();
+		HAL_SPI_Receive(SocketClient::hspi1, buff, len, 100);
+		uint32_t end = HAL_GetTick();
+		if(end - begin > 110) {
+			osDelay(50);
+		}
+		xSemaphoreGive( SocketClient::spi_read );
+	}
 }
 
-void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len) {
-    HAL_SPI_Transmit(SocketClient::hspi1, buff, len, HAL_MAX_DELAY);
+void SocketClient::W5500_WriteBuff(uint8_t* buff, uint16_t len)
+{
+	if( xSemaphoreTake( SocketClient::spi_read, portMAX_DELAY) == pdTRUE )
+	{
+		uint32_t begin = HAL_GetTick();
+		HAL_SPI_Transmit(SocketClient::hspi1, buff, len, 100);
+		uint32_t end = HAL_GetTick();
+		if(end - begin > 110)
+		{
+			osDelay(50);
+		}
+		xSemaphoreGive( SocketClient::spi_read );
+	}
 }
 
 uint8_t SocketClient::W5500_ReadByte(void) {
-    uint8_t byte;
-    W5500_ReadBuff(&byte, sizeof(byte));
-    return byte;
+	uint8_t byte;
+	W5500_ReadBuff(&byte, sizeof(byte));
+	return byte;
 }
 
-void SocketClient::W5500_WriteByte(uint8_t byte) {
-    W5500_WriteBuff(&byte, sizeof(byte));
+void SocketClient::W5500_WriteByte(uint8_t byte)
+{
+	W5500_WriteBuff(&byte, sizeof(byte));
 }
 

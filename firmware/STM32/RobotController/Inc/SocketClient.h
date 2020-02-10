@@ -10,12 +10,11 @@
 
 #define DHCP_SOCKET     0
 #define DNS_SOCKET      1
-#define HTTP_SOCKET     2
+#define HTTP_SOCKET_CLIENT    2
+#define HTTP_SOCKET_SERVER    3
 
-#define W5500_CS_Pin GPIO_PIN_12
-#define W5500_CS_GPIO_Port GPIOB
 
-#define BUFF_SIZE 20
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -25,18 +24,37 @@
 
 #include "socket.h"
 #include "UartHelper.h"
+#include "Settings.h"
+
+#include "System_config.h"
+#include "User_config.h"
 
 class SocketClient {
 private:
+
+	static SemaphoreHandle_t error_semaphore;
+	static SemaphoreHandle_t spi_read;
+	static SemaphoreHandle_t spi_write;
+	static bool wiznet_inited;
+	static bool wiznet_restarted;
+
 	static SPI_HandleTypeDef *hspi1;
+	static uint8_t error_count;
+	uint32_t data_exchange_time;
 	uint8_t http_socket;
 	UartHelper *uart_helper;
 
-	volatile bool ip_assigned;
-	uint8_t addr[4] = {192, 168, 55, 10};
-	uint16_t port = 11411;
+	const bool success_state = false;
+	const bool error_state = true;
+	xQueueHandle queue;
 
-	void socket_init();
+	Settings *settings;
+
+	uint8_t addr[4] = SERVER_IP_ADRESS;
+	uint16_t port = SERVER_PORT;
+
+	void wiznet_init();
+	void server_loop();
 
 
 	static void W5500_Select(void);
@@ -45,17 +63,22 @@ private:
 	static void W5500_WriteBuff(uint8_t* buff, uint16_t len);
 	static uint8_t W5500_ReadByte(void);
 	static void W5500_WriteByte(uint8_t byte);
-//	void UART_Printf(const char* fmt, ...);
-public:
-	SocketClient();
-	virtual ~SocketClient();
 
-	void init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper);
+public:
+	SocketClient(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper, Settings *main_settings, uint8_t socket_mode);
+	virtual ~SocketClient();
+	bool socket_open();
 	void socket_connect();
 	void socket_send(uint8_t *pData, uint16_t len);
 	void socket_send(const char *pData, uint16_t len);
 	void socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaInd);
 	void socket_close();
+	void socket_reset();
+	void socket_error();
+	void socket_success();
+	void SocketStateTask();
+	void CheckFreezingTask();
+	void socketServerTestTask();
 };
 
 #endif /* SOCKETCLIENT_H_ */

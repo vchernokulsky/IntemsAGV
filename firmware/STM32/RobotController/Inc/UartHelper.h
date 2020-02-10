@@ -11,8 +11,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
+
+#include "System_config.h"
 
 class UartHelper {
 private:
