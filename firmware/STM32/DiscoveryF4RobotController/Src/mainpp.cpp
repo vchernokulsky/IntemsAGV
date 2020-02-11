@@ -1,8 +1,10 @@
 #include "mainpp.h"
+
 #include "SocketClient.h"
 #include "SocketServer.h"
 #include "RosHelper.h"
 #include "System_config.h"
+
 
 SocketClient socket_client;
 RosHelper ros_helper;
@@ -34,9 +36,16 @@ void memory_setup()
 }
 /********************************************/
 
-/*************** CALL IN 'USER CODE BEGIN(END) 5' ***************/
+/*************** CALL IN 'USER CODE BEGIN(END) 5' *************
+ *
+ * replace MX_LWIP_Init() with LWIP_Init() from "lwip_init.h" in StartDefaultTask
+ * to set ip configuration from "User_config.h"*
+ *
+ * */
 void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
+;
+
 	socket_client.init(10888, "192.168.2.150", 11411);
 	ros_helper.setupRos(main_htim, main_htim2, encoder_htim, encoder_htim2);
 

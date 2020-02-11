@@ -28,6 +28,7 @@
 #include "mainpp.h"
 
 
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -566,19 +567,14 @@ void StartDefaultTask(void const * argument)
     
                  
   /* init code for LWIP */
-  MX_LWIP_Init();
 
   /* USER CODE BEGIN 5 */
+  LWIP_Init();
   threds_setup(&htim3, &htim4, &htim8, &htim1);
 
 
   for(;;)
   {
-
-
-
-
-
     osDelay(100);
   }
   /* USER CODE END 5 */ 
