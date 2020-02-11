@@ -22,8 +22,9 @@ private:
 	uint8_t http_socket;
 	UartHelper *uart_helper;
 	volatile bool ip_assigned;
-	uint8_t addr[4] = {192, 168, 55, 100};
-	uint16_t port = 5000;
+	uint8_t addr[4] = {192, 168, 88, 2};
+	//uint8_t addr[4] = {192, 168, 55, 100};
+	uint16_t port = 5004;
 	CHIP* chip;
 
 	void socket_init();

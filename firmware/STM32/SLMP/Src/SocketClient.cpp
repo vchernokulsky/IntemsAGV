@@ -23,8 +23,10 @@ SocketClient::~SocketClient() {
 	SocketClient::socket_close();
 }
 void SocketClient::socket_connect(){
-	uint8_t code = connect(http_socket, addr, port);
-    if(code < 0) {
+	//uint8_t code = connect(http_socket, addr, port);
+	uint8_t code = listen(http_socket);
+
+	if(code < 0) {
     	(*uart_helper).printf("connect() failed, code = %d\r\n", code);
         close(http_socket);
         return;
@@ -35,8 +37,10 @@ void SocketClient::socket_connect(){
 void SocketClient::socket_send(uint8_t *pData, uint16_t len){
 
     while(len > 0) {
-        int32_t nbytes = send(http_socket, pData, len);
-        if(nbytes <= 0) {
+        //int32_t nbytes = send(http_socket, pData, len);
+    	int32_t nbytes = sendto(http_socket, pData, len, addr, port);
+
+    	if(nbytes <= 0) {
         	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
             close(http_socket);
             return;
@@ -51,7 +55,8 @@ void SocketClient::socket_send(uint8_t *pData, uint16_t len){
 void SocketClient::socket_send(const char *pData, uint16_t len){
 
     while(len > 0) {
-        int32_t nbytes = send(http_socket, (uint8_t*)pData, len);
+        //int32_t nbytes = send(http_socket, (uint8_t*)pData, len);
+        int32_t nbytes = sendto(http_socket, (uint8_t*)pData, len, addr, port);
         if(nbytes <= 0) {
         	(*uart_helper).printf("send() failed, %d returned\r\n", nbytes);
             close(http_socket);
@@ -68,7 +73,8 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t Size, uint32_t* rdmaI
 		int32_t nbytes = 0;
 		uint16_t recvsize = getSn_RX_RSR(http_socket);
 		if (recvsize > 0){
-			nbytes = recv(http_socket, pData, Size);
+			//nbytes = recv(http_socket, pData, Size);
+			nbytes = recvfrom(http_socket, pData, Size, addr, &port);
 		}
 		*rdmaInd = nbytes;
 
@@ -96,7 +102,9 @@ void SocketClient::socket_init(){
 	chip->initChip();
 
     SocketClient::http_socket = HTTP_SOCKET;
-    uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
+    //uint8_t code = socket(SocketClient::http_socket, Sn_MR_TCP, 10888, SF_IO_NONBLOCK );
+    uint8_t code = socket(SocketClient::http_socket, Sn_MR_UDP, 10888, SF_IO_NONBLOCK );
+
     if(code != SocketClient::http_socket) {
     	(*uart_helper).printf("socket() failed, code = %d\r\n", code);
         return;

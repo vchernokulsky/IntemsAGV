@@ -213,6 +213,10 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port)
          if((ret = socket(sn, Sn_MR_UDP, port, 0x00)) != sn)
             return ret;
 #ifdef _LOOPBACK_DEBUG_
+
+
+
+
          printf("%d:Opened, UDP loopback, port [%d]\r\n", sn, port);
 #endif
          break;

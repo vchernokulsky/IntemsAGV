@@ -33,21 +33,15 @@ public:
 	void setValue(ValueType value) {
 		this.value = value;
 
-		if (endian) {
-			swapEndian();
-		}
+		if (endian) {swapEndian();}
 	}
 
 	ValueType getValue() {
+		if (endian) {swapEndian();}
+
 		ValueType tmp = this->data.value;
 
-		if (endian) {
-			swapEndian();
-		}
-
-		data.value ^= tmp;
-		tmp ^= data.value;
-		data.value ^= tmp;
+		if (endian) {swapEndian();}
 
 		return tmp;
 	}
@@ -65,6 +59,7 @@ public:
 		std::copy(begin, begin + value.size(), value.begin());
 	}
 	void setValue(std::vector<unsigned char> value) {this->value = value;}
+	unsigned short getSize() {return value.size();}
 	std::vector<unsigned char> getValue() {return value;}
 };
 #endif //SLMP_PACKETFIELDS_H

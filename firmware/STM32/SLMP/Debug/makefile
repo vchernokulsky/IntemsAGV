@@ -22,6 +22,7 @@ RM := rm -rf
 -include Lib/ioLibrary_Driver/Ethernet/W5100S/subdir.mk
 -include Lib/ioLibrary_Driver/Ethernet/W5100/subdir.mk
 -include Lib/ioLibrary_Driver/Ethernet/subdir.mk
+-include Lib/SLMP/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include subdir.mk
 -include objects.mk

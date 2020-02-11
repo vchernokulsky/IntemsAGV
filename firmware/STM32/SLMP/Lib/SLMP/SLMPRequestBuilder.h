@@ -7,11 +7,6 @@
 
 #include "SLMPPacket.h"
 
-struct Msg {
-	unsigned char *content;
-	unsigned int len;
-};
-
-Msg buildRequest(SLMPPacket *packet);
-unsigned int getMsgLen(SLMPPacket *packet);
+void buildRequest(SLMPPacket *packet, unsigned char *msg);
+unsigned short getMsgLen(SLMPPacket *packet);
 #endif //SLMP_SLMPREQUESTBUILDER_H

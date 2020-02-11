@@ -50,7 +50,11 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/W5500/w5500.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h \
- ../Inc/UartHelper.h ../Inc/W5500_chip.h
+ ../Inc/UartHelper.h ../Inc/W5500_chip.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPRequestBuilder.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/PacketFields.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h
 
 ../Inc/mainpp.h:
 
@@ -159,3 +163,11 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
 ../Inc/UartHelper.h:
 
 ../Inc/W5500_chip.h:
+
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPRequestBuilder.h:
+
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h:
+
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/PacketFields.h:
+
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h:

@@ -4,11 +4,8 @@
 
 #include "SLMPRequestBuilder.h"
 
-Msg buildRequest(SLMPPacket *packet) {
-	Msg msg;
-	msg.len = getMsgLen(packet);
-	msg.content = new unsigned char[msg.len];
-	unsigned char *slider = msg.content;
+void buildRequest(SLMPPacket *packet, unsigned char *msg) {
+	unsigned char *slider = msg;
 
 	if (packet->is_serial_no.exist) {
 		packet->is_serial_no.putInDump(slider);
@@ -36,7 +33,7 @@ Msg buildRequest(SLMPPacket *packet) {
 	}
 	if (packet->request_reserved.exist) {
 		packet->request_reserved.putInDump(slider);
-		slider += 2;
+		slider += 1;
 	}
 	if (packet->data_length.exist) {
 		packet->data_length.putInDump(slider);
@@ -56,7 +53,7 @@ Msg buildRequest(SLMPPacket *packet) {
 	}
 	if (packet->head_device_no.exist) {
 		packet->head_device_no.putInDump(slider);
-		slider += 2;
+		slider += 3;
 	}
 	if (packet->device_code.exist) {
 		packet->device_code.putInDump(slider);
@@ -64,7 +61,7 @@ Msg buildRequest(SLMPPacket *packet) {
 	}
 	if (packet->no_of_device_points.exist) {
 		packet->no_of_device_points.putInDump(slider);
-		slider += 3;
+		slider += 2;
 	}
 	if (packet->end_code.exist) {
 		packet->end_code.putInDump(slider);
@@ -74,29 +71,27 @@ Msg buildRequest(SLMPPacket *packet) {
 		packet->value.putInDump(slider);
 		slider += 2;
 	}
-
-    return msg;
 }
 
-unsigned int getMsgLen(SLMPPacket* packet) {
-	unsigned int len = 0;
+unsigned short getMsgLen(SLMPPacket* packet) {
+	unsigned short len = 0;
 
-	if (packet->is_serial_no.exist) {len++;}
-	if (packet->serial_no.exist) {len++;}
-	if (packet->field_If_serial_no.exist) {len++;}
-	if (packet->request_dest_net_no.exist) {len++;}
-	if (packet->request_dest_station_no.exist) {len++;}
-	if (packet->request_processor.exist) {len++;}
-	if (packet->request_reserved.exist) {len++;}
-	if (packet->data_length.exist) {len++;}
-	if (packet->monitoring_time.exist) {len++;}
-	if (packet->command.exist) {len++;}
-	if (packet->subcommand.exist) {len++;}
-	if (packet->head_device_no.exist) {len++;}
-	if (packet->device_code.exist) {len++;}
-	if (packet->no_of_device_points.exist) {len++;}
-	if (packet->end_code.exist) {len++;}
-	if (packet->value.exist) {len++;}
+	if (packet->is_serial_no.exist) {len += 2;}
+	if (packet->serial_no.exist) {len += 2;}
+	if (packet->field_If_serial_no.exist) {len += 2;}
+	if (packet->request_dest_net_no.exist) {len += 1;}
+	if (packet->request_dest_station_no.exist) {len += 1;}
+	if (packet->request_processor.exist) {len += 2;}
+	if (packet->request_reserved.exist) {len += 1;}
+	if (packet->data_length.exist) {len += 2;}
+	if (packet->monitoring_time.exist) {len += 2;}
+	if (packet->command.exist) {len += 2;}
+	if (packet->subcommand.exist) {len += 2;}
+	if (packet->head_device_no.exist) {len += 3;}
+	if (packet->device_code.exist) {len += 1;}
+	if (packet->no_of_device_points.exist) {len += 2;}
+	if (packet->end_code.exist) {len += 2;}
+	if (packet->value.exist) {len += packet->value.getSize();}
 
 	return len;
 }

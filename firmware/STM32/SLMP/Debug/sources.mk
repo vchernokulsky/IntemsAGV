@@ -27,6 +27,7 @@ CPP_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 Drivers/STM32F4xx_HAL_Driver/Src \
+Lib/SLMP \
 Lib/ioLibrary_Driver/Ethernet/W5100 \
 Lib/ioLibrary_Driver/Ethernet/W5100S \
 Lib/ioLibrary_Driver/Ethernet/W5200 \
