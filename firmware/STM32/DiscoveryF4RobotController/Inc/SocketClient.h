@@ -13,6 +13,8 @@
 #include "lwip/inet.h"
 #include "lwip/sockets.h"
 
+#include "User_config.h"
+
 
 
 #ifndef SOCKETCLIENT_H_
@@ -46,7 +48,7 @@ public:
 	SocketClient();
 	SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port);
 	virtual ~SocketClient();
-
+	void init();
 	void init(uint16_t local_port, const char *remote_ip,  uint16_t remote_port);
 	void socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd);
 	void socket_send(uint8_t *pData, uint16_t len);

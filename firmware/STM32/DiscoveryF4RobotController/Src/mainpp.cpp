@@ -6,8 +6,7 @@
 #include "System_config.h"
 
 
-SocketClient socket_client;
-RosHelper ros_helper;
+
 
 
 
@@ -22,6 +21,9 @@ void StartSetSpeedTask2(void *arg);
 void StartEncoderTask(void *arg);
 void StartEncoderTask2(void *arg);
 void StartCmdvelTimeoutRask(void *arg);
+
+SocketClient socket_client;
+RosHelper ros_helper;
 
 /***** CALL IN 'USER CODE BEGIN(END) 1' *****/
 void memory_setup()
@@ -44,9 +46,8 @@ void memory_setup()
  * */
 void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
-;
 
-	socket_client.init(10888, "192.168.2.150", 11411);
+	socket_client.init();
 	ros_helper.setupRos(main_htim, main_htim2, encoder_htim, encoder_htim2);
 
 
