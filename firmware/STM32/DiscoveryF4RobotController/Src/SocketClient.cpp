@@ -72,7 +72,7 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaI
 {
 
 	recv_data = recv(sock, pData, size, 0);
-	*rdmaInd = (recv_data > 0)? recv_data : 0;
+	*rdmaInd = (recv_data > 0) ? recv_data : 0;
 
 	if( check_errno(recv_data) == ERROR_STATUS){
 		++err_count;

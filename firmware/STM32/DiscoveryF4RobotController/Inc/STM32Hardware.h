@@ -79,35 +79,9 @@ class STM32Hardware {
 		}
     }
 
-    void flush(void){
-      static bool mutex = false;
 
-      if(!mutex){
-        mutex = true;
-
-        if(twind != tfind){
-          uint16_t len = tfind < twind ? twind - tfind : tbuflen - tfind;
-//          HAL_UART_Transmit_DMA(huart, &(tbuf[tfind]), len);
-          socket_client.socket_send( &(tbuf[tfind]), len);
-          tfind = (tfind + len) & (tbuflen - 1);
-        }
-        mutex = false;
-      }
-    }
-
-    void write_stm32hw(uint8_t* data, uint16_t length){
-    	uint16_t n = length;
-      n = n <= tbuflen ? n : tbuflen;
-
-      uint16_t n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
-      memcpy(&(tbuf[twind]), data, n_tail);
-      twind = (twind + n) & (tbuflen - 1);
-
-      if(n != n_tail){
-        memcpy(tbuf, &(data[n_tail]), n - n_tail);
-      }
-
-      flush();
+    void write_stm32hw(uint8_t* data, uint16_t length) {
+    	socket_client.socket_send(data, length);
     }
 
     unsigned long time(){ return HAL_GetTick();; }
