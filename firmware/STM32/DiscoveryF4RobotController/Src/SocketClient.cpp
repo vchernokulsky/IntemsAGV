@@ -6,9 +6,14 @@
  */
 
 #include "SocketClient.h"
+
+SemaphoreHandle_t SocketClient::error_semaphore;
+bool SocketClient::is_connected = false;
+
 SocketClient::SocketClient( )
 {
 	// TODO Auto-generated constructor stub
+
 }
 
 SocketClient::SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
@@ -30,7 +35,7 @@ void SocketClient::init( )
 {
 	// TODO Auto-generated constructor stub
 
-
+	SocketClient::error_semaphore = xSemaphoreCreateMutex();
 	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
 
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
@@ -49,7 +54,7 @@ void SocketClient::init( )
 void SocketClient::init(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
 {
 	// TODO Auto-generated constructor stub
-
+	SocketClient::error_semaphore = xSemaphoreCreateMutex();
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
 	localhost.sin_family = AF_INET;
 	localhost.sin_port = htons(local_port);
@@ -70,8 +75,11 @@ SocketClient::~SocketClient() {
 
 void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd)
 {
-
-	recv_data = recv(sock, pData, size, 0);
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		recv_data = (SocketClient::is_connected) ? recv(sock, pData, size, 0) : 0;
+		xSemaphoreGive( SocketClient::error_semaphore );
+	}
 	*rdmaInd = (recv_data > 0) ? recv_data : 0;
 
 	if( check_errno(recv_data) == ERROR_STATUS){
@@ -86,7 +94,11 @@ void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaI
 
 void SocketClient::socket_send(uint8_t *pData, uint16_t len)
 {
-	send_data = write(sock,(void *) pData, len);
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		send_data = (SocketClient::is_connected) ? write(sock,(void *) pData, len) : 0;
+		xSemaphoreGive( SocketClient::error_semaphore );
+	}
 	if( check_errno(send_data) == ERROR_STATUS){
 			++err_count;
 		} else {
@@ -100,23 +112,50 @@ void SocketClient::SocketClientTask()
 {
 	for(;;)
 	{
-		if ((sock = socket(AF_INET,SOCK_STREAM, 0)) >= 0)
+		if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+		{
+			sock = socket(AF_INET,SOCK_STREAM, 0);
+			xSemaphoreGive( SocketClient::error_semaphore );
+		}
+
+		if (sock >= 0)
 		{
 			err_count = 0;
 			osDelay(100);
-
-			lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
-			connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
+			if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+			{
+				lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
+				connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
+				osDelay(500);
+				xSemaphoreGive( SocketClient::error_semaphore );
+			}
 			if (check_errno() == OK_STATUS)
 			{
+				if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+				{
+					SocketClient::is_connected = true;
+					osDelay(500);
+					xSemaphoreGive( SocketClient::error_semaphore );
+				}
+				osDelay(100);
 				for(;;){
 					if(err_count > MAX_ERROR_COUNT){
+						if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+						{
+							SocketClient::is_connected = false;
+							xSemaphoreGive( SocketClient::error_semaphore );
+						}
 						break;
 					}
 					osDelay(100);
 				}
 			}
-			close(sock);
+			if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+			{
+				close(sock);
+				osDelay(500);
+				xSemaphoreGive( SocketClient::error_semaphore );
+			}
 		}
 		osDelay(100);
 	}
