@@ -49,8 +49,8 @@ public:
 		odom.child_frame_id = BASE_FRAME;
 
 		tf_broadcaster.init(*nh);
-		transform.header.frame_id = BASE_FRAME;
-		transform.child_frame_id = ODOMETRY_FRAME;
+		transform.header.frame_id = ODOMETRY_FRAME;
+		transform.child_frame_id = BASE_FRAME;
 	}
 
 
