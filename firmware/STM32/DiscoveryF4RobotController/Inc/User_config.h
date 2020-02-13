@@ -17,7 +17,7 @@
 /************************************************/
 
 /*******************CONTROL****************/
-#define ROS_SPINONCE_DELAY 200
+#define ROS_SPINONCE_DELAY 100
 #define SET_SPEED_DELAY 100
 #define GET_TICK_DELAY 100
 #define CMDVEL_TIMEOUT 5000

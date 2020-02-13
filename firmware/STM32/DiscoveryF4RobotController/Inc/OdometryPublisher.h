@@ -52,8 +52,8 @@ public:
 		odom.child_frame_id = BASE_FRAME;
 
 		tf_broadcaster.init(*nh);
-		transform.header.frame_id = BASE_FRAME;
-		transform.child_frame_id = ODOMETRY_FRAME;
+		transform.header.frame_id =ODOMETRY_FRAME;
+		transform.child_frame_id = BASE_FRAME;
 	}
 
 	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel){
@@ -73,8 +73,8 @@ public:
 			odom.child_frame_id = BASE_FRAME;
 
 			tf_broadcaster.init(*nh);
-			transform.header.frame_id = BASE_FRAME;
-			transform.child_frame_id = ODOMETRY_FRAME;
+			transform.header.frame_id =ODOMETRY_FRAME ;
+			transform.child_frame_id = BASE_FRAME;
 		}
 
 
@@ -137,6 +137,9 @@ public:
 		transform.transform.translation.z = 0;
 		transform.transform.rotation = q;
 		tf_broadcaster.sendTransform(transform);
+		if(pose_x == 0 && pose_y == 0){
+			tf_broadcaster.sendTransform(transform);
+		}
 
 
 		odom.header.stamp = cur_time;
