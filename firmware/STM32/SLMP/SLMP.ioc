@@ -1,5 +1,6 @@
 #MicroXplorer Configuration settings - do not modify
-FREERTOS.IPParameters=Tasks01
+FREERTOS.HEAP_NUMBER=4
+FREERTOS.IPParameters=Tasks01,HEAP_NUMBER
 FREERTOS.Tasks01=defaultTask,0,128,StartDefaultTask,Default,NULL
 File.Version=6
 KeepUserPlacement=true
@@ -280,3 +281,4 @@ VP_TIM3_VS_ClockSourceINT.Mode=Internal
 VP_TIM3_VS_ClockSourceINT.Signal=TIM3_VS_ClockSourceINT
 board=NUCLEO-F401RE
 boardIOC=true
+isbadioc=false

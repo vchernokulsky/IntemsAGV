@@ -54,6 +54,7 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPRequestBuilder.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/PacketFields.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPResponseParser.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h
 
 ../Inc/mainpp.h:
@@ -169,5 +170,7 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h:
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/PacketFields.h:
+
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPResponseParser.h:
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h:

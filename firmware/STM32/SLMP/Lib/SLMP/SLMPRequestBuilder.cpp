@@ -11,14 +11,17 @@ void buildRequest(SLMPPacket *packet, unsigned char *msg) {
 		packet->is_serial_no.putInDump(slider);
 		slider += 2;
 	}
-	if (packet->serial_no.exist) {
-		packet->serial_no.putInDump(slider);
-		slider += 2;
+
+	if (packet->is_serial_no.getValue() != 0x0050) {
+			packet->serial_no.putInDump(slider);
+			packet->serial_no.exist = true;
+			slider += 2;
+
+			packet->field_If_serial_no.putInDump(slider);
+			packet->field_If_serial_no.exist = true;
+			slider += 2;
 	}
-	if (packet->field_If_serial_no.exist) {
-		packet->field_If_serial_no.putInDump(slider);
-		slider += 2;
-	}
+
 	if (packet->request_dest_net_no.exist) {
 		packet->request_dest_net_no.putInDump(slider);
 		slider += 1;
@@ -35,10 +38,13 @@ void buildRequest(SLMPPacket *packet, unsigned char *msg) {
 		packet->request_reserved.putInDump(slider);
 		slider += 1;
 	}
-	if (packet->data_length.exist) {
-		packet->data_length.putInDump(slider);
-		slider += 2;
-	}
+
+	packet->data_length = Field<unsigned short, 2>(0xc + ((packet->value.exist) ? packet->value.getSize(): 0));
+	//packet->data_length.setValue(12 + ((packet->value.exist) ? packet->value.getSize(): 0));
+
+	packet->data_length.putInDump(slider);
+	slider += 2;
+
 	if (packet->monitoring_time.exist) {
 		packet->monitoring_time.putInDump(slider);
 		slider += 2;
@@ -63,10 +69,7 @@ void buildRequest(SLMPPacket *packet, unsigned char *msg) {
 		packet->no_of_device_points.putInDump(slider);
 		slider += 2;
 	}
-	if (packet->end_code.exist) {
-		packet->end_code.putInDump(slider);
-		slider += 2;
-	}
+
 	if (packet->value.exist) {
 		packet->value.putInDump(slider);
 		slider += 2;

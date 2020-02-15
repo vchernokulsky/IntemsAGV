@@ -517,6 +517,10 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
+    
+    
+    
+
   /* USER CODE BEGIN 5 */
 //	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
 //	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
@@ -585,6 +589,25 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
+}
+
+extern void malloc(size_t size);
+extern void free (void ptr);
+
+void *malloc(size_t size)
+{
+    void *result;
+
+    result = pvPortMalloc(size);
+
+return result;
+
+
+
+}
+
+void free (void* ptr){
+    vPortFree(ptr);
 }
 #endif /* USE_FULL_ASSERT */
 

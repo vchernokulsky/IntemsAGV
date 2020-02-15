@@ -16,6 +16,8 @@
 		 TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2,
 		 TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2);
 
+ void prepareSLMPRequest(void);
+
 #ifdef __cplusplus
 }
 #endif

@@ -2,6 +2,7 @@
 #include <string>
 #include "SocketClient.h"
 #include "SLMPRequestBuilder.h"
+#include "SLMPResponseParser.h"
 #include "SLMPPacket.h"
 
 UART_HandleTypeDef *huart;
@@ -10,6 +11,10 @@ UartHelper uart_helper;
 SocketClient socket_client;
 SLMPPacket packet;
 unsigned int msg_len = 0;
+
+extern void* malloc(size_t);
+extern void  free(void*);
+
 
 void StartSecondTask(void const * argument)
 {
@@ -28,22 +33,72 @@ void StartUARTTask(void const * argument)
 
 void StartSocketSendTask(void const * argument)
 {
-			unsigned char msg[msg_len];
-			buildRequest(&packet, msg);
+		unsigned char msg[msg_len];
+		buildRequest(&packet, msg);
 
-			const static uint16_t rbuflen = 128;
+			const static uint16_t rbuflen = 30;
+
 			uint8_t rbuf[rbuflen];
-			uint16_t Size = 5;
+			uint16_t Size = 30;
 			uint32_t* rdmaInd;
+			static SLMPPacket packet1;
 			  for(;;)
 			  {
-				  socket_client.socket_receive(rbuf, Size, rdmaInd);
-				  uart_helper.printf(rbuf);
 				  socket_client.socket_send(msg, msg_len);
+				  osDelay(1000);
+				  socket_client.socket_receive(rbuf, Size, rdmaInd);
+				  parseResponse(&packet1, rbuf);
+				  std::vector<unsigned char> v = packet1.value.getValue();
+				  char a = v[0];
+				  char b = v[1];
+				  //uart_helper.printf(rbuf);
 				  osDelay(100);
 			  }
 
 //	vTaskDelete( NULL );
+}
+
+void prepareSLMPRequest(void) {
+	packet = SLMPPacket();
+
+		  packet.is_serial_no = Field<unsigned short, 2>(0x0050);
+		  packet.is_serial_no.exist = true;
+
+		  packet.request_dest_net_no = Field<unsigned char, 1>(0x0);
+		  packet.request_dest_net_no.exist = true;
+
+		  packet.request_dest_station_no = Field<unsigned char, 1>(0xff);
+		  packet.request_dest_station_no.exist = true;
+
+		  packet.request_processor = Field<unsigned short, 2>(0x3ff);
+		  packet.request_processor.exist = true;
+
+		  packet.request_reserved = Field<unsigned char, 1>(0x0);
+		  packet.request_reserved.exist = true;
+
+		  packet.monitoring_time = Field<unsigned short, 2>(0x1);
+		  packet.monitoring_time.exist = true;
+
+		  packet.command = Field<unsigned short, 2>(0x0401);
+		  //packet.command = Field<unsigned short, 2>(0x1401);
+		  packet.command.exist = true;
+
+		  packet.subcommand = Field<unsigned short, 2>(0x0);
+		  packet.subcommand.exist = true;
+
+		  packet.head_device_no = Field<unsigned int, 3>(100);
+		  packet.head_device_no.exist = true;
+
+		  packet.device_code = Field<unsigned char, 1>(0xa8);
+		  packet.device_code.exist = true;
+
+		  packet.no_of_device_points = Field<unsigned short, 2>(0x2);
+		  packet.no_of_device_points.exist = true;
+
+//		  packet.value = ValueField({12, '\x00', 14, '\x00'});
+//		  packet.value.exist = true;
+
+		  msg_len = getMsgLen(&packet);
 }
 
 void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
@@ -59,49 +114,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  HAL_Delay(1000 * 2);
 	  socket_client.socket_connect();
 
-	  packet = SLMPPacket();
-
-	  packet.is_serial_no = Field<unsigned short, 2>(0x0050, true);
-	  packet.is_serial_no.exist = true;
-
-	  packet.request_dest_net_no = Field<unsigned char, 1>(0, true);
-	  packet.request_dest_net_no.exist = true;
-
-	  packet.request_dest_station_no = Field<unsigned char, 1>(0xff, true);
-	  packet.request_dest_station_no.exist = true;
-
-	  packet.request_processor = Field<unsigned short, 2>(0x3ff, true);
-	  packet.request_processor.exist = true;
-
-	  packet.request_reserved = Field<unsigned char, 1>(0x0, true);
-	  packet.request_reserved.exist = true;
-
-	  packet.data_length = Field<unsigned short, 2>(16, true);
-	  packet.data_length.exist = true;
-
-	  packet.monitoring_time = Field<unsigned short, 2>(1, true);
-	  packet.monitoring_time.exist = true;
-
-	  packet.command = Field<unsigned short, 2>(0x1401, true);
-	  packet.command.exist = true;
-
-	  packet.subcommand = Field<unsigned short, 2>(0, true);
-	  packet.subcommand.exist = true;
-
-	  packet.head_device_no = Field<unsigned int, 3>(100, true);
-	  packet.head_device_no.exist = true;
-
-	  packet.device_code = Field<unsigned char, 1>(0xa8, true);
-	  packet.device_code.exist = true;
-
-	  packet.no_of_device_points = Field<unsigned short, 2>(0x2, true);
-	  packet.no_of_device_points.exist = true;
-
-	  packet.value = ValueField({5, '\x00', 3, '\x00'});
-	  packet.value.exist = true;
-
-	  msg_len = getMsgLen(&packet);
-
+	  prepareSLMPRequest();
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
@@ -113,12 +126,30 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 //
 
 	  //****** UART Test ***************
-	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
-	  osThreadCreate(osThread(SecondTask), NULL);
+//	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
+//	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  //******* Socket Test *************
-	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 256);
+	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 2000);
 	  osThreadCreate(osThread(SocketSendTask), NULL);
-
 }
 
+void * operator new( size_t size )
+{
+    return pvPortMalloc( size );
+}
+
+void * operator new[]( size_t size )
+{
+    return pvPortMalloc(size);
+}
+
+void operator delete( void * ptr )
+{
+    vPortFree ( ptr );
+}
+
+void operator delete[]( void * ptr )
+{
+    vPortFree ( ptr );
+}

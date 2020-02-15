@@ -7,6 +7,6 @@
 
 #include "SLMPPacket.h"
 
-SLMPPacket parseResponse(unsigned char * msg);
+void parseResponse(SLMPPacket *packet, unsigned char * msg);
 
 #endif //SLMP_SLMPRESPONSEPARSER_H

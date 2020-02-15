@@ -66,7 +66,7 @@ all: SLMP.elf secondary-outputs
 
 # Tool invocations
 SLMP.elf: $(OBJS) $(USER_OBJS) /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld
-	arm-none-eabi-g++ -o "SLMP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld" -Wl,-Map="SLMP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "SLMP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLMP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
