@@ -12,10 +12,6 @@ PacketFields.h:57:8:ValueField& ValueField::operator=(ValueField&&)	16	static
 SLMPPacket.h:11:8:SLMPPacket& SLMPPacket::operator=(SLMPPacket&&)	16	static
 mainpp.cpp:71:6:void prepareSLMPRequest()	136	static
 mainpp.cpp:114:6:void setup(UART_HandleTypeDef*, SPI_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*, TIM_HandleTypeDef*)	104	static
-mainpp.cpp:147:8:void* operator new(size_t)	16	static
-mainpp.cpp:152:8:void* operator new [](size_t)	16	static
-mainpp.cpp:157:6:void operator delete(void*)	16	static
-mainpp.cpp:162:6:void operator delete [](void*)	16	static
 stl_vector.h:326:7:std::vector<_Tp, _Alloc>::vector(const std::vector<_Tp, _Alloc>&) [with _Tp = unsigned char; _Alloc = std::allocator<unsigned char>]	40	static
 stl_vector.h:433:7:std::vector<_Tp, _Alloc>::~vector() [with _Tp = unsigned char; _Alloc = std::allocator<unsigned char>]	24	static
 stl_vector.h:259:7:std::vector<_Tp, _Alloc>::vector() [with _Tp = unsigned char; _Alloc = std::allocator<unsigned char>]	16	static
@@ -93,6 +89,6 @@ new_allocator.h:99:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new
 stl_iterator.h:844:7:const _Iterator& __gnu_cxx::__normal_iterator<_Iterator, _Container>::base() const [with _Iterator = const unsigned char*; _Container = std::vector<unsigned char>]	16	static
 stl_algobase.h:420:5:_OI std::__copy_move_a2(_II, _II, _OI) [with bool _IsMove = false; _II = __gnu_cxx::__normal_iterator<const unsigned char*, std::vector<unsigned char> >; _OI = unsigned char*]	32	static
 new_allocator.h:129:7:__gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::max_size() const [with _Tp = unsigned char]	16	static
-mainpp.cpp:165:1:void __static_initialization_and_destruction_0(int, int)	16	static
-mainpp.cpp:165:1:cpp)	8	static
-mainpp.cpp:165:1:cpp)	8	static
+mainpp.cpp:145:1:void __static_initialization_and_destruction_0(int, int)	16	static
+mainpp.cpp:145:1:cpp)	8	static
+mainpp.cpp:145:1:cpp)	8	static

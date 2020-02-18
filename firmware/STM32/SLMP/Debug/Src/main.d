@@ -44,8 +44,7 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/display/LiquidCristal.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 
 ../Inc/main.h:
 
@@ -142,5 +141,3 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
-
-/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/display/LiquidCristal.h:

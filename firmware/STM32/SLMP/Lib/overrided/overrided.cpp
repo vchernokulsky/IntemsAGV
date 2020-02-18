@@ -25,3 +25,22 @@ std::string float_to_std_string(float number) {
 	 return std::to_string(ceil) + "." + std::string(front_fraction_zero_counter, '0') +  std::to_string(fraction_int);
 }
 
+void * operator new( size_t size )
+{
+    return pvPortMalloc( size );
+}
+
+void * operator new[]( size_t size )
+{
+    return pvPortMalloc(size);
+}
+
+void operator delete( void * ptr )
+{
+    vPortFree ( ptr );
+}
+
+void operator delete[]( void * ptr )
+{
+    vPortFree ( ptr );
+}

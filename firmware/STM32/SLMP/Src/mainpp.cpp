@@ -144,22 +144,22 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  osThreadCreate(osThread(SocketSendTask), NULL);
 }
 
-void * operator new( size_t size )
-{
-    return pvPortMalloc( size );
-}
-
-void * operator new[]( size_t size )
-{
-    return pvPortMalloc(size);
-}
-
-void operator delete( void * ptr )
-{
-    vPortFree ( ptr );
-}
-
-void operator delete[]( void * ptr )
-{
-    vPortFree ( ptr );
-}
+//void * operator new( size_t size )
+//{
+//    return pvPortMalloc( size );
+//}
+//
+//void * operator new[]( size_t size )
+//{
+//    return pvPortMalloc(size);
+//}
+//
+//void operator delete( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
+//
+//void operator delete[]( void * ptr )
+//{
+//    vPortFree ( ptr );
+//}
