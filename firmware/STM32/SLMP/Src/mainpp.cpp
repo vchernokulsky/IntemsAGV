@@ -4,6 +4,9 @@
 #include "SLMPRequestBuilder.h"
 #include "SLMPResponseParser.h"
 #include "SLMPPacket.h"
+#include "PacketFields.h"
+#include "LiquidCristal.h"
+#include "overrided.h"
 
 UART_HandleTypeDef *huart;
 SPI_HandleTypeDef *hspi;
@@ -11,9 +14,6 @@ UartHelper uart_helper;
 SocketClient socket_client;
 SLMPPacket packet;
 unsigned int msg_len = 0;
-
-extern void* malloc(size_t);
-extern void  free(void*);
 
 
 void StartSecondTask(void const * argument)
@@ -37,6 +37,7 @@ void StartSocketSendTask(void const * argument)
 		buildRequest(&packet, msg);
 
 			const static uint16_t rbuflen = 30;
+			static float a_before = 0;
 
 			uint8_t rbuf[rbuflen];
 			uint16_t Size = 30;
@@ -49,9 +50,18 @@ void StartSocketSendTask(void const * argument)
 				  socket_client.socket_receive(rbuf, Size, rdmaInd);
 				  parseResponse(&packet1, rbuf);
 				  std::vector<unsigned char> v = packet1.value.getValue();
-				  char a = v[0];
-				  char b = v[1];
-				  //uart_helper.printf(rbuf);
+
+				  Field<float, 4> res_val;
+
+				  unsigned char * begin = &packet1.value.getValue().front();
+				  res_val.getFromDump(begin);
+				  float a = res_val.getValue();
+
+				  if  (a != a_before) {
+					  a_before = a;
+					  clear();
+					  print(float_to_std_string(a).c_str());
+				  }
 				  osDelay(100);
 			  }
 
@@ -105,7 +115,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 		TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2,
 		TIM_HandleTypeDef *main_encoder_htim1, TIM_HandleTypeDef *main_encoder_htim2)
 {
-
+	LiquidCrystal(GPIOC, GPIO_PIN_0, GPIO_PIN_12, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_5);
 	  huart = main_huart;
 	  hspi = main_hspi1;
 	  uart_helper.init(huart);
@@ -130,7 +140,7 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 //	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  //******* Socket Test *************
-	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 2000);
+	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 2048);
 	  osThreadCreate(osThread(SocketSendTask), NULL);
 }
 

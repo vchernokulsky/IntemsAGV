@@ -14,6 +14,7 @@ RM := rm -rf
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
+-include Lib/overrided/subdir.mk
 -include Lib/ioLibrary_Driver/Internet/DNS/subdir.mk
 -include Lib/ioLibrary_Driver/Internet/DHCP/subdir.mk
 -include Lib/ioLibrary_Driver/Ethernet/W5500/subdir.mk
@@ -22,6 +23,7 @@ RM := rm -rf
 -include Lib/ioLibrary_Driver/Ethernet/W5100S/subdir.mk
 -include Lib/ioLibrary_Driver/Ethernet/W5100/subdir.mk
 -include Lib/ioLibrary_Driver/Ethernet/subdir.mk
+-include Lib/display/subdir.mk
 -include Lib/SLMP/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include subdir.mk
@@ -66,7 +68,7 @@ all: SLMP.elf secondary-outputs
 
 # Tool invocations
 SLMP.elf: $(OBJS) $(USER_OBJS) /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld
-	arm-none-eabi-g++ -o "SLMP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLMP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "SLMP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLMP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

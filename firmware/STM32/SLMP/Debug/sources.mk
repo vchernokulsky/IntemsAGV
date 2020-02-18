@@ -28,6 +28,7 @@ CPP_DEPS :=
 SUBDIRS := \
 Drivers/STM32F4xx_HAL_Driver/Src \
 Lib/SLMP \
+Lib/display \
 Lib/ioLibrary_Driver/Ethernet/W5100 \
 Lib/ioLibrary_Driver/Ethernet/W5100S \
 Lib/ioLibrary_Driver/Ethernet/W5200 \
@@ -36,6 +37,7 @@ Lib/ioLibrary_Driver/Ethernet/W5500 \
 Lib/ioLibrary_Driver/Ethernet \
 Lib/ioLibrary_Driver/Internet/DHCP \
 Lib/ioLibrary_Driver/Internet/DNS \
+Lib/overrided \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
