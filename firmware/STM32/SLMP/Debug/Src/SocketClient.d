@@ -50,7 +50,7 @@ Src/SocketClient.o: ../Src/SocketClient.cpp ../Inc/SocketClient.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Inc/W5500_chip.h
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/chips/W5500_chip.h
 
 ../Inc/SocketClient.h:
 
@@ -156,4 +156,4 @@ Src/SocketClient.o: ../Src/SocketClient.cpp ../Inc/SocketClient.h \
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-../Inc/W5500_chip.h:
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/chips/W5500_chip.h:

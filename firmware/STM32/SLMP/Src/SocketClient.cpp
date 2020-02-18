@@ -1,17 +1,17 @@
 #include "SocketClient.h"
 
-SPI_HandleTypeDef *W5500Chip::hspi;
+SPI_HandleTypeDef *CHIP::hspi;
 
 SocketClient::SocketClient() {}
 
 void SocketClient::init(SPI_HandleTypeDef *main_hspi1, UartHelper *main_uart_helper) {
 	uart_helper = main_uart_helper;
-	W5500Chip::hspi = main_hspi1;
+	CHIP::hspi = main_hspi1;
 	chip = new CHIP();
 
-	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_RESET);
+	 HAL_GPIO_WritePin(CHIP_RST_GPIO_Port, CHIP_RST_Pin, GPIO_PIN_RESET);
 	 HAL_Delay(100);
-	 HAL_GPIO_WritePin(W5500_RST_GPIO_Port, W5500_RST_Pin, GPIO_PIN_SET);
+	 HAL_GPIO_WritePin(CHIP_RST_GPIO_Port, CHIP_RST_Pin, GPIO_PIN_SET);
 	 HAL_Delay(100);
 
 	SocketClient::socket_init();

@@ -1,4 +1,5 @@
-Src/W5500_chip.o: ../Src/W5500_chip.cpp ../Inc/W5500_chip.h \
+Lib/chips/W5500_chip.o: ../Lib/chips/W5500_chip.cpp \
+ ../Lib/chips/W5500_chip.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/W5500/w5500.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
@@ -31,7 +32,7 @@ Src/W5500_chip.o: ../Src/W5500_chip.cpp ../Inc/W5500_chip.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 
-../Inc/W5500_chip.h:
+../Lib/chips/W5500_chip.h:
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h:
 

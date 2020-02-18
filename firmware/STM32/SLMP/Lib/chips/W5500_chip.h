@@ -3,11 +3,11 @@
 #include "wizchip_conf.h"
 #include "stm32f4xx_hal.h"
 
-#define W5500_CS_Pin GPIO_PIN_2
-#define W5500_CS_GPIO_Port GPIOB
+#define CHIP_CS_Pin GPIO_PIN_2
+#define CHIP_CS_GPIO_Port GPIOB
 
-#define W5500_RST_Pin GPIO_PIN_6
-#define W5500_RST_GPIO_Port GPIOB
+#define CHIP_RST_Pin GPIO_PIN_6
+#define CHIP_RST_GPIO_Port GPIOB
 
 class W5500Chip {
 public:

@@ -28,6 +28,7 @@ CPP_DEPS :=
 SUBDIRS := \
 Drivers/STM32F4xx_HAL_Driver/Src \
 Lib/SLMP \
+Lib/chips \
 Lib/display \
 Lib/ioLibrary_Driver/Ethernet/W5100 \
 Lib/ioLibrary_Driver/Ethernet/W5100S \

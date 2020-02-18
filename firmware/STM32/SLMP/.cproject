@@ -63,6 +63,7 @@
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/overrided}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/display}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/chips}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1602502449" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -84,6 +85,7 @@
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/overrided}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/display}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SLMP/Lib/chips}&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols.1681423731" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
@@ -121,6 +123,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Lib/SLMP"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Lib/chips"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Lib/display"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Lib/ioLibrary_Driver/Ethernet"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Lib/ioLibrary_Driver/Internet/DHCP"/>

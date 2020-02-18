@@ -18,11 +18,11 @@ void W5500Chip::initChip(void) {
 }
 
 void W5500Chip::W5500_Select(void) {
-    HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(CHIP_CS_GPIO_Port, CHIP_CS_Pin, GPIO_PIN_RESET);
 }
 
 void W5500Chip::W5500_Unselect(void) {
-    HAL_GPIO_WritePin(W5500_CS_GPIO_Port, W5500_CS_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(CHIP_CS_GPIO_Port, CHIP_CS_Pin, GPIO_PIN_SET);
 }
 
 void W5500Chip::W5500_ReadBuff(uint8_t* buff, uint16_t len) {
