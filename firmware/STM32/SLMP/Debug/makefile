@@ -14,6 +14,8 @@ RM := rm -rf
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
+-include Lib/udpClient/subdir.mk
+-include Lib/uart_helper/subdir.mk
 -include Lib/overrided/subdir.mk
 -include Lib/ioLibrary_Driver/Internet/DNS/subdir.mk
 -include Lib/ioLibrary_Driver/Internet/DHCP/subdir.mk

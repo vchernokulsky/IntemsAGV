@@ -526,18 +526,6 @@ void  free(void* ptr) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
-//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-//	__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_2, 128);
-//	HAL_TIM_PWM_Start(htim, CHANNEL_REV1);
-//	if (speed > 0){
-//		__HAL_TIM_SetCompare(htim, CHANNEL1, speed);
-//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, 0);
-//	} else {
-//		__HAL_TIM_SetCompare(htim, CHANNEL1, 0);
-//		__HAL_TIM_SetCompare(htim, CHANNEL_REV1, speed * (-1));
-//	}
   /* Infinite loop */
   for(;;)
   {

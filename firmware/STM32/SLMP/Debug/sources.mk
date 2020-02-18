@@ -39,6 +39,8 @@ Lib/ioLibrary_Driver/Ethernet \
 Lib/ioLibrary_Driver/Internet/DHCP \
 Lib/ioLibrary_Driver/Internet/DNS \
 Lib/overrided \
+Lib/uart_helper \
+Lib/udpClient \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \

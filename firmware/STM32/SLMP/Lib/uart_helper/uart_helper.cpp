@@ -6,7 +6,7 @@
  */
 
 #include <stdlib.h>
-#include "UartHelper.h"
+#include "uart_helper.h"
 
 UartHelper::UartHelper() {
 	// TODO Auto-generated constructor stub

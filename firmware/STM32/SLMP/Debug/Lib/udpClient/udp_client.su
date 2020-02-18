@@ -1,0 +1,10 @@
+udp_client.cpp:5:1:SocketClient::SocketClient()	16	static
+udp_client.cpp:7:6:void SocketClient::init(SPI_HandleTypeDef*, UartHelper*)	32	static
+udp_client.cpp:21:1:SocketClient::~SocketClient()	16	static
+udp_client.cpp:21:1:virtual SocketClient::~SocketClient()	16	static
+udp_client.cpp:25:6:void SocketClient::socket_connect()	24	static
+udp_client.cpp:37:6:void SocketClient::socket_send(uint8_t*, uint16_t)	40	static
+udp_client.cpp:55:6:void SocketClient::socket_send(const char*, uint16_t)	40	static
+udp_client.cpp:72:6:void SocketClient::socket_receive(uint8_t*, uint16_t, uint32_t*)	40	static
+udp_client.cpp:96:6:void SocketClient::socket_close()	16	static
+udp_client.cpp:101:6:void SocketClient::socket_init()	24	static

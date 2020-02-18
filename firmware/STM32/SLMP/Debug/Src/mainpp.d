@@ -45,12 +45,12 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Inc/SocketClient.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/udpClient/udp_client.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/socket.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/W5500/w5500.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h \
- ../Inc/UartHelper.h \
+ /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/uart_helper/uart_helper.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/chips/W5500_chip.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPRequestBuilder.h \
  /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/SLMP/SLMPPacket.h \
@@ -155,7 +155,7 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-../Inc/SocketClient.h:
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/udpClient/udp_client.h:
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/socket.h:
 
@@ -165,7 +165,7 @@ Src/mainpp.o: ../Src/mainpp.cpp ../Inc/mainpp.h \
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/ioLibrary_Driver/Ethernet/wizchip_conf.h:
 
-../Inc/UartHelper.h:
+/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/uart_helper/uart_helper.h:
 
 /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/Lib/chips/W5500_chip.h:
 

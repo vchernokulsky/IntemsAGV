@@ -12,7 +12,7 @@
 #include <string.h>
 
 #include "socket.h"
-#include "UartHelper.h"
+#include "uart_helper.h"
 #include "W5500_chip.h"
 
 #define CHIP W5500Chip

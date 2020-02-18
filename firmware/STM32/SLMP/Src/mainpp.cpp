@@ -1,6 +1,6 @@
 #include <mainpp.h>
 #include <string>
-#include "SocketClient.h"
+#include "udp_client.h"
 #include "SLMPRequestBuilder.h"
 #include "SLMPResponseParser.h"
 #include "SLMPPacket.h"
@@ -14,16 +14,6 @@ UartHelper uart_helper;
 SocketClient socket_client;
 SLMPPacket packet;
 unsigned int msg_len = 0;
-
-
-void StartSecondTask(void const * argument)
-{
-  for(;;)
-  {
-	  uart_helper.printf("!!!!!!!!!!!!!!!!\n\0");
-	  osDelay(500);
-  }
-}
 
 
 void StartUARTTask(void const * argument)
@@ -128,38 +118,8 @@ void setup(UART_HandleTypeDef *main_huart, SPI_HandleTypeDef *main_hspi1,
 	  //****** UART **********
 	  osThreadDef(UartTask, StartUARTTask, osPriorityNormal, 1, 256);
 	  osThreadCreate(osThread(UartTask), NULL);
-//	  //****** Socket **********
-//	  osThreadDef(SocketTask, StartSocketTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(SocketTask), NULL);
-
-	  //========== ROS ===============
-//
-
-	  //****** UART Test ***************
-//	  osThreadDef(SecondTask, StartSecondTask, osPriorityNormal, 1, 256);
-//	  osThreadCreate(osThread(SecondTask), NULL);
 
 	  //******* Socket Test *************
 	  osThreadDef(SocketSendTask, StartSocketSendTask, osPriorityNormal, 1, 2048);
 	  osThreadCreate(osThread(SocketSendTask), NULL);
 }
-
-//void * operator new( size_t size )
-//{
-//    return pvPortMalloc( size );
-//}
-//
-//void * operator new[]( size_t size )
-//{
-//    return pvPortMalloc(size);
-//}
-//
-//void operator delete( void * ptr )
-//{
-//    vPortFree ( ptr );
-//}
-//
-//void operator delete[]( void * ptr )
-//{
-//    vPortFree ( ptr );
-//}
