@@ -86,7 +86,8 @@ public:
 
 	float get_speed(){
 		// speed in %
-		return cur_speed / MAX_LIN_SPEED;
+//		return cur_speed / MAX_LIN_SPEED;
+		return cur_speed;
 	}
 
 	float get_tick_per_sek(){

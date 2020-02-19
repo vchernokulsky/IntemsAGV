@@ -7,19 +7,23 @@
 #include "tf/tf.h"
 #include "tf/transform_broadcaster.h"
 #include "geometry_msgs/TransformStamped.h"
+#include "geometry_msgs/PoseWithCovarianceStamped.h"
 
 #include "WheelPublisher.h"
 
 #define PI 3.14
 
+
 class OdometryPublisher
 {
 private:
+	SemaphoreHandle_t pose_set;
 	ros::NodeHandle* nh;
 	nav_msgs::Odometry odom;
 	ros::Publisher pub;
 	tf::TransformBroadcaster tf_broadcaster;
 	geometry_msgs::TransformStamped transform;
+	ros::Subscriber<geometry_msgs::PoseWithCovarianceStamped,OdometryPublisher> sub;
 
 
 	WheelPublisher *encoder1 = nullptr;
@@ -31,13 +35,15 @@ private:
 	float theta;
 
 public:
-	OdometryPublisher():pub(ODOMETRY_TOPIC,&odom){
-
+	OdometryPublisher():pub(ODOMETRY_TOPIC,&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
+//		OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
 	}
 
-	OdometryPublisher(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel):pub(ODOMETRY_TOPIC,&odom){
+	OdometryPublisher(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel):pub(ODOMETRY_TOPIC,&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
+//		OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
 		nh = n;
-		(*nh).advertise(pub);
+		nh->advertise(pub);
+		nh->subscribe(sub);
 
 		encoder1 = leftWheel;
 		encoder2 = rightWheel;
@@ -57,8 +63,10 @@ public:
 	}
 
 	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel){
+		    OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
 			nh = n;
 			(*nh).advertise(pub);
+			nh->subscribe(sub);
 
 			encoder1 = leftWheel;
 			encoder2 = rightWheel;
@@ -80,6 +88,8 @@ public:
 
 
 	void set_pose(){
+		if( xSemaphoreTake( pose_set, portMAX_DELAY) == pdTRUE )
+		{
 
 		float left_travel = encoder1->get_distance() * RADIUS;
 		float right_travel = encoder2->get_distance() * RADIUS;
@@ -150,7 +160,8 @@ public:
 		 odom.twist.twist.linear.x = x_vel;
 		 odom.twist.twist.angular.z = theta_vel;
 
-
+		 xSemaphoreGive( pose_set );
+		}
 
 	}
 
@@ -162,6 +173,25 @@ public:
 
 	}
 
+	void on_initial_pose(const geometry_msgs::PoseWithCovarianceStamped& msg)
+	{
+		if( xSemaphoreTake( pose_set, portMAX_DELAY) == pdTRUE )
+		{
+	    // yaw (z-axis rotation)
+	    double siny_cosp = 2 * (msg.pose.pose.orientation.w * msg.pose.pose.orientation.z + msg.pose.pose.orientation.x * msg.pose.pose.orientation.y);
+	    double cosy_cosp = 1 - 2 * (msg.pose.pose.orientation.y * msg.pose.pose.orientation.y + msg.pose.pose.orientation.z * msg.pose.pose.orientation.z);
+	    theta = std::atan2(siny_cosp, cosy_cosp);
+	    odom.pose.pose.position.x = msg.pose.pose.position.x;
+	    odom.pose.pose.position.x = msg.pose.pose.position.y;
+
+	    xSemaphoreGive( pose_set );
+		}
+	}
+
 
 
 };
+
+
+
+
