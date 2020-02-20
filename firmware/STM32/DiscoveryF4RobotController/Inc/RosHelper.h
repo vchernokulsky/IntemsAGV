@@ -11,6 +11,7 @@
 #include <ros.h>
 #include "System_config.h"
 #include <std_msgs/String.h>
+#include <std_msgs/Int16.h>
 #include "WheelSubscriber.h"
 #include "WheelPublisher.h"
 #include "CmdVelSubscriber.h"
@@ -24,7 +25,9 @@ class RosHelper {
 private:
 	ros::NodeHandle nh;
 	std_msgs::String str_msg;
+	std_msgs::Int16 cur_speed_msg;
 	ros::Publisher chatter;
+	ros::Publisher speed_pub;
 	WheelSubscriber wheel;
 	WheelSubscriber wheel2;
 	WheelPublisher encoder;

@@ -1,5 +1,7 @@
 #pragma once
 
+#define PID_SETUP false
+
 /********************WIZNET************************/
 #define WIZNET_MAC_ADRESS {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef}
 #define WIZNET_IP_ADRESS {192, 168, 2, 114}
@@ -23,16 +25,21 @@
 #define CMDVEL_TIMEOUT 5000
 #define CMDVEL_TIMEOUT_DELAY 100
 
+#define KP_DEFAULT 1.0
+#define KI_DEAFAULT 0.0
+#define KD_DEFAULT 0.0
+
+#define MAX_PWD 255
 #define MAX_PWD_ALLOWED 255
 
 #define PWD_STEP_L 10
-#define SPEED_DELTA_L 0.3
+#define SPEED_DELTA_L 40
 
 #define PWD_STEP_M 5
-#define SPEED_DELTA_M 0.1
+#define SPEED_DELTA_M 13
 
 #define PWD_STEP_S 1
-#define SPEED_DELTA_S 0.02
+#define SPEED_DELTA_S 2
 /************************************************/
 
 /***************ROBOT***************************/

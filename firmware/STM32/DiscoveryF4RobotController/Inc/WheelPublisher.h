@@ -8,6 +8,7 @@
 class WheelPublisher
 {
 private:
+	SemaphoreHandle_t semaphore;
 	TIM_HandleTypeDef *encoder_htim = nullptr;
 
 	uint16_t prev_tick;
@@ -47,9 +48,10 @@ public:
 	}
 
 	void init(TIM_HandleTypeDef *htim){
+		WheelPublisher::semaphore = xSemaphoreCreateMutex();
 
 		prev_tick = 0;
-		cur_tick = 0;
+
 		delta_tick = 0;
 
 		prev_time = 0;
@@ -62,6 +64,8 @@ public:
 
 		encoder_htim = htim;
 		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
+		cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
+		prev_tick = cur_tick;
 	}
 
 	void tick_calculate(){
@@ -72,22 +76,39 @@ public:
 				delta_tick = cur_tick - prev_tick;
 				distance_tick += delta_tick;
 				tick_per_sek = ((float)delta_tick / 4.0)  /  ((float)delta_time / 1000.0);
-				cur_speed = ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+				if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
+					{
+					cur_speed = ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+						xSemaphoreGive( semaphore );
+					}
+
 			} else {
 				delta_tick = prev_tick - cur_tick;
 				distance_tick -= delta_tick;
 				tick_per_sek = (-1) * ((float)delta_tick / 4.0)   /  ((float)delta_time / 1000.0);
-				cur_speed = (-1) * ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+				if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
+					{
+					cur_speed = (-1) * ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+						xSemaphoreGive( semaphore );
+					}
+
 			}
 			prev_tick = cur_tick;
 			prev_time = cur_time;
 	}
 
 
-	float get_speed(){
+	int16_t get_speed(){
 		// speed in %
 //		return cur_speed / MAX_LIN_SPEED;
-		return cur_speed;
+		int16_t ret = 0;
+		if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
+		{
+			ret = std::round(cur_speed / MAX_LIN_SPEED * MAX_PWD);
+			xSemaphoreGive( semaphore );
+		}
+		return ret;
+//		return cur_speed;
 	}
 
 	float get_tick_per_sek(){

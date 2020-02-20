@@ -9,7 +9,7 @@
 
 static const char test_string[] = "Hello world";
 
-RosHelper::RosHelper():chatter("chatter",&str_msg),wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
+RosHelper::RosHelper():chatter("chatter",&str_msg), speed_pub("wheel_cur_speed", &cur_speed_msg), wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
 	// TODO Auto-generated constructor stub
 
 }
@@ -23,6 +23,7 @@ void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_
 {
 	nh.initNode();
 	nh.advertise(chatter);
+	nh.advertise(speed_pub);
 
 	//===Right wheel===
 	wheel.set_pins(GPIO_REN1, PIN_REN1, GPIO_LEN1, PIN_LEN1);
@@ -71,7 +72,12 @@ void RosHelper::setSpeedTask(void)
 {
 	for(;;)
 	{
-		wheel.set_speed(encoder.get_speed());
+	    cur_speed_msg.data = encoder.get_speed();
+		 if (PID_SETUP)
+		 {
+			speed_pub.publish(&cur_speed_msg);
+		}
+		wheel.set_speed(cur_speed_msg.data);
 		osDelay(SET_SPEED_DELAY);
 	}
 }

@@ -182,7 +182,7 @@ public:
 	    double cosy_cosp = 1 - 2 * (msg.pose.pose.orientation.y * msg.pose.pose.orientation.y + msg.pose.pose.orientation.z * msg.pose.pose.orientation.z);
 	    theta = std::atan2(siny_cosp, cosy_cosp);
 	    odom.pose.pose.position.x = msg.pose.pose.position.x;
-	    odom.pose.pose.position.x = msg.pose.pose.position.y;
+	    odom.pose.pose.position.y = msg.pose.pose.position.y;
 
 	    xSemaphoreGive( pose_set );
 		}
