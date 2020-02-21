@@ -1,0 +1,9 @@
+max_lin_vel: 1.9
+max_ang_vel: 1.9
+
+lin_step: 0.05
+ang_step: 0.05
+
+cmd_vel_pub_rate: 5.0
+cmd_vel_pub_timeout: 600.0
+cmd_vel_pub_need_log_info: True

@@ -1,0 +1,5 @@
+<launch>
+    <node name="mono_odometer" pkg="viso2_ros" type="mono_odometer">
+        <remap from="image" to="/usb_cam/image_rect"/>       
+    </node>
+</launch>

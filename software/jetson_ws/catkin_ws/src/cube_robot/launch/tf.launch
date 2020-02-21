@@ -1,0 +1,26 @@
+<launch>
+  <node pkg="cube_robot" type="tf_pub.py" name="left_wheel"  output="screen">
+  	<param name="x_coord" value="0.0" />
+        <param name="y_coord" value="0.22" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="left_wheel" />
+ </node>
+<node pkg="cube_robot" type="tf_pub.py" name="right_wheel"  output="screen">
+  	<param name="x_coord" value="0.0" />
+        <param name="y_coord" value="-0.22" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="right_wheel" />
+ </node>
+ <node pkg="cube_robot" type="tf_pub.py" name="head_camera"  output="screen">
+  	<param name="x_coord" value="0.225" />
+        <param name="y_coord" value="-0.22" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="camera" />
+ </node>
+<!--  <node pkg="cube_robot" type="tf_pub.py" name="laser"  output="screen">
+  	<param name="x_coord" value="0.09" />
+        <param name="y_coord" value="0.0" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="laser" />
+ </node> -->
+</launch>

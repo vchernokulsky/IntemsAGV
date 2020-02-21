@@ -1,0 +1,11 @@
+<launch>
+  <node pkg="cube_robot_teleop" type="cube_robot_teleop_key" name="cube_robot_teleop"  output="screen">
+    <rosparam file="$(find cube_robot_teleop)/config/teleop_params.yaml"/>
+
+  </node>
+  <node pkg="cube_robot_teleop" type="cmd_vel_pub.py" name="cmd_vel_publisher"  output="screen">
+    <rosparam file="$(find cube_robot_teleop)/config/teleop_params.yaml"/>
+    <rosparam param="cmd_vel_pub_need_log_info">False</rosparam>
+   <!-- <remap from="/cmd_vel" to="/mobile_base_controller/cmd_vel"/> -->
+  </node>
+</launch>

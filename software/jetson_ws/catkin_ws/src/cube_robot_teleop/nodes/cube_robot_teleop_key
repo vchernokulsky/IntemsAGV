@@ -1,0 +1,159 @@
+#!/usr/bin/env python
+
+import os
+import rospy
+import select
+import sys
+from std_msgs.msg import Float32
+
+if os.name == 'nt':
+    import msvcrt
+else:
+    import tty
+    import termios
+
+
+def get_key():
+    if os.name == 'nt':
+        return msvcrt.getch()
+
+    tty.setraw(sys.stdin.fileno())
+    rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+    if rlist:
+        c = sys.stdin.read(1)
+    else:
+        c = ''
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    return c
+
+
+def constrain(value, low, high):
+    if value < low:
+        value = low
+    elif value > high:
+        value = high
+    return value
+
+
+class KeyNode:
+    def __init__(self):
+        self.maxLinVel = 0
+        self.maxAngVel = 0
+        self.linStep = 0
+        self.angStep = 0
+        self.name = ''
+
+        self.linearVelocity = 0.0
+        self.angularVelocity = 0.0
+        self.status = 0
+        self.working = True
+
+        self.linPub = rospy.Publisher("lin_vel", Float32, queue_size=1)
+        self.angPub = rospy.Publisher("ang_vel", Float32, queue_size=1)
+
+        self.msg = """
+        Moving around:
+                w
+           a    s    d
+                x
+
+        w/x : increase/decrease linear velocity
+        a/d : increase/decrease angular velocity
+
+        space key, s : force stop
+
+        CTRL-C to quit
+        """
+
+    def main(self):
+        rospy.init_node('cube_robot_teleop')
+        self.name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.name))
+
+        self.maxLinVel = float(rospy.get_param('~max_lin_vel', 3.82))
+        self.maxAngVel = float(rospy.get_param('~max_ang_vel', 3.82))
+        self.linStep = float(rospy.get_param('~lin_step', 0.1))
+        self.angStep = float(rospy.get_param('~ang_step', 0.1))
+
+        try:
+            rospy.loginfo(self.msg)
+            while self.working and not rospy.is_shutdown():
+                lin, ang = self.get_velocities()
+                is_ang_pub = self.publish_angular(ang)
+                is_lin_pub = self.publish_linear(lin)
+                self.show_info(is_ang_pub or is_lin_pub)
+        except Exception as ex:
+            print(ex)
+        finally:
+            self.angPub.publish(0.0)
+            self.linPub.publish(0.0)
+
+        if os.name != 'nt':
+            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+
+    def get_velocities(self):
+        target_linear_vel = self.linearVelocity
+        target_angular_vel = self.angularVelocity
+        key = get_key()
+        if key == 'w':
+            target_linear_vel = self.check_linear_limit_velocity(target_linear_vel + self.linStep)
+            self.status += 1
+        elif key == 'x':
+            target_linear_vel = self.check_linear_limit_velocity(target_linear_vel - self.linStep)
+            self.status += 1
+        elif key == 'a':
+            target_angular_vel = self.check_angular_limit_velocity(target_angular_vel + self.angStep)
+            self.status += 1
+        elif key == 'd':
+            target_angular_vel = self.check_angular_limit_velocity(target_angular_vel - self.angStep)
+            self.status += 1
+        elif key == ' ' or key == 's':
+            target_angular_vel = 0
+            target_linear_vel = 0
+        else:
+            if key == '\x03':
+                self.working = False
+        return target_linear_vel, target_angular_vel
+
+    def publish_angular(self, target_angular_vel):
+        is_published = False
+        if target_angular_vel != self.angularVelocity:
+            self.angularVelocity = target_angular_vel
+            self.angPub.publish(self.angularVelocity)
+            is_published = True
+        return is_published
+
+    def publish_linear(self, target_linear_vel):
+        is_published = False
+        if target_linear_vel != self.linearVelocity:
+            self.linearVelocity = target_linear_vel
+            self.linPub.publish(self.linearVelocity)
+            is_published = True
+        return is_published
+
+    def check_linear_limit_velocity(self, vel):
+        return constrain(vel, -self.maxLinVel, self.maxLinVel)
+
+    def check_angular_limit_velocity(self, vel):
+        return constrain(vel, -self.maxAngVel, self.maxAngVel)
+
+    def show_info(self, show_vel):
+        if show_vel:
+            rospy.loginfo(self.twist_msg())
+        if self.status == 20:
+            rospy.loginfo(self.msg)
+            self.status = 0
+
+    def twist_msg(self):
+        return "Twist:\tlinear vel %s\t angular vel %s " % (self.linearVelocity, self.angularVelocity)
+
+
+if __name__ == '__main__':
+    if os.name != 'nt':
+        settings = termios.tcgetattr(sys.stdin)
+    try:
+        node = KeyNode()
+        node.main()
+    except rospy.ROSInterruptException:
+        pass
+

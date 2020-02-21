@@ -1,0 +1,39 @@
+<launch>
+    <node pkg="cube_robot" type="cmd_vel_sub.py" name="cmd_vel_sub"  output="screen"/>
+<!--    <node pkg="cube_robot" type="odom_pub.py" name="odometry_publisher"  output="screen"/> -->
+
+    <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+        <param name="serial_port"         type="string" value="/dev/rplidar"/>
+        <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
+        <param name="frame_id"            type="string" value="laser"/>
+        <param name="inverted"            type="bool"   value="false"/>
+        <param name="angle_compensate"    type="bool"   value="true"/>
+    </node>
+  <!-- <include file="$(find gscam)/examples/jetson_cam.launch"/> -->
+
+    <node pkg="cube_robot" type="tf_pub.py" name="left_wheel"  output="screen">
+        <param name="x_coord" value="1.0" />
+        <param name="y_coord" value="2.0" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="left_wheel" />
+    </node>
+    <node pkg="cube_robot" type="tf_pub.py" name="right_wheel"  output="screen">
+        <param name="x_coord" value="1.0" />
+        <param name="y_coord" value="2.0" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="right_wheel" />
+    </node>
+    <node pkg="cube_robot" type="tf_pub.py" name="camera"  output="screen">
+        <param name="x_coord" value="1.0" />
+        <param name="y_coord" value="2.0" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="camera" />
+    </node>
+    <node pkg="cube_robot" type="tf_pub.py" name="lidar"  output="screen">
+        <param name="x_coord" value="1.0" />
+        <param name="y_coord" value="2.0" />
+        <param name="t_coord" value="0.0" />
+        <param name="tf_to" value="lidar" />
+    </node>
+
+</launch>
