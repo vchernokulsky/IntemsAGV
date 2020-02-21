@@ -84,7 +84,11 @@ class STM32Hardware {
     	socket_client.socket_send(data, length);
     }
 
-    unsigned long time(){ return HAL_GetTick();; }
+    unsigned long time()
+    {
+//    	return HAL_GetTick();
+    	return osKernelSysTick();
+    }
 
   protected:
 };

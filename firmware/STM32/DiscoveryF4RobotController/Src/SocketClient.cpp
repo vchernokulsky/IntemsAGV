@@ -178,7 +178,7 @@ uint8_t SocketClient::check_errno()
 //		osDelay(50);
 		return WARNING_STATUS;
 	}
-	if(errno == ECONNRESET)
+	if(errno == ECONNRESET || errno == EHOSTUNREACH)
 	{
 		return ERROR_STATUS;
 	}

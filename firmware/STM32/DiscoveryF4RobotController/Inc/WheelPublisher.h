@@ -22,7 +22,7 @@ private:
 
 	float cur_speed; // Speed in m/s
 	float tick_per_sek;
-	int32_t distance_tick;
+	int64_t distance_tick;
 
 public:
 	WheelPublisher(){
