@@ -55,8 +55,18 @@ void RosHelper::rosLoop(void)
 {
 	str_msg.data = test_string;
 //	chatter.publish(&str_msg);
-	odom.publish();
-	nh.spinOnce();
+	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
+	{
+		if (SocketClient::is_connected)
+		{
+			xSemaphoreGive( SocketClient::error_semaphore );
+			odom.publish();
+			nh.spinOnce();
+		}else {
+			xSemaphoreGive( SocketClient::error_semaphore );
+		}
+	}
+
 	osDelay(ROS_SPINONCE_DELAY);
 }
 

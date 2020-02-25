@@ -75,6 +75,7 @@ SocketClient::~SocketClient() {
 
 void SocketClient::socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd)
 {
+	osDelay(10);
 	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 	{
 		recv_data = (SocketClient::is_connected) ? recv(sock, pData, size, 0) : 0;
@@ -121,16 +122,18 @@ void SocketClient::SocketClientTask()
 		if (sock >= 0)
 		{
 			err_count = 0;
-			osDelay(100);
+			osDelay(10);
 			if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 			{
 				lwip_fcntl(sock, F_SETFL, (lwip_fcntl(sock, F_GETFL, 0)| O_NONBLOCK));
+				osDelay(10);
 				connect(sock, (struct sockaddr *)&remotehost,sizeof(struct sockaddr_in));
-				osDelay(500);
+				osDelay(400);
 				xSemaphoreGive( SocketClient::error_semaphore );
 			}
 			if (check_errno() == OK_STATUS)
 			{
+				osDelay(500);
 				if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 				{
 					SocketClient::is_connected = true;
@@ -147,7 +150,7 @@ void SocketClient::SocketClientTask()
 						}
 						break;
 					}
-					osDelay(100);
+					osDelay(10);
 				}
 			}
 			if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
@@ -185,6 +188,24 @@ uint8_t SocketClient::check_errno()
 	return UNKNOWN_STATUS;
 }
 
+//uint8_t SocketClient::check_errno(int bytes)
+//{
+//
+//	if(bytes>=0 || errno == EINPROGRESS || errno == 0)
+//	{
+//		return OK_STATUS;
+//	}
+//	if(errno == EAGAIN)
+//	{
+////		osDelay(50);
+//		return WARNING_STATUS;
+//	}
+//	if(bytes<0 || errno == ECONNRESET || errno == EHOSTUNREACH)
+//	{
+//		return ERROR_STATUS;
+//	}
+//	return UNKNOWN_STATUS;
+//}
 
 
 
