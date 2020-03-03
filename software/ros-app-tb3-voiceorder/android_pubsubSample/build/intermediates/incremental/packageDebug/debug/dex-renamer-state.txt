@@ -1,0 +1,4 @@
+#Wed Feb 26 14:05:36 MSK 2020
+base.0=/home/developer/projects/IntemsAGV/software/ros-app-tb3-voiceorder/android_pubsubSample/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex

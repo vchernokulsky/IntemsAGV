@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Thu Feb 27 15:50:39 MSK 2020
+0.baseType=DIRECTORY
+0.base=/home/developer/projects/IntemsAGV/software/ros-app-tb3-voiceorder/android_controllerSample/build/intermediates/transforms/dexMerger/debug/0
+0.path=classes.dex
+0.set=DEX
+count=1

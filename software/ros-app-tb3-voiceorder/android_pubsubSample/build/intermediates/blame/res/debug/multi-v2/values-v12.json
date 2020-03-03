@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/developer/projects/IntemsAGV/software/ros-app-tb3-voiceorder/android_pubsubSample/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v12/values-v12.xml",
+            "map": [
+                {
+                    "source": "/home/developer/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.1.0.aar/ef9f2f677287bb2f412aa96f715c21fc/res/values-v12/values-v12.xml",
+                    "from": {
+                        "startLines": "2,5,8,9",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,279,479,598",
+                        "endLines": "4,7,8,9",
+                        "endColumns": "12,12,118,94",
+                        "endOffsets": "274,474,593,688"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/home/hyunoklee/app/ros-app-tb3-voiceorder/android_pubsubSample/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v12/values-v12.xml",
+            "map": [
+                {
+                    "source": "/home/hyunoklee/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.1.0.aar/1422bf390ffc11fd1dcf912aaf11c292/res/values-v12/values-v12.xml",
+                    "from": {
+                        "startLines": "2,5,8,9",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,279,479,598",
+                        "endLines": "4,7,8,9",
+                        "endColumns": "12,12,118,94",
+                        "endOffsets": "274,474,593,688"
+                    }
+                }
+            ]
+        }
+    ]
+}
