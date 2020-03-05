@@ -4,9 +4,7 @@
 #include "SocketServer.h"
 #include "RosHelper.h"
 #include "System_config.h"
-
-
-
+#include "SetUpHelper.h"
 
 
 
@@ -24,6 +22,7 @@ void StartCmdvelTimeoutRask(void *arg);
 
 SocketClient socket_client;
 RosHelper ros_helper;
+SetUpHelper settings;
 
 /***** CALL IN 'USER CODE BEGIN(END) 1' *****/
 void memory_setup()
@@ -38,12 +37,22 @@ void memory_setup()
 }
 /********************************************/
 
+
+
 /*************** CALL IN 'USER CODE BEGIN(END) 5' *************
  *
  * replace MX_LWIP_Init() with LWIP_Init() from "lwip_init.h" in StartDefaultTask
  * to set ip configuration from "User_config.h"*
  *
+ * before LWIP_Init() call external_memory_init() to load settings from external memory
+ *
+ * after LWIP_Init() call threads_setup() to run ROS
  * */
+void external_memory_init(I2C_HandleTypeDef *main_hi2c1)
+{
+	settings.memory_init(main_hi2c1);
+}
+
 void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2)
 {
 
@@ -64,6 +73,14 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 
 }
 /***************************************************************************/
+
+
+uint8_t* get_local_ip_ptr()
+{
+	return settings.LOCAL_IP_ADDRESS;
+}
+
+
 
 void StartSocetClientTask(void *arg)
 {

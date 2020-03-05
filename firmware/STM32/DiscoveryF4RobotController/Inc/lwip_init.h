@@ -32,6 +32,7 @@
 #include "ethernetif.h"
 
 #include "User_config.h"
+#include "System_config.h"
 
 /* Includes for RTOS ---------------------------------------------------------*/
 #if WITH_RTOS
@@ -42,7 +43,7 @@
 extern ETH_HandleTypeDef heth;
 
 /* LWIP init function */	
-void LWIP_Init();
+void LWIP_Init(uint8_t *local_ip);
 
 
 

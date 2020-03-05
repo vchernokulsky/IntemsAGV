@@ -25,26 +25,27 @@
 #include "lwip_init.h"
 
 
-
 /* Variables Initialization */
 struct netif gnetif;
 ip4_addr_t ipaddr;
 ip4_addr_t netmask;
 ip4_addr_t gw;
-uint8_t IP_ADDRESS[4] = WIZNET_IP_ADRESS;
+uint8_t IP_ADDRESS[4] ;
 uint8_t NETMASK_ADDRESS[4] = WIZNET_MASK;
 uint8_t GATEWAY_ADDRESS[4] = WIZNET_GATEAWAY;
+
+
 
 
 /**
   * LwIP initialization function
   */
-void LWIP_Init()
+void LWIP_Init(uint8_t *local_ip)
 {
   
   /* Initilialize the LwIP stack with RTOS */
   tcpip_init( NULL, NULL );
-
+  memcpy(IP_ADDRESS, local_ip, IP_SIZE);
   /* IP addresses initialization without DHCP (IPv4) */
   IP4_ADDR(&ipaddr, IP_ADDRESS[0], IP_ADDRESS[1], IP_ADDRESS[2], IP_ADDRESS[3]);
   IP4_ADDR(&netmask, NETMASK_ADDRESS[0], NETMASK_ADDRESS[1] , NETMASK_ADDRESS[2], NETMASK_ADDRESS[3]);
