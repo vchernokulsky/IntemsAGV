@@ -16,11 +16,11 @@ class Wiznet extends StatefulWidget {
 class _Wiznet extends State<Wiznet> {
 
 
-  var macAddressController;
+  var ipAddressController;
 
 
   _Wiznet() {
-    macAddressController = TextEditingController();
+    ipAddressController = TextEditingController();
   }
 
   void initState() {
@@ -58,8 +58,8 @@ class _Wiznet extends State<Wiznet> {
   }
 
   void save(){
-    if(MacInput.isCorrect(macAddressController.text)){
-      SocketData.macAddress = macAddressController.text;
+    if(IpInput.isCorrect(ipAddressController.text)){
+      SocketData.localIpAddress = ipAddressController.text;
       showGoodToast("Data saved");
     } else {
       showBadToast("Can not save: wrong mac address");
@@ -68,11 +68,10 @@ class _Wiznet extends State<Wiznet> {
 
   @override
   Widget build(BuildContext context) {
-    macAddressController.text = SocketData.macAddress;
+    ipAddressController.text = SocketData.localIpAddress;
     return Column(
       children: <Widget>[
-        MacInput(title: "STM MAC address", controller: macAddressController),
-        IpInput(title: "STM IP address"),
+        IpInput(title: "STM IP address", controller: ipAddressController),
         NumericInput(
           title: "STM host",
           minValue: 0,
