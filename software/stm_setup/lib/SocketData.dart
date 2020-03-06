@@ -55,9 +55,10 @@ class SocketData extends ChangeNotifier{
 
   }
   void parseIntoVariables(Uint8List data){
+    data.forEach((i) => print("got $i")) ;
     String string = String.fromCharCodes(data.sublist(0,3));
     if (string == 'set') {
-      localIpAddress = IpInput.bytesToString(data.sublist(4,7));
+      localIpAddress = IpInput.bytesToString(data.sublist(4,8));
     }
   }
 

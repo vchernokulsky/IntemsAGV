@@ -14,20 +14,21 @@ class Wiznet extends StatefulWidget {
 }
 
 class _Wiznet extends State<Wiznet> {
-
-
   var ipAddressController;
-
+  var networkMaskController;
+  var gateAwayController;
 
   _Wiznet() {
     ipAddressController = TextEditingController();
+    networkMaskController = TextEditingController();
+    gateAwayController = TextEditingController();
   }
 
   void initState() {
     super.initState();
   }
 
-  void showGoodToast(String text){
+  void showGoodToast(String text) {
     Fluttertoast.showToast(
         msg: "$text",
         toastLength: Toast.LENGTH_SHORT,
@@ -35,11 +36,10 @@ class _Wiznet extends State<Wiznet> {
         timeInSecForIos: 1,
         backgroundColor: Colors.blueGrey,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 
-  void showBadToast(String text){
+  void showBadToast(String text) {
     Fluttertoast.showToast(
         msg: "$text",
         toastLength: Toast.LENGTH_SHORT,
@@ -47,8 +47,7 @@ class _Wiznet extends State<Wiznet> {
         timeInSecForIos: 1,
         backgroundColor: Colors.redAccent[700],
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 
   void reset() {
@@ -57,8 +56,8 @@ class _Wiznet extends State<Wiznet> {
     });
   }
 
-  void save(){
-    if(IpInput.isCorrect(ipAddressController.text)){
+  void save() {
+    if (IpInput.isCorrect(ipAddressController.text)) {
       SocketData.localIpAddress = ipAddressController.text;
       showGoodToast("Data saved");
     } else {
@@ -77,8 +76,14 @@ class _Wiznet extends State<Wiznet> {
           minValue: 0,
           maxValue: 65555,
         ),
-        IpInput(title: "network mask"),
-        IpInput(title: "gate away"),
+        IpInput(
+          title: "network mask",
+          controller: networkMaskController,
+        ),
+        IpInput(
+          title: "gate away",
+          controller: gateAwayController,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -86,7 +91,6 @@ class _Wiznet extends State<Wiznet> {
             RaisedButton(child: Text("Save"), onPressed: save),
           ],
         ),
-
       ],
     );
   }

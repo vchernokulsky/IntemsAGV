@@ -31,7 +31,7 @@ class IpInput extends StatefulWidget {
   static String bytesToString(Uint8List data){
     String ret = "";
     if(data.length == 4) {
-      data.forEach((i) => ret += '${HEX.encode([i])}.');
+      data.forEach((i) => ret += '$i.');
       ret = ret.substring(0, ret.length - 1);
     }
     return ret;
