@@ -91,7 +91,12 @@ void SocketServer::SocketServerTask()
 				{
 					if(recv_buffer[0] == 255 && recv_buffer[1] == 254)
 					{
-						settings->set(recv_buffer);
+						if (settings->set(recv_buffer)){
+							socket_send(ok_status, STAUS_SIZE);
+						} else
+						{
+							socket_send(err_status, STAUS_SIZE);
+						}
 					}
 				}
 

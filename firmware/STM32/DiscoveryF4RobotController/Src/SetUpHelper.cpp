@@ -22,7 +22,7 @@ SetUpHelper::~SetUpHelper() {
 void SetUpHelper::memory_init(I2C_HandleTypeDef *main_hi2c1)
 {
 	SetUpHelper::mem_out = main_hi2c1;
-	set_default(false);
+	set_default(true);
 	osDelay(100);
 	read_all();
 	osDelay(100);
@@ -102,7 +102,7 @@ void SetUpHelper::get_curr_memory(uint8_t *buff)
 	memcpy(buff, message_out, SETTING_SIZE);
 }
 
-void SetUpHelper::set(uint8_t *buff){
+bool SetUpHelper::set(uint8_t *buff){
 		int offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
@@ -125,5 +125,7 @@ void SetUpHelper::set(uint8_t *buff){
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
+		return status == HAL_OK;
+
 }
 

@@ -39,7 +39,7 @@ public:
 	virtual ~SetUpHelper();
 	void memory_init(I2C_HandleTypeDef *main_hi2c1);
 	void get_curr_memory(uint8_t *buff);
-	void set(uint8_t *buff);
+	bool set(uint8_t *buff);
 };
 
 #endif /* SETUPHELPER_H_ */

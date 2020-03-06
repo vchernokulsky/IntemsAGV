@@ -23,10 +23,13 @@
 
 
 #define BUFFER_SIZE 30
+#define STAUS_SIZE 3
 
 class SocketServer {
 private:
 	static SetUpHelper *settings;
+	uint8_t ok_status[STAUS_SIZE] = {7, 7, 7};
+	uint8_t err_status[STAUS_SIZE] = {6, 6, 6};
 
 	int local_sock;
 	int remote_sock;
