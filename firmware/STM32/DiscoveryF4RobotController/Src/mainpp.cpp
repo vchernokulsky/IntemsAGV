@@ -1,10 +1,11 @@
 #include "mainpp.h"
 
+#include "SetUpHelper.h"
 #include "SocketClient.h"
 #include "SocketServer.h"
 #include "RosHelper.h"
 #include "System_config.h"
-#include "SetUpHelper.h"
+
 
 
 
@@ -21,6 +22,7 @@ void StartEncoderTask2(void *arg);
 void StartCmdvelTimeoutRask(void *arg);
 
 SocketClient socket_client;
+SocketServer socket_server;
 RosHelper ros_helper;
 SetUpHelper settings;
 
@@ -57,13 +59,14 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 {
 
 	socket_client.init();
+	socket_server.init(11511, &settings);
 	ros_helper.setupRos(main_htim, main_htim2, encoder_htim, encoder_htim2);
 
 
 	//****** Client Task **********
 	sys_thread_new("client_thread", StartSocetClientTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	osDelay(500);
-//	sys_thread_new("server_thread", StartSocetServerTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
+	sys_thread_new("server_thread", StartSocetServerTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);
 	sys_thread_new("ros_thread", StartRosTask, 0, 256, osPriorityNormal);
 	sys_thread_new("wheel1_thread", StartSetSpeedTask, 0, 256, osPriorityNormal);
 	sys_thread_new("wheel2_thread", StartSetSpeedTask2, 0, 256, osPriorityNormal);
@@ -89,8 +92,7 @@ void StartSocetClientTask(void *arg)
 
 void StartSocetServerTask(void *arg)
 {
-	SocketServer server(11511);
-	server.SocketServerTask();
+	socket_server.SocketServerTask();
 }
 
 void StartRosTask(void *arg)

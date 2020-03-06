@@ -97,3 +97,8 @@ void SetUpHelper::extract_variables()
 //	memcpy(wiznet_gateaway, message_out + WIZET_GATE_AWAY_OFFSET, IP_SIZE);
 }
 
+void SetUpHelper::get_curr_memory(uint8_t *buff)
+{
+	memcpy(buff, message_out, SETTING_SIZE);
+}
+
