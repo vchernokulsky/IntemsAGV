@@ -37,8 +37,8 @@ class SocketData extends ChangeNotifier{
 
   void sendInfo() async {
 
-      final Socket client = await Socket.connect('192.168.55.10', 11511);
-      client.add(Uint8List.fromList([255, 254]) + MacInput.stringToBytes(localIpAddress));
+      final Socket client = await Socket.connect('192.168.2.114', 11511);
+      client.add(Uint8List.fromList([255, 254, 0, 0]) + IpInput.stringToBytes(localIpAddress));
       client.listen(
               (Uint8List data) {
               data.forEach((i) => print("got $i")) ;
