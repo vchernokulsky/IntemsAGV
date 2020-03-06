@@ -6,15 +6,34 @@ class DecimalInput extends StatefulWidget {
   final String title;
   final double minValue;
   final double maxValue;
+  final TextEditingController controller = TextEditingController();
 
-  const DecimalInput({Key key, this.title, this.minValue, this.maxValue})
+  DecimalInput({Key key, this.title, this.minValue, this.maxValue})
       : super(key: key);
 
-  _DecimalInput createState() => _DecimalInput(title, minValue, maxValue);
+  _DecimalInput createState() => _DecimalInput(title, minValue, maxValue, controller);
+
+  bool isCorrect({String numStr}) {
+    if (numStr == null) {
+      numStr = controller.text;
+    }
+    RegExp regExp = new RegExp(
+      r'^(\d*\.)?\d+$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+    if (regExp.hasMatch(numStr)) {
+      double num = double.parse(numStr);
+      if (num >= minValue && num <= maxValue) {
+       return true;
+      }
+    }
+    return false;
+  }
 }
 
 class _DecimalInput extends State<DecimalInput> {
-  _DecimalInput(this.title, this.minValue, this.maxValue);
+  _DecimalInput(this.title, this.minValue, this.maxValue, this.controller);
 
   final String title;
 
@@ -22,6 +41,7 @@ class _DecimalInput extends State<DecimalInput> {
   final double maxValue;
 
   String errorMsg;
+  final controller;
 
   void initState() {
     super.initState();
@@ -55,6 +75,7 @@ class _DecimalInput extends State<DecimalInput> {
   }
 
   Widget build(BuildContext context) {
+    numberValidate(controller.text);
     return Center(
       child: Column(
         children: <Widget>[
