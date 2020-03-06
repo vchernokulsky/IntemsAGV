@@ -8,14 +8,14 @@ import 'package:hex/hex.dart';
 class MacInput extends StatefulWidget {
   final String title;
   final String value;
-  final controller;
+  final TextEditingController controller = TextEditingController();
 
-  const MacInput({Key key, this.title, this.value, this.controller})
+  MacInput({Key key, this.title, this.value})
       : super(key: key);
 
   _MacInput createState() => _MacInput(title, value, controller);
 
-  static bool isCorrect(String numStr){
+  bool isCorrect(String numStr){
     RegExp regExp = new RegExp(
       r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
       caseSensitive: false,
@@ -60,7 +60,7 @@ class _MacInput extends State<MacInput> {
 
   void numberValidate(String numStr) {
     setState(() {
-      if (numStr.isEmpty || MacInput.isCorrect(numStr)) {
+      if (numStr.isEmpty || super.widget.isCorrect(numStr)) {
         errorMsg = "";
       } else {
         errorMsg = "wrong mac address";
