@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stm_setup/Inputs/IpInput.dart';
-import 'package:stm_setup/Inputs/MacInput.dart';
 import 'package:stm_setup/RobotSetUp.dart';
 import 'package:stm_setup/SocketData.dart';
-import 'package:ping_discover_network/ping_discover_network.dart';
 
 import 'Inputs/NumericInput.dart';
 import 'ShowToast.dart';
@@ -15,15 +12,17 @@ class RobotConnect extends StatefulWidget {
 }
 
 class _RobotConnect extends State<RobotConnect> {
-  var ipAddressController;
-  var portController;
 
   NumericInput portInput;
   IpInput ipInput;
 
   _RobotConnect() {
-    ipAddressController = TextEditingController();
-    portController = TextEditingController();
+    ipInput = IpInput(title: "STM IP address");
+    portInput = NumericInput(
+      title: "STM host",
+      minValue: 0,
+      maxValue: 65555,
+    );
   }
 
   void initState() {
@@ -32,10 +31,9 @@ class _RobotConnect extends State<RobotConnect> {
 
   void connect() {
     if (ipInput.isCorrect()) {
-      if (NumericInput.isCorrect(
-          portController.text, portInput.minValue, portInput.maxValue)) {
-        SocketData.connectHost = ipAddressController.text;
-        SocketData.connectPort = int.parse(portController.text);
+      if (portInput.isCorrect()) {
+        SocketData.connectHost = ipInput.controller.text;
+        SocketData.connectPort = int.parse(portInput.controller.text);
         showGoodToast("Data saved");
         Navigator.push(
           context,
@@ -51,17 +49,8 @@ class _RobotConnect extends State<RobotConnect> {
 
   @override
   Widget build(BuildContext context) {
-    ipAddressController.text = SocketData.connectHost;
-    portController.text = '${SocketData.connectPort}';
-
-    portInput = NumericInput(
-      title: "STM host",
-      controller: portController,
-      minValue: 0,
-      maxValue: 65555,
-    );
-
-    ipInput = IpInput(title: "STM IP address");
+    ipInput.controller.text = SocketData.connectHost;
+    portInput.controller.text = '${SocketData.connectPort}';
 
     return Scaffold(
       appBar: AppBar(title: Text("Set up connection to robot")),
