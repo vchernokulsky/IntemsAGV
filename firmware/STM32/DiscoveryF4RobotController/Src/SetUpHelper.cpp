@@ -22,7 +22,7 @@ SetUpHelper::~SetUpHelper() {
 void SetUpHelper::memory_init(I2C_HandleTypeDef *main_hi2c1)
 {
 	SetUpHelper::mem_out = main_hi2c1;
-	set_default(true);
+	set_default(false);
 	osDelay(100);
 	read_all();
 	osDelay(100);
@@ -100,5 +100,30 @@ void SetUpHelper::extract_variables()
 void SetUpHelper::get_curr_memory(uint8_t *buff)
 {
 	memcpy(buff, message_out, SETTING_SIZE);
+}
+
+void SetUpHelper::set(uint8_t *buff){
+		int offset = SET_FLAG_OFFSET;
+		const char set_flag[] = "set";
+		memcpy(message_out + offset, set_flag, sizeof(set_flag));
+
+		offset = LOCAL_IP_OFFSET;
+		memcpy(message_out + offset, buff + offset, IP_SIZE);
+
+//		offset = WIZNET_PORT_OFFSET;
+//		uint16_t port = WIZNET_PORT;
+//		 message_out[offset] = port & 0xFF;
+//		 message_out[offset+1] = port >> 8;
+//
+//		offset = WIZNET_MASK_OFFSET;
+//		uint8_t mask[] = WIZNET_MASK;
+//		memcpy(message_out + offset, mask, sizeof(mask));
+//
+//		offset = WIZET_GATE_AWAY_OFFSET;
+//		uint8_t gw[] = WIZNET_GATEAWAY;
+//		memcpy(message_out + offset, gw, sizeof(gw));
+
+		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
+		osDelay(1);
 }
 

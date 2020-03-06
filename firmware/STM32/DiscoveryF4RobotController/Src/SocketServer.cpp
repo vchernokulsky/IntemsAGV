@@ -87,6 +87,12 @@ void SocketServer::SocketServerTask()
 				{
 					settings->get_curr_memory(send_buffer);
 					socket_send(send_buffer, SETTING_SIZE);
+				} else
+				{
+					if(recv_buffer[0] == 255 && recv_buffer[1] == 254)
+					{
+						settings->set(recv_buffer);
+					}
 				}
 
 				osDelay(100);
