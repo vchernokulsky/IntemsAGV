@@ -4,17 +4,32 @@ import 'package:flutter/widgets.dart';
 
 class TopicNameInput extends StatefulWidget {
   final String title;
+  final TextEditingController controller = TextEditingController();
 
-  const TopicNameInput({Key key, this.title})
+  TopicNameInput({Key key, this.title})
       : super(key: key);
 
-  _TopicNameInput createState() => _TopicNameInput(title);
+  _TopicNameInput createState() => _TopicNameInput(title, controller);
+
+  bool isCorrect({String numStr}) {
+    if(numStr == null){
+      numStr = controller.text;
+    }
+    RegExp regExp = new RegExp(
+      r'^([a-z|A-Z]|/|~)([0-9|a-z|A-Z]|/|_)+$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+    return regExp.hasMatch(numStr);
+  }
+
 }
 
 class _TopicNameInput extends State<TopicNameInput> {
-  _TopicNameInput(this.title);
+  _TopicNameInput(this.title, this.controller);
 
   final String title;
+  final controller;
 
   String errorMsg;
 
@@ -24,13 +39,8 @@ class _TopicNameInput extends State<TopicNameInput> {
   }
 
   void numberValidate(String numStr) {
-    RegExp regExp = new RegExp(
-      r'^([a-z|A-Z]|/|~)([0-9|a-z|A-Z]|/|_)+$',
-      caseSensitive: false,
-      multiLine: false,
-    );
     setState(() {
-      if (numStr.isEmpty || regExp.hasMatch(numStr)) {
+      if (numStr.isEmpty || super.widget.isCorrect(numStr: numStr)) {
         errorMsg = "";
       } else {
         errorMsg = "wrong topic name";
