@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stm_setup/Inputs/IpInput.dart';
-import 'package:stm_setup/Inputs/MacInput.dart';
 import 'package:stm_setup/SocketData.dart';
 
 import 'Inputs/NumericInput.dart';
+import 'ShowToast.dart';
 
 class Wiznet extends StatefulWidget {
   const Wiznet({Key key}) : super(key: key);
@@ -14,40 +13,21 @@ class Wiznet extends StatefulWidget {
 }
 
 class _Wiznet extends State<Wiznet> {
-  var ipAddressController;
   var networkMaskController;
   var gateAwayController;
 
+  IpInput ipInput;
+
   _Wiznet() {
-    ipAddressController = TextEditingController();
     networkMaskController = TextEditingController();
     gateAwayController = TextEditingController();
+
+    ipInput =  IpInput(title: "STM IP address");
+
   }
 
   void initState() {
     super.initState();
-  }
-
-  void showGoodToast(String text) {
-    Fluttertoast.showToast(
-        msg: "$text",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.blueGrey,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
-  void showBadToast(String text) {
-    Fluttertoast.showToast(
-        msg: "$text",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.redAccent[700],
-        textColor: Colors.white,
-        fontSize: 16.0);
   }
 
   void reset() {
@@ -57,8 +37,8 @@ class _Wiznet extends State<Wiznet> {
   }
 
   void save() {
-    if (IpInput.isCorrect(ipAddressController.text)) {
-      SocketData.localIpAddress = ipAddressController.text;
+    if (ipInput.isCorrect()) {
+      SocketData.localIpAddress = ipInput.controller.text;
       showGoodToast("Data saved");
     } else {
       showBadToast("Can not save: wrong mac address");
@@ -67,10 +47,10 @@ class _Wiznet extends State<Wiznet> {
 
   @override
   Widget build(BuildContext context) {
-    ipAddressController.text = SocketData.localIpAddress;
+    ipInput.controller.text = SocketData.localIpAddress;
     return Column(
       children: <Widget>[
-        IpInput(title: "STM IP address", controller: ipAddressController),
+        ipInput,
         NumericInput(
           title: "STM host",
           minValue: 0,
@@ -78,11 +58,9 @@ class _Wiznet extends State<Wiznet> {
         ),
         IpInput(
           title: "network mask",
-          controller: networkMaskController,
         ),
         IpInput(
           title: "gate away",
-          controller: gateAwayController,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

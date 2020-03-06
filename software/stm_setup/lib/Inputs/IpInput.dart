@@ -3,18 +3,20 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hex/hex.dart';
 
+// ignore: must_be_immutable
 class IpInput extends StatefulWidget {
   final String title;
-  final controller;
+  final TextEditingController controller = TextEditingController();
 
-  const IpInput({Key key, this.title, this.controller})
-      : super(key: key);
+  IpInput({Key key, this.title}):super(key: key);
 
   _IpInput createState() => _IpInput(title, controller);
 
-  static bool isCorrect(String numStr) {
+  bool isCorrect({String numStr}) {
+    if(numStr == null){
+      numStr = controller.text;
+    }
     RegExp regExp = new RegExp(
       r'^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$',
       caseSensitive: false,
@@ -27,6 +29,7 @@ class IpInput extends StatefulWidget {
         return false;
       }
   }
+
   static Uint8List stringToBytes(String string){
     Uint8List ret = Uint8List.fromList([0, 0, 0, 0]);
     List<String> retStr = string.split(".");
@@ -61,7 +64,7 @@ class _IpInput extends State<IpInput> {
 
   void numberValidate(String numStr) {
     setState(() {
-      if (numStr.isEmpty || IpInput.isCorrect(numStr)) {
+      if (numStr.isEmpty || super.widget.isCorrect(numStr: numStr)) {
         errorMsg = "";
       } else {
         errorMsg = "wrong ip";

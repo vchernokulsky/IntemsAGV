@@ -19,6 +19,7 @@ class _RobotConnect extends State<RobotConnect> {
   var portController;
 
   NumericInput portInput;
+  IpInput ipInput;
 
   _RobotConnect() {
     ipAddressController = TextEditingController();
@@ -30,8 +31,9 @@ class _RobotConnect extends State<RobotConnect> {
   }
 
   void connect() {
-    if (IpInput.isCorrect(ipAddressController.text)){
-      if( NumericInput.isCorrect(portController.text, portInput.minValue, portInput.maxValue)){
+    if (ipInput.isCorrect()) {
+      if (NumericInput.isCorrect(
+          portController.text, portInput.minValue, portInput.maxValue)) {
         SocketData.connectHost = ipAddressController.text;
         SocketData.connectPort = int.parse(portController.text);
         showGoodToast("Data saved");
@@ -45,7 +47,6 @@ class _RobotConnect extends State<RobotConnect> {
     } else {
       showBadToast("Wrong Robot HOST");
     }
-
   }
 
   @override
@@ -53,10 +54,14 @@ class _RobotConnect extends State<RobotConnect> {
     ipAddressController.text = SocketData.connectHost;
     portController.text = '${SocketData.connectPort}';
 
-    portInput = NumericInput(title: "STM host",
+    portInput = NumericInput(
+      title: "STM host",
       controller: portController,
       minValue: 0,
-      maxValue: 65555,);
+      maxValue: 65555,
+    );
+
+    ipInput = IpInput(title: "STM IP address");
 
     return Scaffold(
       appBar: AppBar(title: Text("Set up connection to robot")),
@@ -68,8 +73,7 @@ class _RobotConnect extends State<RobotConnect> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  IpInput(
-                      title: "STM IP address", controller: ipAddressController),
+                  ipInput,
                   portInput,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
