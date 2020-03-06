@@ -11,5 +11,13 @@ software/Simulation/catkin_ws/src/CMakeList.txt
 firmware/STM32/RobotController/Debug/
 firmware/STM32/RosUARTController/Debug/
 firmware/STM32/TCPClientF7/Debug/
+firmware/STM32/DiscoveryTest/Debug/
+firmware/STM32/DiscoveryF4RobotController/Debug/
+
 
 software/catkin_ws/src/creating_map_lidar/venv/
+
+software/stm_setup/.dart_tool/
+software/stm_setup/.idea
+software/stm_setup/build
+
