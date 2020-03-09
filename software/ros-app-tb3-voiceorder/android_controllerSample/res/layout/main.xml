@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/top_view"
@@ -150,6 +151,29 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight=".5">
+                <com.goodiebag.protractorview.ProtractorView
+                    android:id="@+id/protractor_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:thumb="@drawable/thumb_disabled"
+                    app:arcColor="#4a4a4a"
+                    app:arcProgressColor="#20B2AA"
+                    app:tickColor="#4a4a4a"
+                    app:tickProgressColor="#20B2AA"
+                    app:textColor="#000"
+                    app:textProgressColor="#CD5C5C"
+                    app:angleTextSize="10sp"
+                    app:arcWidth="4dp"
+                    app:progressWidth="4dp"
+                    app:tickOffset="18dp"
+                    app:tickLength="10dp"
+                    app:angle="90"
+                    app:tickIntervals="15"
+                    app:ticksBetweenLabel="three"
+                    app:touchInside="true"
+                    app:roundEdges="true"
+                    />
                 <SeekBar
                     android:id="@+id/seekBar2"
                     android:layout_width="200dp"

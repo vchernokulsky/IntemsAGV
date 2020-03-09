@@ -129,5 +129,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui:25.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat:25.1.0@aar" level="project" />
     <orderEntry type="module" module-name="android_10" />
+    <orderEntry type="module" module-name="protractorview" />
   </component>
 </module>
