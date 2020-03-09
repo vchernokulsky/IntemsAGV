@@ -17,6 +17,7 @@
 include "android_10"
 include "android_pubsubSample"
 include "android_controllerSample"
+include "protractorview"
 //include "test5"
 
 // TODO(damonkohler): The following projects are not included in the

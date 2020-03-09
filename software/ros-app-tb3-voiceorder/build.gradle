@@ -22,22 +22,21 @@ buildscript {
     apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-
     }
     repositories {
+        jcenter()
         google()
-
     }
 }
-/*
+
 apply plugin: "catkin"
 
 allprojects {
-    group "org.ros.android_core"
-    version = project.catkin.pkg.version
+    repositories {
+        jcenter()
+        google()
+    }
 }
-*/
-
 
 configure(subprojects.findAll { it.name.startsWith("android_") }) {
     /*
@@ -94,5 +93,6 @@ configure(subprojects.findAll { it.name.startsWith("android_") }) {
 defaultTasks 'assembleRelease', 'uploadArchives'
 
 repositories {
+    jcenter()
     google()
 }
