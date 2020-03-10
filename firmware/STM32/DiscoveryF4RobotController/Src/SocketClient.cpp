@@ -15,12 +15,12 @@ SocketClient::SocketClient( )
 	// TODO Auto-generated constructor stub
 }
 
-void SocketClient::init(uint16_t ros_local_port )
+void SocketClient::init(uint16_t ros_local_port, uint8_t *remote_ip, uint16_t ros_serialnode_port)
 {
 	// TODO Auto-generated constructor stub
 
 	SocketClient::error_semaphore = xSemaphoreCreateMutex();
-	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
+//	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
 
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
 	localhost.sin_family = AF_INET;
@@ -29,7 +29,7 @@ void SocketClient::init(uint16_t ros_local_port )
 
 	memset(&remotehost, 0, sizeof(struct sockaddr_in));
 	remotehost.sin_family = AF_INET;
-	remotehost.sin_port = htons(SERVER_PORT);
+	remotehost.sin_port = htons(ros_serialnode_port);
 	ip4_addr_set_u32((ip4_addr_t*)&remotehost.sin_addr, remote_ip[0] | (remote_ip[1] << 8) | (remote_ip[2] << 16) | (remote_ip[3] << 24));
 }
 

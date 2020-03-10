@@ -70,6 +70,15 @@ void SetUpHelper::set_default(bool force){
 		message_out[offset] = port & 0xFF;
 		message_out[offset+1] = port >> 8;
 
+		offset = SERIALNODE_IP_OFFSET;
+		uint8_t sn_ip[] = SERVER_IP_ADRESS;
+		memcpy(message_out + offset, sn_ip, IP_SIZE);
+
+		offset = SERIALNODE_PORT_OFFSET;
+		port = SERVER_PORT;
+		message_out[offset] = port & 0xFF;
+		message_out[offset+1] = port >> 8;
+
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
 	}
@@ -102,6 +111,9 @@ void SetUpHelper::extract_variables()
 	ROS_CLIENT_PORT = (message_out[ROS_CLIENT_PORT_OFFSET + 1] << 8) | message_out[ROS_CLIENT_PORT_OFFSET];
 	SET_UP_SERVER_PORT = (message_out[SET_UP_SERVER_PORT_OFFSET + 1] << 8) | message_out[SET_UP_SERVER_PORT_OFFSET];
 
+	memcpy(SERIALNODE_IP, message_out + SERIALNODE_IP_OFFSET, IP_SIZE);
+	SERIALNODE_PORT = (message_out[SERIALNODE_PORT_OFFSET + 1] << 8) | message_out[SERIALNODE_PORT_OFFSET];
+
 }
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
@@ -129,10 +141,11 @@ bool SetUpHelper::set(uint8_t *buff){
 		offset = SET_UP_SERVER_PORT_OFFSET;
 		memcpy(message_out + offset, buff + offset, PORT_SIZE);
 
-//		offset = WIZNET_PORT_OFFSET;
-//		uint16_t port = WIZNET_PORT;
-//		 message_out[offset] = port & 0xFF;
-//		 message_out[offset+1] = port >> 8;
+		offset = SERIALNODE_IP_OFFSET;
+		memcpy(message_out + offset, buff + offset, IP_SIZE);
+
+		offset = SERIALNODE_PORT_OFFSET;
+		memcpy(message_out + offset, buff + offset, PORT_SIZE);
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);

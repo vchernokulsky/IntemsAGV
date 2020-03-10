@@ -50,7 +50,7 @@ public:
 	static bool is_connected;
 	SocketClient();
 	virtual ~SocketClient();
-	void init(uint16_t ros_local_port);
+	void init(uint16_t ros_local_port, uint8_t *remote_ip, uint16_t ros_serialnode_port);
 	void socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd);
 	void socket_send(uint8_t *pData, uint16_t len);
 	void SocketClientTask();

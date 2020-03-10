@@ -10,7 +10,7 @@
 
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
-#define SETTING_SIZE 20
+#define SETTING_SIZE 26
 
 #define SET_STR "set"
 #define SET_FLAG_OFFSET 0
@@ -19,6 +19,8 @@
 #define GATEAWAY_OFFSET 12
 #define ROS_CLIENT_PORT_OFFSET 16
 #define SET_UP_SERVER_PORT_OFFSET 18
+#define SERIALNODE_IP_OFFSET 20
+#define SERIALNODE_PORT_OFFSET 24
 
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
@@ -43,6 +45,8 @@ public:
 	uint8_t GATEAWAY[IP_SIZE];
 	uint16_t ROS_CLIENT_PORT;
 	uint16_t SET_UP_SERVER_PORT;
+	uint8_t SERIALNODE_IP[IP_SIZE];
+	uint16_t SERIALNODE_PORT;
 
 	SetUpHelper();
 	virtual ~SetUpHelper();
