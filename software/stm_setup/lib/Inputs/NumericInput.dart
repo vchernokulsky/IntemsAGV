@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -19,6 +21,22 @@ class NumericInput extends StatefulWidget {
     }
     int num = int.parse(numStr);
       return (num >= minValue && num <= maxValue);
+  }
+
+  static Uint8List stringToBytes(String string){
+    Uint8List ret = Uint8List.fromList([0, 0]);
+    int num = int.parse(string);
+    if (num ~/ 256 < 256){
+      ret = Uint8List.fromList([ num % 256, num ~/256]);
+    }
+    return ret;
+  }
+  static String bytesToString(Uint8List data){
+    String ret = "";
+    if(data.length == 2) {
+      ret = '${data[1] * 256 + data[0]}';
+    }
+    return ret;
   }
 }
 

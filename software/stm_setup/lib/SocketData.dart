@@ -5,19 +5,23 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import "package:hex/hex.dart";
 import 'package:stm_setup/Inputs/MacInput.dart';
+import 'package:stm_setup/Inputs/NumericInput.dart';
 
 import 'Inputs/IpInput.dart';
 import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
-  final int msgSize = 16;
+  final int msgSize = 20;
   final int setFlagSize = 3;
   final int ipSize = 4;
+  final int numSize = 2;
 
   final int setFlagOffset = 0;
   final int localIpOffset = 4;
   final int networkMaskOffset = 8;
   final int gateAwayOffset = 12;
+  final int rosClientPortOffset = 16;
+  final int setupServerPortOffset = 18;
 
   static String connectHost = "192.168.2.114";
   static int connectPort = 11511;
@@ -26,6 +30,8 @@ class SocketData extends ChangeNotifier {
   static String localIpAddress = "";
   static String networkMask = "";
   static String gateAway = "";
+  static String rosClientPort = "";
+  static String setupServerPort = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
@@ -58,7 +64,9 @@ class SocketData extends ChangeNotifier {
     client.add(Uint8List.fromList([255, 254, 0, 0]) +
         IpInput.stringToBytes(localIpAddress) +
         IpInput.stringToBytes(networkMask) +
-        IpInput.stringToBytes(gateAway));
+        IpInput.stringToBytes(gateAway) +
+        NumericInput.stringToBytes(rosClientPort) +
+        NumericInput.stringToBytes(setupServerPort));
     client.listen((Uint8List data) {
       data.forEach((i) => print("got $i"));
       if (data[0] == 7 && data[1] == 7 && data[2] == 7) {
@@ -94,6 +102,10 @@ class SocketData extends ChangeNotifier {
           data.sublist(networkMaskOffset, networkMaskOffset + ipSize));
       gateAway = IpInput.bytesToString(
           data.sublist(gateAwayOffset, gateAwayOffset + ipSize));
+      rosClientPort = NumericInput.bytesToString(
+          data.sublist(rosClientPortOffset, rosClientPortOffset + numSize));
+      setupServerPort = NumericInput.bytesToString(
+          data.sublist(setupServerPortOffset, setupServerPortOffset + numSize));
     }
   }
 }

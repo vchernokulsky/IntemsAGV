@@ -16,11 +16,17 @@ class _Wiznet extends State<Wiznet> {
   IpInput ipInput;
   IpInput networkMaskInput;
   IpInput gateAwayInput;
+  NumericInput localRosPort;
+  NumericInput setUpServerPort;
 
   _Wiznet() {
     ipInput = IpInput(title: "STM IP address");
     networkMaskInput = IpInput(title: "network mask");
     gateAwayInput = IpInput(title: "gate away");
+    localRosPort =
+        NumericInput(title: "STM ros client port", minValue: 0, maxValue: 65555);
+    setUpServerPort =
+        NumericInput(title: "set up server port", minValue: 0, maxValue: 65555);
   }
 
   void initState() {
@@ -38,6 +44,8 @@ class _Wiznet extends State<Wiznet> {
       SocketData.localIpAddress = ipInput.controller.text;
       SocketData.networkMask = networkMaskInput.controller.text;
       SocketData.gateAway = gateAwayInput.controller.text;
+      SocketData.rosClientPort = localRosPort.controller.text;
+      SocketData.setupServerPort = setUpServerPort.controller.text;
       showGoodToast("Data saved");
     } else {
       showBadToast("Can not save: wrong mac address");
@@ -49,16 +57,15 @@ class _Wiznet extends State<Wiznet> {
     ipInput.controller.text = SocketData.localIpAddress;
     networkMaskInput.controller.text = SocketData.networkMask;
     gateAwayInput.controller.text = SocketData.gateAway;
+    localRosPort.controller.text = SocketData.rosClientPort;
+    setUpServerPort.controller.text = SocketData.setupServerPort;
     return Column(
       children: <Widget>[
         ipInput,
-        NumericInput(
-          title: "STM host",
-          minValue: 0,
-          maxValue: 65555,
-        ),
         networkMaskInput,
         gateAwayInput,
+        localRosPort,
+        setUpServerPort,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
