@@ -5,10 +5,6 @@
  *      Author: developer
  */
 
-
-
-
-
 #ifndef SOCKETSERVER_H_
 #define SOCKETSERVER_H_
 
@@ -48,10 +44,9 @@ private:
 	void start_server();
 public:
 	SocketServer();
-	SocketServer(uint16_t local_port, SetUpHelper *main_settings);
 	virtual ~SocketServer();
 
-	void init(uint16_t local_port, SetUpHelper *main_settings);
+	void init(SetUpHelper *main_settings);
 	void socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd);
 	void socket_send(uint8_t *pData, uint16_t len);
 	void SocketServerTask();

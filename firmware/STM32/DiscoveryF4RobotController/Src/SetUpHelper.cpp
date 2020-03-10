@@ -60,12 +60,15 @@ void SetUpHelper::set_default(bool force){
 		uint8_t gw[] = WIZNET_GATEAWAY;
 		memcpy(message_out + offset, gw, IP_SIZE);
 
-//		offset = WIZNET_PORT_OFFSET;
-//		uint16_t port = WIZNET_PORT;
-//		 message_out[offset] = port & 0xFF;
-//		 message_out[offset+1] = port >> 8;
-//
+		offset = ROS_CLIENT_PORT_OFFSET;
+		uint16_t port = WIZNET_PORT;
+		message_out[offset] = port & 0xFF;
+		message_out[offset+1] = port >> 8;
 
+		offset = SET_UP_SERVER_PORT_OFFSET;
+		port = DEFAULT_SETUP_SERVER_PORT;
+		message_out[offset] = port & 0xFF;
+		message_out[offset+1] = port >> 8;
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
@@ -96,7 +99,8 @@ void SetUpHelper::extract_variables()
 	memcpy(NETWORK_MASK, message_out + NETWORK_MASK_OFFSET, IP_SIZE);
 	memcpy(GATEAWAY, message_out + GATEAWAY_OFFSET, IP_SIZE);
 
-//	wiznet_client_port = (message_out[WIZNET_PORT_OFFSET + 1] << 8) | message_out[WIZNET_PORT_OFFSET];
+	ROS_CLIENT_PORT = (message_out[ROS_CLIENT_PORT_OFFSET + 1] << 8) | message_out[ROS_CLIENT_PORT_OFFSET];
+	SET_UP_SERVER_PORT = (message_out[SET_UP_SERVER_PORT_OFFSET + 1] << 8) | message_out[SET_UP_SERVER_PORT_OFFSET];
 
 }
 
@@ -118,6 +122,12 @@ bool SetUpHelper::set(uint8_t *buff){
 
 		offset = GATEAWAY_OFFSET;
 		memcpy(message_out + offset, buff + offset, IP_SIZE);
+
+		offset = ROS_CLIENT_PORT_OFFSET;
+		memcpy(message_out + offset, buff + offset, PORT_SIZE);
+
+		offset = SET_UP_SERVER_PORT_OFFSET;
+		memcpy(message_out + offset, buff + offset, PORT_SIZE);
 
 //		offset = WIZNET_PORT_OFFSET;
 //		uint16_t port = WIZNET_PORT;

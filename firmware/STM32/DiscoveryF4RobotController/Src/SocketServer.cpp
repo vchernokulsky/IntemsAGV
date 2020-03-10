@@ -15,24 +15,13 @@ SocketServer::SocketServer()
 
 }
 
-SocketServer::SocketServer(uint16_t local_port, SetUpHelper *main_settings)
-{
-	// TODO Auto-generated constructor stub
-    settings = main_settings;
-	memset(&localhost, 0, sizeof(struct sockaddr_in));
-	localhost.sin_family = AF_INET;
-	localhost.sin_port = htons(local_port);
-	localhost.sin_addr.s_addr = INADDR_ANY;
-	osDelay(100);
 
-}
-
-void SocketServer::init(uint16_t local_port, SetUpHelper *main_settings)
+void SocketServer::init(SetUpHelper *main_settings)
 {
 	settings = main_settings;
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
 	localhost.sin_family = AF_INET;
-	localhost.sin_port = htons(local_port);
+	localhost.sin_port = htons(settings->SET_UP_SERVER_PORT);
 	localhost.sin_addr.s_addr = INADDR_ANY;
 	osDelay(100);
 }
