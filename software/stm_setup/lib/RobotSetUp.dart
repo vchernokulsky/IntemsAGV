@@ -13,27 +13,20 @@ class RobotSetUp extends StatefulWidget {
 
 class _RobotSetUpState extends State<RobotSetUp> {
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   static const int ROBOT_GEOM = 0;
   static const int ROBOT_DRIVE = 1;
   static const int ROS_TOPICS = 2;
   static const int WIZNET = 3;
   static const int DELAY = 4;
 
-  static const String RADIUS_ERROR_MSG = "Wrong radius value";
 
   final model = SocketData();
-
   int curItem;
-  String radiusErrorMsg;
-  double val;
+
 
   void initState() {
     super.initState();
-    val = 0;
     curItem = ROBOT_GEOM;
-    radiusErrorMsg = "";
-
     model.addListener(updateState);
     model.getInfo();
   }
@@ -42,24 +35,6 @@ class _RobotSetUpState extends State<RobotSetUp> {
     setState(() {});
   }
 
-  void change() {
-    setState(() {
-      val += 1;
-    });
-  }
-
-  void numberValidate(String numStr) {
-    int maxValue = 100;
-    int minValue = 1;
-    int num = int.parse(numStr);
-    setState(() {
-      if (num >= minValue && num <= maxValue) {
-        radiusErrorMsg = "";
-      } else {
-        radiusErrorMsg = RADIUS_ERROR_MSG;
-      }
-    });
-  }
 
   void setWidgets(int widget) {
     setState(() {

@@ -7,35 +7,25 @@ import "package:hex/hex.dart";
 import 'package:stm_setup/Inputs/MacInput.dart';
 
 import 'Inputs/IpInput.dart';
+import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
+  final int msgSize = 16;
+  final int setFlagSize = 3;
+  final int ipSize = 4;
+
+  final int setFlagOffset = 0;
+  final int localIpOffset = 4;
+  final int networkMaskOffset = 8;
+  final int gateAwayOffset = 12;
+
   static String connectHost = "192.168.2.114";
   static int connectPort = 11511;
 
   static bool getData = false;
   static String localIpAddress = "";
-
-  void showGoodToast(String text) {
-    Fluttertoast.showToast(
-        msg: "$text",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.blueGrey,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
-  void showBadToast(String text) {
-    Fluttertoast.showToast(
-        msg: "$text",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.redAccent[700],
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
+  static String networkMask = "";
+  static String gateAway = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
@@ -66,7 +56,9 @@ class SocketData extends ChangeNotifier {
   void sendInfo() async {
     final Socket client = await Socket.connect(connectHost, connectPort);
     client.add(Uint8List.fromList([255, 254, 0, 0]) +
-        IpInput.stringToBytes(localIpAddress));
+        IpInput.stringToBytes(localIpAddress) +
+        IpInput.stringToBytes(networkMask) +
+        IpInput.stringToBytes(gateAway));
     client.listen((Uint8List data) {
       data.forEach((i) => print("got $i"));
       if (data[0] == 7 && data[1] == 7 && data[2] == 7) {
@@ -90,9 +82,18 @@ class SocketData extends ChangeNotifier {
 
   void parseIntoVariables(Uint8List data) {
     data.forEach((i) => print("got $i"));
-    String string = String.fromCharCodes(data.sublist(0, 3));
+    if (data.length != msgSize) {
+      return;
+    }
+    String string = String.fromCharCodes(
+        data.sublist(setFlagOffset, setFlagOffset + setFlagSize));
     if (string == 'set') {
-      localIpAddress = IpInput.bytesToString(data.sublist(4, 8));
+      localIpAddress = IpInput.bytesToString(
+          data.sublist(localIpOffset, localIpOffset + ipSize));
+      networkMask = IpInput.bytesToString(
+          data.sublist(networkMaskOffset, networkMaskOffset + ipSize));
+      gateAway = IpInput.bytesToString(
+          data.sublist(gateAwayOffset, gateAwayOffset + ipSize));
     }
   }
 }

@@ -13,17 +13,14 @@ class Wiznet extends StatefulWidget {
 }
 
 class _Wiznet extends State<Wiznet> {
-  var networkMaskController;
-  var gateAwayController;
-
   IpInput ipInput;
+  IpInput networkMaskInput;
+  IpInput gateAwayInput;
 
   _Wiznet() {
-    networkMaskController = TextEditingController();
-    gateAwayController = TextEditingController();
-
-    ipInput =  IpInput(title: "STM IP address");
-
+    ipInput = IpInput(title: "STM IP address");
+    networkMaskInput = IpInput(title: "network mask");
+    gateAwayInput = IpInput(title: "gate away");
   }
 
   void initState() {
@@ -39,6 +36,8 @@ class _Wiznet extends State<Wiznet> {
   void save() {
     if (ipInput.isCorrect()) {
       SocketData.localIpAddress = ipInput.controller.text;
+      SocketData.networkMask = networkMaskInput.controller.text;
+      SocketData.gateAway = gateAwayInput.controller.text;
       showGoodToast("Data saved");
     } else {
       showBadToast("Can not save: wrong mac address");
@@ -48,6 +47,8 @@ class _Wiznet extends State<Wiznet> {
   @override
   Widget build(BuildContext context) {
     ipInput.controller.text = SocketData.localIpAddress;
+    networkMaskInput.controller.text = SocketData.networkMask;
+    gateAwayInput.controller.text = SocketData.gateAway;
     return Column(
       children: <Widget>[
         ipInput,
@@ -56,12 +57,8 @@ class _Wiznet extends State<Wiznet> {
           minValue: 0,
           maxValue: 65555,
         ),
-        IpInput(
-          title: "network mask",
-        ),
-        IpInput(
-          title: "gate away",
-        ),
+        networkMaskInput,
+        gateAwayInput,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
