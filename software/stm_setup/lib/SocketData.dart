@@ -11,7 +11,7 @@ import 'Inputs/IpInput.dart';
 import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
-  final int msgSize = 20;
+  final int msgSize = 26;
   final int setFlagSize = 3;
   final int ipSize = 4;
   final int numSize = 2;
@@ -22,6 +22,8 @@ class SocketData extends ChangeNotifier {
   final int gateAwayOffset = 12;
   final int rosClientPortOffset = 16;
   final int setupServerPortOffset = 18;
+  final int serialNodeIpOffset = 20;
+  final int serialNodePortOffset = 24;
 
   static String connectHost = "192.168.2.114";
   static int connectPort = 11511;
@@ -32,6 +34,8 @@ class SocketData extends ChangeNotifier {
   static String gateAway = "";
   static String rosClientPort = "";
   static String setupServerPort = "";
+  static String serialNodeIp = "";
+  static String serialNodePort = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
@@ -66,7 +70,9 @@ class SocketData extends ChangeNotifier {
         IpInput.stringToBytes(networkMask) +
         IpInput.stringToBytes(gateAway) +
         NumericInput.stringToBytes(rosClientPort) +
-        NumericInput.stringToBytes(setupServerPort));
+        NumericInput.stringToBytes(setupServerPort) +
+        IpInput.stringToBytes(serialNodeIp) +
+        NumericInput.stringToBytes(serialNodePort));
     client.listen((Uint8List data) {
       data.forEach((i) => print("got $i"));
       if (data[0] == 7 && data[1] == 7 && data[2] == 7) {
@@ -106,6 +112,10 @@ class SocketData extends ChangeNotifier {
           data.sublist(rosClientPortOffset, rosClientPortOffset + numSize));
       setupServerPort = NumericInput.bytesToString(
           data.sublist(setupServerPortOffset, setupServerPortOffset + numSize));
+      serialNodeIp = IpInput.bytesToString(
+          data.sublist(serialNodeIpOffset, serialNodeIpOffset + ipSize));
+      serialNodePort = NumericInput.bytesToString(
+          data.sublist(serialNodePortOffset, serialNodePortOffset + numSize));
     }
   }
 }

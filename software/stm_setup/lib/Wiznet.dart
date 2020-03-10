@@ -23,8 +23,8 @@ class _Wiznet extends State<Wiznet> {
     ipInput = IpInput(title: "STM IP address");
     networkMaskInput = IpInput(title: "network mask");
     gateAwayInput = IpInput(title: "gate away");
-    localRosPort =
-        NumericInput(title: "STM ros client port", minValue: 0, maxValue: 65555);
+    localRosPort = NumericInput(
+        title: "STM ros client port", minValue: 0, maxValue: 65555);
     setUpServerPort =
         NumericInput(title: "set up server port", minValue: 0, maxValue: 65555);
   }
@@ -40,16 +40,32 @@ class _Wiznet extends State<Wiznet> {
   }
 
   void save() {
-    if (ipInput.isCorrect()) {
-      SocketData.localIpAddress = ipInput.controller.text;
-      SocketData.networkMask = networkMaskInput.controller.text;
-      SocketData.gateAway = gateAwayInput.controller.text;
-      SocketData.rosClientPort = localRosPort.controller.text;
-      SocketData.setupServerPort = setUpServerPort.controller.text;
-      showGoodToast("Data saved");
-    } else {
-      showBadToast("Can not save: wrong mac address");
+    if (!ipInput.isCorrect()) {
+      showBadToast("Can not save: Wrong STM IP address");
+      return;
     }
+    if (!networkMaskInput.isCorrect()) {
+      showBadToast("Can not save: Wrong network mask");
+      return;
+    }
+    if (!gateAwayInput.isCorrect()) {
+      showBadToast("Can not save: Wrong gate away");
+      return;
+    }
+    if (!localRosPort.isCorrect()) {
+      showBadToast("Can not save: Wrong STM ros client port");
+      return;
+    }
+    if (!setUpServerPort.isCorrect()) {
+      showBadToast("Can not save: Wrong setup server port");
+      return;
+    }
+    SocketData.localIpAddress = ipInput.controller.text;
+    SocketData.networkMask = networkMaskInput.controller.text;
+    SocketData.gateAway = gateAwayInput.controller.text;
+    SocketData.rosClientPort = localRosPort.controller.text;
+    SocketData.setupServerPort = setUpServerPort.controller.text;
+    showGoodToast("Data saved");
   }
 
   @override
