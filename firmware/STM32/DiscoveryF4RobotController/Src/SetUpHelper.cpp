@@ -50,20 +50,22 @@ void SetUpHelper::set_default(bool force){
 
 		offset = LOCAL_IP_OFFSET;
 		uint8_t ip[] = WIZNET_IP_ADRESS;
-		memcpy(message_out + offset, ip, sizeof(ip));
+		memcpy(message_out + offset, ip, IP_SIZE);
+
+		offset = NETWORK_MASK_OFFSET;
+		uint8_t mask[] = WIZNET_MASK;
+		memcpy(message_out + offset, mask, IP_SIZE);
+
+		offset = GATEAWAY_OFFSET;
+		uint8_t gw[] = WIZNET_GATEAWAY;
+		memcpy(message_out + offset, gw, IP_SIZE);
 
 //		offset = WIZNET_PORT_OFFSET;
 //		uint16_t port = WIZNET_PORT;
 //		 message_out[offset] = port & 0xFF;
 //		 message_out[offset+1] = port >> 8;
 //
-//		offset = WIZNET_MASK_OFFSET;
-//		uint8_t mask[] = WIZNET_MASK;
-//		memcpy(message_out + offset, mask, sizeof(mask));
-//
-//		offset = WIZET_GATE_AWAY_OFFSET;
-//		uint8_t gw[] = WIZNET_GATEAWAY;
-//		memcpy(message_out + offset, gw, sizeof(gw));
+
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
@@ -91,10 +93,11 @@ void SetUpHelper::read_all()
 void SetUpHelper::extract_variables()
 {
 	memcpy(LOCAL_IP_ADDRESS, message_out + LOCAL_IP_OFFSET, IP_SIZE);
+	memcpy(NETWORK_MASK, message_out + NETWORK_MASK_OFFSET, IP_SIZE);
+	memcpy(GATEAWAY, message_out + GATEAWAY_OFFSET, IP_SIZE);
 
 //	wiznet_client_port = (message_out[WIZNET_PORT_OFFSET + 1] << 8) | message_out[WIZNET_PORT_OFFSET];
-//	memcpy(wiznet_mask, message_out + WIZNET_MASK_OFFSET, IP_SIZE);
-//	memcpy(wiznet_gateaway, message_out + WIZET_GATE_AWAY_OFFSET, IP_SIZE);
+
 }
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
@@ -110,18 +113,16 @@ bool SetUpHelper::set(uint8_t *buff){
 		offset = LOCAL_IP_OFFSET;
 		memcpy(message_out + offset, buff + offset, IP_SIZE);
 
+		offset = NETWORK_MASK_OFFSET;
+		memcpy(message_out + offset, buff + offset, IP_SIZE);
+
+		offset = GATEAWAY_OFFSET;
+		memcpy(message_out + offset, buff + offset, IP_SIZE);
+
 //		offset = WIZNET_PORT_OFFSET;
 //		uint16_t port = WIZNET_PORT;
 //		 message_out[offset] = port & 0xFF;
 //		 message_out[offset+1] = port >> 8;
-//
-//		offset = WIZNET_MASK_OFFSET;
-//		uint8_t mask[] = WIZNET_MASK;
-//		memcpy(message_out + offset, mask, sizeof(mask));
-//
-//		offset = WIZET_GATE_AWAY_OFFSET;
-//		uint8_t gw[] = WIZNET_GATEAWAY;
-//		memcpy(message_out + offset, gw, sizeof(gw));
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);

@@ -43,7 +43,7 @@
 extern ETH_HandleTypeDef heth;
 
 /* LWIP init function */	
-void LWIP_Init(uint8_t *local_ip);
+void LWIP_Init(uint8_t *local_ip, uint8_t *network_mask, uint8_t *gateaway);
 
 
 

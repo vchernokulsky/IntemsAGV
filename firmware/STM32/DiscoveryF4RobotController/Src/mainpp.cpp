@@ -83,6 +83,16 @@ uint8_t* get_local_ip_ptr()
 	return settings.LOCAL_IP_ADDRESS;
 }
 
+uint8_t* get_network_mask_ptr()
+{
+	return settings.NETWORK_MASK;
+}
+
+uint8_t* get_gateaway_ptr()
+{
+	return settings.GATEAWAY;
+}
+
 
 
 void StartSocetClientTask(void *arg)

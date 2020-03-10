@@ -10,11 +10,13 @@
 
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
-#define SETTING_SIZE 8
+#define SETTING_SIZE 16
 
 #define SET_STR "set"
 #define SET_FLAG_OFFSET 0
 #define LOCAL_IP_OFFSET 4
+#define NETWORK_MASK_OFFSET 8
+#define GATEAWAY_OFFSET 12
 
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
@@ -35,6 +37,8 @@ private:
 	void extract_variables();
 public:
 	uint8_t LOCAL_IP_ADDRESS[IP_SIZE];
+	uint8_t NETWORK_MASK[IP_SIZE];
+	uint8_t GATEAWAY[IP_SIZE];
 	SetUpHelper();
 	virtual ~SetUpHelper();
 	void memory_init(I2C_HandleTypeDef *main_hi2c1);

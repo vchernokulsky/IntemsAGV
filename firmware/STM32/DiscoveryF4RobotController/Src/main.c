@@ -607,7 +607,7 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
   external_memory_init(&hi2c1);
   osDelay(100);
-  LWIP_Init(get_local_ip_ptr());
+  LWIP_Init(get_local_ip_ptr(), get_network_mask_ptr(), get_gateaway_ptr());
   threds_setup(&htim3, &htim4, &htim8, &htim1) ;
 
 
