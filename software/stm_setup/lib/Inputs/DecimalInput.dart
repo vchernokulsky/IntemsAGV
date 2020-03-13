@@ -63,6 +63,7 @@ class _DecimalInput extends State<DecimalInput> {
 
           if (num >= minValue && num <= maxValue) {
             errorMsg = "";
+            controller.text = num.toStringAsFixed(3);
           } else {
             errorMsg =
             "out of range(should be between $minValue and $maxValue)";

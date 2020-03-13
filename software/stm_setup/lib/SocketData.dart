@@ -29,6 +29,7 @@ class SocketData extends ChangeNotifier {
   static int connectPort = 11511;
 
   static bool getData = false;
+
   static String localIpAddress = "";
   static String networkMask = "";
   static String gateAway = "";
@@ -36,6 +37,13 @@ class SocketData extends ChangeNotifier {
   static String setupServerPort = "";
   static String serialNodeIp = "";
   static String serialNodePort = "";
+
+  static String wheelRadius;
+  static String wheelSeparation;
+  static String maxLinVelocity;
+  static String maxAngVelocity;
+  static String maxPwdAllowed;
+  static String radPerTick;
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
