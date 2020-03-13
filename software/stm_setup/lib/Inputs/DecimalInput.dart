@@ -76,11 +76,11 @@ class _DecimalInput extends State<DecimalInput> {
   }
 
   Widget build(BuildContext context) {
-    numberValidate(controller.text);
     return Center(
       child: Column(
         children: <Widget>[
           TextField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: "$title",
               border: OutlineInputBorder(),

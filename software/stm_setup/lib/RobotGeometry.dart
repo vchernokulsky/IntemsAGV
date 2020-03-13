@@ -28,11 +28,11 @@ class _RobotGeometry extends State<RobotGeometry> {
     maxLinVelocity = DecimalInput(
         title: "max linear velocity", minValue: 0.1, maxValue: 30.0);
     maxAngVelocity = DecimalInput(
-        title: "max angular velocity", minValue: 0.1, maxValue: 30.0);
+        title: "max angular velocity", minValue: 0.1, maxValue: 10.0);
     maxPwdAllowed =
         NumericInput(title: "Max PWD allowed", minValue: 0, maxValue: 255);
     radPerTick =
-        DecimalInput(title: "Rad per tick", minValue: 0.0, maxValue: 3.2);
+        DecimalInput(title: "Rad per tick", minValue: 0.0, maxValue: 0.5);
   }
 
   void initState() {

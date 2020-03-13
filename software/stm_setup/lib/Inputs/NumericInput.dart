@@ -19,6 +19,9 @@ class NumericInput extends StatefulWidget {
     if(numStr == null){
       numStr = controller.text;
     }
+    if(numStr.isEmpty){
+      return true;
+    }
     int num = int.parse(numStr);
       return (num >= minValue && num <= maxValue);
   }
@@ -55,13 +58,17 @@ class _NumericInput extends State<NumericInput> {
     errorMsg = "";
   }
 
+  void setErrorText(String numStr){
+    if (super.widget.isCorrect(numStr: numStr)) {
+      errorMsg = "";
+    } else {
+      errorMsg = "out of range(should be between $minValue and $maxValue)";
+    }
+  }
+
   void numberValidate(String numStr) {
     setState(() {
-      if (super.widget.isCorrect(numStr: numStr)) {
-        errorMsg = "";
-      } else {
-        errorMsg = "out of range(should be between $minValue and $maxValue)";
-      }
+      setErrorText(numStr);
     });
   }
 

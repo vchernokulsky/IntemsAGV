@@ -38,12 +38,12 @@ class SocketData extends ChangeNotifier {
   static String serialNodeIp = "";
   static String serialNodePort = "";
 
-  static String wheelRadius;
-  static String wheelSeparation;
-  static String maxLinVelocity;
-  static String maxAngVelocity;
-  static String maxPwdAllowed;
-  static String radPerTick;
+  static String wheelRadius = "";
+  static String wheelSeparation = "";
+  static String maxLinVelocity = "";
+  static String maxAngVelocity = "";
+  static String maxPwdAllowed = "";
+  static String radPerTick = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
