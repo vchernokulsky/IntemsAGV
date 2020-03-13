@@ -13,3 +13,11 @@ firmware/STM32/RosUARTController/Debug/
 firmware/STM32/TCPClientF7/Debug/
 
 software/catkin_ws/src/creating_map_lidar/venv/
+
+software/ros-app-tb3-voiceorder/build/
+software/ros-app-tb3-voiceorder/android_10/build/
+software/ros-app-tb3-voiceorder/android_pubsubSample/build/
+software/ros-app-tb3-voiceorder/android_controllerSample/build/
+software/ros-app-tb3-voiceorder/.idea/
+software/ros-app-tb3-voiceorder/.gradle/
+
