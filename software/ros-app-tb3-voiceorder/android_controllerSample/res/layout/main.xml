@@ -133,9 +133,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:thumb="@drawable/custom_thumb"
+                    android:progressDrawable="@drawable/custom_progress"
+                    android:maxHeight="5dp"
+                    android:minHeight="4dp"
                     android:min="-100"
                     android:max="100"
-                    android:rotation="270"/>
+                    android:rotation="270"
+                    />
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
@@ -156,16 +161,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    app:thumb="@drawable/thumb_disabled"
+                    app:thumb="@drawable/custom_thumb"
                     app:arcColor="#4a4a4a"
-                    app:arcProgressColor="#20B2AA"
+                    app:arcProgressColor="#CB7DCFCB"
                     app:tickColor="#4a4a4a"
-                    app:tickProgressColor="#20B2AA"
-                    app:textColor="#000"
-                    app:textProgressColor="#CD5C5C"
-                    app:angleTextSize="10sp"
-                    app:arcWidth="4dp"
-                    app:progressWidth="4dp"
+                    app:tickProgressColor="#CB64CCC7"
+                    app:arcWidth="5dp"
+                    app:progressWidth="5dp"
                     app:tickOffset="18dp"
                     app:tickLength="10dp"
                     app:angle="90"
@@ -174,14 +176,7 @@
                     app:touchInside="true"
                     app:roundEdges="true"
                     />
-                <SeekBar
-                    android:id="@+id/seekBar2"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:min="-100"
-                    android:max="100"
-                    />
+
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"

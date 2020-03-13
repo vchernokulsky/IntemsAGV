@@ -17,11 +17,14 @@
 package org.ros.android.controllerSample;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.goodiebag.protractorview.ProtractorView;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.android.MasterChooser;
@@ -62,7 +65,7 @@ public class MainActivity extends RosActivity {
   TextView ang_vel;
   View root_view;
 
-  SeekBar seekBar2;
+  ProtractorView protractorView;
   TextView textView2;
   int min = 0, max = 100, current = 0;
 
@@ -95,7 +98,7 @@ public class MainActivity extends RosActivity {
     textView.setText("" + current);
 
     textView2 = findViewById(R.id.textView2);
-    seekBar2 = findViewById(R.id.seekBar2);
+    protractorView=findViewById(R.id.protractor_view);
     textView2.setText("" + 0);
 
     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -119,27 +122,26 @@ public class MainActivity extends RosActivity {
       }
     });
 
-    seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    protractorView.setOnProtractorViewChangeListener(new ProtractorView.OnProtractorViewChangeListener() {
       @Override
-      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        twistAngular = - (double)progress / 100.0;
-        textView2.setText("" + progress);
+      public void onProgressChanged(ProtractorView protractorView, int progress, boolean fromUser) {
+        twistAngular = (double) (progress-90) / 90.0;
+        textView2.setText("" + (progress - 90));
       }
 
       @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
+      public void onStartTrackingTouch(ProtractorView protractorView) {
         publishAngVelocity = true;
       }
 
       @Override
-      public void onStopTrackingTouch(SeekBar sBar) {
-        seekBar2.setProgress(0);
+      public void onStopTrackingTouch(ProtractorView protractorView) {
+        protractorView.setAngle(90);
         twistAngular = 0;
         setTwist();
         publishAngVelocity = false;
       }
     });
-
 
     startPub();
   }

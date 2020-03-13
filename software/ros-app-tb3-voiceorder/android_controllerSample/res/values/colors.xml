@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#CB64CCC7</color>
+    <color name="colorGray">#4a4a4a</color>
     <color name="white">#ffffff</color>
     <color name="black">#010101</color>
     <color name="bg_gradient_start">#31244e</color>

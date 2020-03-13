@@ -45,7 +45,7 @@ import android.view.View;
 
 public class ProtractorView extends View {
 
-    private static final int MAX = 180;
+    private static final int MAX =180;
     private final float DENSITY = getContext().getResources().getDisplayMetrics().density;
 
     /**
@@ -76,8 +76,6 @@ public class ProtractorView extends View {
     private int mTranslateY;
     private int mThumbXPos;
     private int mThumbYPos;
-
-    private int mAngleTextSize = 12;
 
     private int mTickOffset = 12;
     private int mTickLength = 10;
@@ -140,8 +138,6 @@ public class ProtractorView extends View {
          */
         int arcColor = res.getColor(R.color.progress_gray);
         int arcProgressColor = res.getColor(R.color.default_blue_light);
-        int textColor = res.getColor(R.color.progress_gray);
-        int textProgressColor = res.getColor(R.color.default_blue_light);
         int tickColor = res.getColor(R.color.progress_gray);
         int tickProgressColor = res.getColor(R.color.default_blue_light);
         int thumbHalfHeight = 0;
@@ -154,7 +150,6 @@ public class ProtractorView extends View {
          */
         mArcWidth = (int) (mArcWidth * DENSITY);
         mArcProgressWidth = (int) (mArcProgressWidth * DENSITY);
-        mAngleTextSize = (int) (mAngleTextSize * DENSITY);
         mTickOffset = (int) (mTickOffset * DENSITY);
         mTickLength = (int) (mTickLength * DENSITY);
         mTickWidth = (int) (mTickWidth * DENSITY);
@@ -170,7 +165,6 @@ public class ProtractorView extends View {
             thumbHalfWidth = mThumb.getIntrinsicWidth() / 2;
             mThumb.setBounds(-thumbHalfWidth, -thumbHalfHeight, thumbHalfWidth, thumbHalfHeight);
             //Dimensions
-            mAngleTextSize = (int) array.getDimension(R.styleable.ProtractorView_angleTextSize, mAngleTextSize);
             mArcProgressWidth = (int) array.getDimension(R.styleable.ProtractorView_progressWidth, mArcProgressWidth);
             mTickOffset = (int) array.getDimension(R.styleable.ProtractorView_tickOffset, mTickOffset);
             mTickLength = (int) array.getDimension(R.styleable.ProtractorView_tickLength, mTickLength);
@@ -181,8 +175,6 @@ public class ProtractorView extends View {
             //Colors
             arcColor = array.getColor(R.styleable.ProtractorView_arcColor, arcColor);
             arcProgressColor = array.getColor(R.styleable.ProtractorView_arcProgressColor, arcProgressColor);
-            textColor = array.getColor(R.styleable.ProtractorView_textColor, textColor);
-            textProgressColor = array.getColor(R.styleable.ProtractorView_textProgressColor, textProgressColor);
             tickColor = array.getColor(R.styleable.ProtractorView_tickColor, tickColor);
             tickProgressColor = array.getColor(R.styleable.ProtractorView_tickProgressColor, tickProgressColor);
             //Boolean
@@ -229,17 +221,13 @@ public class ProtractorView extends View {
         mTickProgressPaint.setStrokeWidth(mTickProgressWidth);
 
         mTickTextPaint = new Paint();
-        mTickTextPaint.setColor(textColor);
         mTickTextPaint.setAntiAlias(true);
         mTickTextPaint.setStyle(Paint.Style.FILL);
-        mTickTextPaint.setTextSize(mAngleTextSize);
         mTickTextPaint.setTextAlign(Paint.Align.CENTER);
 
         mTickTextColoredPaint = new Paint();
-        mTickTextColoredPaint.setColor(textProgressColor);
         mTickTextColoredPaint.setAntiAlias(true);
         mTickTextColoredPaint.setStyle(Paint.Style.FILL);
-        mTickTextColoredPaint.setTextSize(mAngleTextSize);
         mTickTextColoredPaint.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -301,20 +289,9 @@ public class ProtractorView extends View {
          * Formula for a straight line is y = mx + c. y is calculated for varying values of x and the ticks are drawn.
          */
 
-        int count = mTicksBetweenLabel.ordinal();
+        //int count = mTicksBetweenLabel.ordinal();
         for (int i = 360; i >= 180; i -= mTickIntervals) {
             canvas.save();
-            if (count == mTicksBetweenLabel.ordinal()) {
-                //for text
-                canvas.translate(mArcRect.centerX(), mArcRect.centerY());
-                thetaInRadians = Math.toRadians(i);
-                slope = Math.tan(thetaInRadians);
-                startTickX = (radiusOffset * Math.cos(thetaInRadians));
-                midTickX = startTickX + (((mTickLength / 2)) * Math.cos(thetaInRadians));
-                midTickY = slope * midTickX;
-                canvas.drawText("" + (360 - i), (float) midTickX, (float) midTickY, (mAngle <= 359 - i) ? mTickTextPaint : mTickTextColoredPaint);
-                count = 0;
-            } else {
                 //for tick
                 canvas.scale(-1, 1, mArcRect.centerX(), mArcRect.centerY());
                 canvas.translate(mArcRect.centerX(), mArcRect.centerY());
@@ -326,8 +303,6 @@ public class ProtractorView extends View {
                 endTickX = startTickX + ((mTickLength) * Math.cos(thetaInRadians));
                 endTickY = slope * endTickX;
                 canvas.drawLine((float) startTickX, (float) startTickY, (float) endTickX, (float) endTickY, (mAngle <= 359 - i) ? mTickPaint : mTickProgressPaint);
-                count++;
-            }
             canvas.restore();
         }
 
@@ -562,15 +537,6 @@ public class ProtractorView extends View {
 
     public void setThumb(Drawable thumb) {
         this.mThumb = thumb;
-        invalidate();
-    }
-
-    public int getAngleTextSize() {
-        return mAngleTextSize;
-    }
-
-    public void setAngleTextSize(int angleTextSize) {
-        this.mAngleTextSize = angleTextSize;
         invalidate();
     }
 
