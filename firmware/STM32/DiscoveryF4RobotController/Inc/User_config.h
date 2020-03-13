@@ -31,7 +31,7 @@
 #define KD_DEFAULT 0.0
 
 #define MAX_PWD 255
-#define MAX_PWD_ALLOWED 255
+
 
 #define PWD_STEP_L 10
 #define SPEED_DELTA_L 40
@@ -49,10 +49,11 @@
 #define BASE_FRAME "base_link"
 #define ODOMETRY_FRAME "odom"
 
-#define RAD_PER_TICK 0.0174533
-#define RADIUS 0.1
-#define WHEEL_SEPARATION 0.45
+#define DEFAULT_MAX_PWD_ALLOWED 255
+#define DEFAULT_RAD_PER_TICK 0.0174533
+#define DEFAULT_RADIUS 0.1
+#define DEFAULT_WHEEL_SEPARATION 0.45
 
-#define MAX_LIN_SPEED 1.9
-#define ANG_VEL_MAX 3.8
+#define DEFAULT_MAX_LIN_SPEED 1.9
+#define DEFAULT ANG_VEL_MAX 3.8
 /************************************************/

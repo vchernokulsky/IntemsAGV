@@ -17,6 +17,8 @@
 class OdometryPublisher
 {
 private:
+	float wheel_radius;
+	float wheel_separetion;
 	SemaphoreHandle_t pose_set;
 	ros::NodeHandle* nh;
 	nav_msgs::Odometry odom;
@@ -36,31 +38,9 @@ private:
 
 public:
 	OdometryPublisher():pub(ODOMETRY_TOPIC,&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
-//		OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
+
 	}
 
-	OdometryPublisher(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel):pub(ODOMETRY_TOPIC,&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
-//		OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
-		nh = n;
-		nh->advertise(pub);
-		nh->subscribe(sub);
-
-		encoder1 = leftWheel;
-		encoder2 = rightWheel;
-
-
-		cur_time = nh->now();
-		last_time = cur_time;
-
-		theta = 0;
-
-		odom.header.frame_id = ODOMETRY_FRAME;
-		odom.child_frame_id = BASE_FRAME;
-
-		tf_broadcaster.init(*nh);
-		transform.header.frame_id =ODOMETRY_FRAME;
-		transform.child_frame_id = BASE_FRAME;
-	}
 
 	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel){
 		    OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
@@ -70,7 +50,6 @@ public:
 
 			encoder1 = leftWheel;
 			encoder2 = rightWheel;
-
 
 			cur_time = nh->now();
 			last_time = cur_time;
@@ -84,15 +63,17 @@ public:
 			transform.header.frame_id =ODOMETRY_FRAME ;
 			transform.child_frame_id = BASE_FRAME;
 		}
-
-
+	void set_robot_params(float radius, float separation){
+		wheel_radius = radius;
+		wheel_separetion = separation;
+	}
 
 	void set_pose(){
 		if( xSemaphoreTake( pose_set, portMAX_DELAY) == pdTRUE )
 		{
 
-		float left_travel = encoder1->get_distance() * RADIUS;
-		float right_travel = encoder2->get_distance() * RADIUS;
+		float left_travel = encoder1->get_distance() * wheel_radius;
+		float right_travel = encoder2->get_distance() * wheel_radius;
 
 //		double delta_time = cur_time.toSec() - last_time.toSec();
 		double delta_time = (encoder1->get_distance_time() + encoder2->get_distance_time()) / 2000.0;
@@ -105,7 +86,7 @@ public:
 
 
         float delta_travel = (right_travel + left_travel) / 2.0;
-        float delta_theta = (right_travel - left_travel) / WHEEL_SEPARATION;
+        float delta_theta = (right_travel - left_travel) / wheel_separetion;
 
         float delta_x = 0;
         float delta_y = 0;

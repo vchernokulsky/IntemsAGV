@@ -48,6 +48,13 @@ public:
 	uint8_t SERIALNODE_IP[IP_SIZE];
 	uint16_t SERIALNODE_PORT;
 
+	float WHEEL_RADIUS;
+	float WHEEL_SEPARATION;
+	float MAX_LIN_SPEED;
+	float MAX_ANG_VEL;
+	uint8_t MAX_PWD_ALLOWED;
+	float RAD_PER_TICK;
+
 	SetUpHelper();
 	virtual ~SetUpHelper();
 	void memory_init(I2C_HandleTypeDef *main_hi2c1);

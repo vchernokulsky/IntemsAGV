@@ -59,7 +59,7 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 {
 	socket_client.init(settings.ROS_CLIENT_PORT, settings.SERIALNODE_IP, settings.SERIALNODE_PORT);
 	socket_server.init(&settings);
-	ros_helper.setupRos(main_htim, main_htim2, encoder_htim, encoder_htim2);
+	ros_helper.setupRos(main_htim, main_htim2, encoder_htim, encoder_htim2, &settings);
 
 	//****** Client Task **********
 	sys_thread_new("client_thread", StartSocetClientTask, 0, DEFAULT_THREAD_STACKSIZE * 2, osPriorityNormal);

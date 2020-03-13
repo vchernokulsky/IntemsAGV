@@ -17,12 +17,10 @@
 #include "CmdVelSubscriber.h"
 #include "OdometryPublisher.h"
 
-#include "User_config.h"
-
-//#include "Test.h"
 
 class RosHelper {
 private:
+	static SetUpHelper *settings;
 	ros::NodeHandle nh;
 	std_msgs::String str_msg;
 	std_msgs::Int16 cur_speed_msg;
@@ -39,7 +37,7 @@ private:
 public:
 	RosHelper();
 	virtual ~RosHelper();
-	void setupRos(TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
+	void setupRos(TIM_HandleTypeDef *main_htim, TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2, SetUpHelper *main_settings);
 	void setupRos();
 	void RosTask();
 	void setSpeedTask(void);

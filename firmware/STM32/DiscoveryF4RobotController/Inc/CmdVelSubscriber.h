@@ -11,6 +11,9 @@ class CmdVelSubscriber
 {
 private:
 	ros::Subscriber<geometry_msgs::Twist,CmdVelSubscriber> sub;
+	float wheel_separation;
+	float max_lin_speed;
+	float max_ang_vel;
 
 	float linear;
 	float angular;
@@ -39,11 +42,11 @@ private:
     }
     float check_linear_limit_velocity(float vel)
     {
-    	float ret = constrain(vel, -MAX_LIN_SPEED, MAX_LIN_SPEED);
+    	float ret = constrain(vel, -max_lin_speed, max_lin_speed);
         return ret;
     }
     float check_angular_limit_velocity(float vel){
-    	float ret = constrain(vel, -ANG_VEL_MAX, ANG_VEL_MAX);
+    	float ret = constrain(vel, -max_ang_vel, max_ang_vel);
         return ret;
     }
 
@@ -63,20 +66,20 @@ private:
     }
     void adjust_speeds()
     {
-    	if ((left_linear > MAX_LIN_SPEED)or(right_linear > MAX_LIN_SPEED)){
-            float factor = MAX_LIN_SPEED / max(left_linear, right_linear);
+    	if ((left_linear > max_lin_speed)or(right_linear > max_lin_speed)){
+            float factor = max_lin_speed / max(left_linear, right_linear);
             left_linear *= factor;
 			right_linear *= factor;
     	}
-    	if ((left_linear < -MAX_LIN_SPEED)or(right_linear < -MAX_LIN_SPEED)){
-			float factor = MAX_LIN_SPEED / min(left_linear, right_linear);
+    	if ((left_linear < -max_lin_speed)or(right_linear < -max_lin_speed)){
+			float factor = max_lin_speed / min(left_linear, right_linear);
 			left_linear *= factor;
 			right_linear *= factor;
 		}
     }
     void calculate_speeds(){
-		left_linear = (2 * linear + WHEEL_SEPARATION * angular) / 2;
-		right_linear = (2 * linear - WHEEL_SEPARATION * angular) / 2;
+		left_linear = (2 * linear + wheel_separation * angular) / 2;
+		right_linear = (2 * linear - wheel_separation * angular) / 2;
 		adjust_speeds();
     }
 public:
@@ -104,13 +107,6 @@ public:
 
 	}
 
-	CmdVelSubscriber(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2):sub(CMDVEL_TOPIC,&CmdVelSubscriber::cmdvel_callback, this){
-		(*nh).subscribe(sub);
-		left_wheel = wheel;
-		right_wheel = wheel2;
-		cur_time = HAL_GetTick();
-		last_time = cur_time;
-	}
 
 	void init(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2){
 		(*nh).subscribe(sub);
@@ -119,6 +115,12 @@ public:
 		cur_time = HAL_GetTick();
 		last_time = cur_time;
 	}
+
+	void set_robot_params(float separation, float max_lin, float max_ang){
+			wheel_separation = separation;
+			max_lin_speed = max_lin;
+			max_ang_vel = max_ang;
+		}
 
 
 
