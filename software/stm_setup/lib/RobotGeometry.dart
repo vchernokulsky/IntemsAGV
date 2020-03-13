@@ -32,7 +32,7 @@ class _RobotGeometry extends State<RobotGeometry> {
     maxPwdAllowed =
         NumericInput(title: "Max PWD allowed", minValue: 0, maxValue: 255);
     radPerTick =
-        DecimalInput(title: "Rad per tick", minValue: 0.0, maxValue: 0.5);
+        DecimalInput(title: "Rad per tick", minValue: 0.0, maxValue: 0.6, decimal: 5);
   }
 
   void initState() {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import "package:hex/hex.dart";
+import 'package:stm_setup/Inputs/DecimalInput.dart';
 import 'package:stm_setup/Inputs/MacInput.dart';
 import 'package:stm_setup/Inputs/NumericInput.dart';
 
@@ -11,12 +12,13 @@ import 'Inputs/IpInput.dart';
 import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
-  final int msgSize = 26;
+  final int msgSize = 38;
   final int setFlagSize = 3;
   final int ipSize = 4;
   final int numSize = 2;
 
   final int setFlagOffset = 0;
+
   final int localIpOffset = 4;
   final int networkMaskOffset = 8;
   final int gateAwayOffset = 12;
@@ -24,6 +26,13 @@ class SocketData extends ChangeNotifier {
   final int setupServerPortOffset = 18;
   final int serialNodeIpOffset = 20;
   final int serialNodePortOffset = 24;
+
+  final int wheelRadiusOffset = 26;
+  final int wheelSeparationOffset = 28;
+  final int maxLinVelocityOffset = 30;
+  final int maxAngVelocityOffset = 32;
+  final int radPerTickOffset = 34;
+  final int maxPwdAllowedOffset = 36;
 
   static String connectHost = "192.168.2.114";
   static int connectPort = 11511;
@@ -73,14 +82,7 @@ class SocketData extends ChangeNotifier {
 
   void sendInfo() async {
     final Socket client = await Socket.connect(connectHost, connectPort);
-    client.add(Uint8List.fromList([255, 254, 0, 0]) +
-        IpInput.stringToBytes(localIpAddress) +
-        IpInput.stringToBytes(networkMask) +
-        IpInput.stringToBytes(gateAway) +
-        NumericInput.stringToBytes(rosClientPort) +
-        NumericInput.stringToBytes(setupServerPort) +
-        IpInput.stringToBytes(serialNodeIp) +
-        NumericInput.stringToBytes(serialNodePort));
+    client.add(createMsg());
     client.listen((Uint8List data) {
       data.forEach((i) => print("got $i"));
       if (data[0] == 7 && data[1] == 7 && data[2] == 7) {
@@ -100,6 +102,23 @@ class SocketData extends ChangeNotifier {
       client.close();
     });
     print('main done');
+  }
+
+  Uint8List createMsg() {
+    return Uint8List.fromList([255, 254, 0, 0]) +
+        IpInput.stringToBytes(localIpAddress) +
+        IpInput.stringToBytes(networkMask) +
+        IpInput.stringToBytes(gateAway) +
+        NumericInput.stringToBytes(rosClientPort) +
+        NumericInput.stringToBytes(setupServerPort) +
+        IpInput.stringToBytes(serialNodeIp) +
+        NumericInput.stringToBytes(serialNodePort) +
+        NumericInput.stringToBytes(wheelRadius) +
+        NumericInput.stringToBytes(wheelSeparation) +
+        DecimalInput.stringToBytes(maxLinVelocity, 3) +
+        DecimalInput.stringToBytes(maxAngVelocity, 3) +
+        DecimalInput.stringToBytes(radPerTick, 5) +
+        NumericInput.stringToBytes(maxPwdAllowed);
   }
 
   void parseIntoVariables(Uint8List data) {
@@ -124,6 +143,21 @@ class SocketData extends ChangeNotifier {
           data.sublist(serialNodeIpOffset, serialNodeIpOffset + ipSize));
       serialNodePort = NumericInput.bytesToString(
           data.sublist(serialNodePortOffset, serialNodePortOffset + numSize));
+
+      wheelRadius = NumericInput.bytesToString(
+          data.sublist(wheelRadiusOffset, wheelRadiusOffset + numSize));
+      wheelSeparation = NumericInput.bytesToString(
+          data.sublist(wheelSeparationOffset, wheelSeparationOffset + numSize));
+      maxLinVelocity = DecimalInput.bytesToString(
+          data.sublist(maxLinVelocityOffset, maxLinVelocityOffset + numSize),
+          3);
+      maxAngVelocity = DecimalInput.bytesToString(
+          data.sublist(maxAngVelocityOffset, maxAngVelocityOffset + numSize),
+          3);
+      radPerTick = DecimalInput.bytesToString(
+          data.sublist(radPerTickOffset, radPerTickOffset + numSize), 5);
+      maxPwdAllowed = NumericInput.bytesToString(
+          data.sublist(maxPwdAllowedOffset, maxPwdAllowedOffset + numSize));
     }
   }
 }
