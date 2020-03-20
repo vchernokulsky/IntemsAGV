@@ -55,5 +55,5 @@
 #define DEFAULT_WHEEL_SEPARATION 0.45
 
 #define DEFAULT_MAX_LIN_SPEED 1.9
-#define DEFAULT ANG_VEL_MAX 3.8
+#define DEFAULT_ANG_VEL_MAX 3.8
 /************************************************/

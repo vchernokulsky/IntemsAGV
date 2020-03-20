@@ -10,9 +10,10 @@
 
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
-#define SETTING_SIZE 26
+#define SETTING_SIZE 38
 
 #define SET_STR "set"
+
 #define SET_FLAG_OFFSET 0
 #define LOCAL_IP_OFFSET 4
 #define NETWORK_MASK_OFFSET 8
@@ -22,11 +23,20 @@
 #define SERIALNODE_IP_OFFSET 20
 #define SERIALNODE_PORT_OFFSET 24
 
+#define WHEEL_RADIUS_OFFSET 26
+#define WHEEL_SEPARATION_OFFSET 28
+#define MAX_LIN_VEL_OFFSET 30
+#define MAX_ANG_VEL_OFFSET 32
+#define RAD_PER_TICK_OFFSET 34
+#define MAX_PWD_ALLOWED_OFFSET 36
+
+#include <cmath>
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 #include <string.h>
 #include "User_config.h"
 #include "System_config.h"
+
 
 
 class SetUpHelper {
@@ -35,6 +45,8 @@ private:
 	uint8_t message_out[SETTING_SIZE];
 
 	void wait_for_readiness();
+	void set_default_network();
+	void set_default_robot_geometry();
 	void set_default(bool force);
 	bool is_set();
 	void read_all();

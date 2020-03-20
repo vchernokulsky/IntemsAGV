@@ -41,43 +41,84 @@ void SetUpHelper::wait_for_readiness()
 	}
 }
 
-void SetUpHelper::set_default(bool force){
+void SetUpHelper::set_default_network()
+{
+	int offset = LOCAL_IP_OFFSET;
+	uint8_t ip[] = WIZNET_IP_ADRESS;
+	memcpy(message_out + offset, ip, IP_SIZE);
+
+	offset = NETWORK_MASK_OFFSET;
+	uint8_t mask[] = WIZNET_MASK;
+	memcpy(message_out + offset, mask, IP_SIZE);
+
+	offset = GATEAWAY_OFFSET;
+	uint8_t gw[] = WIZNET_GATEAWAY;
+	memcpy(message_out + offset, gw, IP_SIZE);
+
+	offset = ROS_CLIENT_PORT_OFFSET;
+	uint16_t port = WIZNET_PORT;
+	message_out[offset] = port & 0xFF;
+	message_out[offset+1] = port >> 8;
+
+	offset = SET_UP_SERVER_PORT_OFFSET;
+	port = DEFAULT_SETUP_SERVER_PORT;
+	message_out[offset] = port & 0xFF;
+	message_out[offset+1] = port >> 8;
+
+	offset = SERIALNODE_IP_OFFSET;
+	uint8_t sn_ip[] = SERVER_IP_ADRESS;
+	memcpy(message_out + offset, sn_ip, IP_SIZE);
+
+	offset = SERIALNODE_PORT_OFFSET;
+	port = SERVER_PORT;
+	message_out[offset] = port & 0xFF;
+	message_out[offset+1] = port >> 8;
+}
+
+void SetUpHelper::set_default_robot_geometry()
+{
+	int offset = WHEEL_RADIUS_OFFSET;
+	uint16_t radius = std::round(DEFAULT_RADIUS * 1000.0);
+	message_out[offset] = radius & 0xFF;
+	message_out[offset+1] = radius >> 8;
+
+	offset = WHEEL_SEPARATION_OFFSET;
+	uint16_t separation = std::round(DEFAULT_WHEEL_SEPARATION * 1000.0);
+	message_out[offset] = separation & 0xFF;
+	message_out[offset+1] = separation >> 8;
+
+	offset = MAX_LIN_VEL_OFFSET;
+	uint16_t vel = std::round(DEFAULT_MAX_LIN_SPEED * 1000.0);
+	message_out[offset] = vel & 0xFF;
+	message_out[offset+1] = vel >> 8;
+
+	offset = MAX_ANG_VEL_OFFSET;
+	vel = std::round(DEFAULT_ANG_VEL_MAX * 1000.0);
+	message_out[offset] = vel & 0xFF;
+	message_out[offset+1] = vel >> 8;
+
+	offset = RAD_PER_TICK_OFFSET;
+	uint16_t rad = std::round(DEFAULT_RAD_PER_TICK * 100000.0);
+	message_out[offset] = rad & 0xFF;
+	message_out[offset+1] = rad >> 8;
+
+	offset = MAX_PWD_ALLOWED_OFFSET;
+	uint16_t pwd = DEFAULT_MAX_PWD_ALLOWED;
+	message_out[offset] = pwd & 0xFF;
+	message_out[offset+1] = pwd >> 8;
+
+}
+
+void SetUpHelper::set_default(bool force)
+{
 	if(force || !is_set())
 	{
 		int offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
-		offset = LOCAL_IP_OFFSET;
-		uint8_t ip[] = WIZNET_IP_ADRESS;
-		memcpy(message_out + offset, ip, IP_SIZE);
-
-		offset = NETWORK_MASK_OFFSET;
-		uint8_t mask[] = WIZNET_MASK;
-		memcpy(message_out + offset, mask, IP_SIZE);
-
-		offset = GATEAWAY_OFFSET;
-		uint8_t gw[] = WIZNET_GATEAWAY;
-		memcpy(message_out + offset, gw, IP_SIZE);
-
-		offset = ROS_CLIENT_PORT_OFFSET;
-		uint16_t port = WIZNET_PORT;
-		message_out[offset] = port & 0xFF;
-		message_out[offset+1] = port >> 8;
-
-		offset = SET_UP_SERVER_PORT_OFFSET;
-		port = DEFAULT_SETUP_SERVER_PORT;
-		message_out[offset] = port & 0xFF;
-		message_out[offset+1] = port >> 8;
-
-		offset = SERIALNODE_IP_OFFSET;
-		uint8_t sn_ip[] = SERVER_IP_ADRESS;
-		memcpy(message_out + offset, sn_ip, IP_SIZE);
-
-		offset = SERIALNODE_PORT_OFFSET;
-		port = SERVER_PORT;
-		message_out[offset] = port & 0xFF;
-		message_out[offset+1] = port >> 8;
+		set_default_network();
+		set_default_robot_geometry();
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
@@ -114,6 +155,23 @@ void SetUpHelper::extract_variables()
 	memcpy(SERIALNODE_IP, message_out + SERIALNODE_IP_OFFSET, IP_SIZE);
 	SERIALNODE_PORT = (message_out[SERIALNODE_PORT_OFFSET + 1] << 8) | message_out[SERIALNODE_PORT_OFFSET];
 
+	uint16_t radius_mm =  (message_out[WHEEL_RADIUS_OFFSET + 1] << 8) | message_out[WHEEL_RADIUS_OFFSET];
+	WHEEL_RADIUS = (float)radius_mm / 1000.0f;
+
+	uint16_t separation_mm =  (message_out[WHEEL_SEPARATION_OFFSET + 1] << 8) | message_out[WHEEL_SEPARATION_OFFSET];
+	WHEEL_SEPARATION = (float)separation_mm / 1000.0f;
+
+	uint16_t lin_vel_mm =  (message_out[MAX_LIN_VEL_OFFSET + 1] << 8) | message_out[MAX_LIN_VEL_OFFSET];
+	MAX_LIN_SPEED = (float)lin_vel_mm / 1000.0f;
+
+	uint16_t ang_vel_mr =  (message_out[MAX_ANG_VEL_OFFSET + 1] << 8) | message_out[MAX_ANG_VEL_OFFSET];
+	MAX_ANG_VEL = (float)ang_vel_mr / 1000.0f;
+
+	uint16_t rad_int =  (message_out[RAD_PER_TICK_OFFSET + 1] << 8) | message_out[RAD_PER_TICK_OFFSET];
+	RAD_PER_TICK = (float)rad_int / 100000.0f;
+
+	MAX_PWD_ALLOWED = (message_out[MAX_PWD_ALLOWED_OFFSET + 1] << 8) | message_out[MAX_PWD_ALLOWED_OFFSET];
+
 }
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
@@ -125,6 +183,9 @@ bool SetUpHelper::set(uint8_t *buff){
 		int offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
+
+		offset = LOCAL_IP_OFFSET;
+		memcpy(message_out + offset, buff + offset, SETTING_SIZE - offset);
 
 		offset = LOCAL_IP_OFFSET;
 		memcpy(message_out + offset, buff + offset, IP_SIZE);
