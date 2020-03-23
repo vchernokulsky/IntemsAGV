@@ -30,11 +30,11 @@ class IpInput extends StatefulWidget {
       }
   }
 
-  static Uint8List stringToBytes(String string){
-    Uint8List ret = Uint8List.fromList([0, 0, 0, 0]);
+  static List<int> stringToBytes(String string){
+    List<int> ret =[0, 0, 0, 0];
     List<String> retStr = string.split(".");
     if (retStr.length == 4){
-      ret = Uint8List.fromList(retStr.map(int.parse).toList());
+      ret = retStr.map(int.parse).toList();
     }
     ret.forEach((i) => print("ip $i")) ;
     return ret;

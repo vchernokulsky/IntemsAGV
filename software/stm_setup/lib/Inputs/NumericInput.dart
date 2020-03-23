@@ -26,11 +26,11 @@ class NumericInput extends StatefulWidget {
       return (num >= minValue && num <= maxValue);
   }
 
-  static Uint8List stringToBytes(String string){
-    Uint8List ret = Uint8List.fromList([0, 0]);
+  static List<int> stringToBytes(String string){
+    List<int> ret =[0, 0];
     int num = int.parse(string);
     if (num ~/ 256 < 256){
-      ret = Uint8List.fromList([ num % 256, num ~/256]);
+      ret = [ num % 256, num ~/256];
     }
     return ret;
   }

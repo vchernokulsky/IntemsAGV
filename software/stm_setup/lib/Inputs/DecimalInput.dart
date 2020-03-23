@@ -44,11 +44,11 @@ class DecimalInput extends StatefulWidget {
     return ret;
   }
 
-  static Uint8List stringToBytes(String string, int pwr){
-    Uint8List ret = Uint8List.fromList([0, 0]);
+  static List<int> stringToBytes(String string, int pwr){
+    List<int> ret = [0, 0];
     int num = (double.parse(string) * pow(10, pwr)).round();
     if (num ~/ 256 < 256){
-      ret = Uint8List.fromList([ num % 256, num ~/256]);
+      ret = [ num % 256, num ~/256];
     }
     return ret;
   }

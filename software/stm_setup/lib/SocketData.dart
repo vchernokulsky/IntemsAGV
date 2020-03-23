@@ -110,7 +110,7 @@ class SocketData extends ChangeNotifier {
   }
 
   Uint8List createMsg() {
-    return Uint8List.fromList([255, 254, 0, 0]) +
+    List<int> byteList = [255, 254, 0, 0] +
         IpInput.stringToBytes(localIpAddress) +
         IpInput.stringToBytes(networkMask) +
         IpInput.stringToBytes(gateAway) +
@@ -125,7 +125,8 @@ class SocketData extends ChangeNotifier {
         DecimalInput.stringToBytes(radPerTick, 5) +
         NumericInput.stringToBytes(maxPwdAllowed) +
         TopicNameInput.stringToBytes(cmdVelTopic);
-
+    Uint8List ret = Uint8List.fromList(byteList);
+    return ret;
   }
 
   void parseIntoVariables(Uint8List data) {
@@ -166,12 +167,14 @@ class SocketData extends ChangeNotifier {
       maxPwdAllowed = NumericInput.bytesToString(
           data.sublist(maxPwdAllowedOffset, maxPwdAllowedOffset + numSize));
 
-      int strSize = NumericInput.bytesToInt(data.sublist(topicsOffset, topicsOffset + numSize));
-      if (strSize < 1 ){
+      int strSize = NumericInput.bytesToInt(
+          data.sublist(topicsOffset, topicsOffset + numSize));
+      if (strSize < 1) {
         return;
       }
       int curOffset = topicsOffset + numSize;
-      cmdVelTopic = TopicNameInput.bytesToString(data.sublist(curOffset, curOffset + strSize));
+      cmdVelTopic = TopicNameInput.bytesToString(
+          data.sublist(curOffset, curOffset + strSize));
     }
   }
 }

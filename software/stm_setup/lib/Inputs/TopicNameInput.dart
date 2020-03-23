@@ -24,12 +24,13 @@ class TopicNameInput extends StatefulWidget {
     return regExp.hasMatch(numStr) && numStr.length <= 255;
   }
 
-  static Uint8List stringToBytes(String string){
-    Uint8List ret = Uint8List.fromList([0, 0]);
+  static List<int>  stringToBytes(String string){
+    List<int> ret = [0, 0];
     int num = string.length;
     if ( (num > 0) && (num ~/ 256 < 256)){
       List<int> list = string.codeUnits;
-      ret = Uint8List.fromList([ num % 256, num ~/256]) + Uint8List.fromList(list);
+      List<int> len = [ num % 256, num ~/256];
+      ret = len + list;
     }
     return ret;
   }
@@ -67,6 +68,7 @@ class _TopicNameInput extends State<TopicNameInput> {
       child: Column(
         children: <Widget>[
           TextField(
+            controller: controller,
             decoration: InputDecoration(
               labelText: "$title",
               border: OutlineInputBorder(),
