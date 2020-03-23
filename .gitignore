@@ -21,3 +21,9 @@ software/stm_setup/.dart_tool/
 software/stm_setup/.idea
 software/stm_setup/build
 
+.idea/
+firmware/STM32/.metadata/
+software/RobotController/.idea/
+software/ros-app-tb3-voiceorder/.gradle/
+software/ros-app-tb3-voiceorder/.idea/
+
