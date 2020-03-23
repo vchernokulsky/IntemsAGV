@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stm_setup/RobotDrive.dart';
 import 'package:stm_setup/RobotGeometry.dart';
 import 'package:stm_setup/RosTopics.dart';
 import 'package:stm_setup/Wiznet.dart';
 
-import 'Delay.dart';
 import 'SocketData.dart';
 
 class RobotSetUp extends StatefulWidget {
@@ -14,11 +12,8 @@ class RobotSetUp extends StatefulWidget {
 class _RobotSetUpState extends State<RobotSetUp> {
 
   static const int ROBOT_GEOM = 0;
-  static const int ROBOT_DRIVE = 1;
-  static const int ROS_TOPICS = 2;
-  static const int WIZNET = 3;
-  static const int DELAY = 4;
-
+  static const int ROS_TOPICS = 1;
+  static const int WIZNET = 2;
 
   final model = SocketData();
   int curItem;
@@ -74,20 +69,12 @@ class _RobotSetUpState extends State<RobotSetUp> {
                 child: RobotGeometry(),
               ),
               Visibility(
-                visible: curItem == ROBOT_DRIVE,
-                child: RobotDrive(),
-              ),
-              Visibility(
                 visible: curItem == ROS_TOPICS,
                 child: RosTopic(),
               ),
               Visibility(
                 visible: curItem == WIZNET,
                 child: Wiznet(),
-              ),
-              Visibility(
-                visible: curItem == DELAY,
-                child: Delay(),
               ),
             ],
           ),
@@ -112,20 +99,12 @@ class _RobotSetUpState extends State<RobotSetUp> {
               onTap: () => setWidgets(ROBOT_GEOM),
             ),
             ListTile(
-              title: Text('Robot drive'),
-              onTap: () => setWidgets(ROBOT_DRIVE),
-            ),
-            ListTile(
               title: Text('Ros'),
               onTap: () => setWidgets(ROS_TOPICS),
             ),
             ListTile(
               title: Text('Wiznet'),
               onTap: () => setWidgets(WIZNET),
-            ),
-            ListTile(
-              title: Text('Delay'),
-              onTap: () => setWidgets(DELAY),
             ),
           ],
         ),
