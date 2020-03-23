@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -6,13 +8,12 @@ class TopicNameInput extends StatefulWidget {
   final String title;
   final TextEditingController controller = TextEditingController();
 
-  TopicNameInput({Key key, this.title})
-      : super(key: key);
+  TopicNameInput({Key key, this.title}) : super(key: key);
 
   _TopicNameInput createState() => _TopicNameInput(title, controller);
 
   bool isCorrect({String numStr}) {
-    if(numStr == null){
+    if (numStr == null) {
       numStr = controller.text;
     }
     RegExp regExp = new RegExp(
@@ -20,9 +21,22 @@ class TopicNameInput extends StatefulWidget {
       caseSensitive: false,
       multiLine: false,
     );
-    return regExp.hasMatch(numStr);
+    return regExp.hasMatch(numStr) && numStr.length <= 255;
   }
 
+  static Uint8List stringToBytes(String string){
+    Uint8List ret = Uint8List.fromList([0, 0]);
+    int num = string.length;
+    if ( (num > 0) && (num ~/ 256 < 256)){
+      List<int> list = string.codeUnits;
+      ret = Uint8List.fromList([ num % 256, num ~/256]) + Uint8List.fromList(list);
+    }
+    return ret;
+  }
+
+  static String bytesToString(Uint8List data) {
+    return String.fromCharCodes(data);
+  }
 }
 
 class _TopicNameInput extends State<TopicNameInput> {

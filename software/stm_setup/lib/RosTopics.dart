@@ -16,11 +16,13 @@ class RosTopic extends StatefulWidget {
 class _RosTopic extends State<RosTopic> {
   IpInput rosSerialNodeIpInput;
   NumericInput rosSerialNodePortInput;
+  TopicNameInput cmdVelInput;
 
   _RosTopic() {
     rosSerialNodeIpInput = IpInput(title: "Ros SerialNode IP");
     rosSerialNodePortInput = NumericInput(
         title: "Ros SerialNode PORT", minValue: 0, maxValue: 65555);
+    cmdVelInput = TopicNameInput(title: "cmd_vel topic");
   }
 
   void initState() {
@@ -42,8 +44,13 @@ class _RosTopic extends State<RosTopic> {
       showBadToast("Can not save: Wrong ROS SerialNode port");
       return;
     }
+    if (!cmdVelInput.isCorrect()) {
+      showBadToast("Can not save: Wrong cmd_vel topic name");
+      return;
+    }
     SocketData.serialNodeIp = rosSerialNodeIpInput.controller.text;
     SocketData.serialNodePort = rosSerialNodePortInput.controller.text;
+    SocketData.cmdVelTopic = cmdVelInput.controller.text;
     showGoodToast("Data saved");
   }
 
@@ -51,12 +58,13 @@ class _RosTopic extends State<RosTopic> {
   Widget build(BuildContext context) {
     rosSerialNodeIpInput.controller.text = SocketData.serialNodeIp;
     rosSerialNodePortInput.controller.text =  SocketData.serialNodePort;
+    cmdVelInput.controller.text = SocketData.cmdVelTopic;
 
     return Column(
       children: <Widget>[
         rosSerialNodeIpInput,
         rosSerialNodePortInput,
-        TopicNameInput(title: "cmd_vel topic"),
+        cmdVelInput,
         TopicNameInput(title: "odometry topic"),
         TopicNameInput(title: "base frame"),
         TopicNameInput(title: "odometry frame"),

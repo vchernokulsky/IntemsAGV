@@ -7,12 +7,13 @@ import "package:hex/hex.dart";
 import 'package:stm_setup/Inputs/DecimalInput.dart';
 import 'package:stm_setup/Inputs/MacInput.dart';
 import 'package:stm_setup/Inputs/NumericInput.dart';
+import 'package:stm_setup/Inputs/TopicNameInput.dart';
 
 import 'Inputs/IpInput.dart';
 import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
-  final int msgSize = 38;
+  final int msgSize = 48;
   final int setFlagSize = 3;
   final int ipSize = 4;
   final int numSize = 2;
@@ -34,6 +35,8 @@ class SocketData extends ChangeNotifier {
   final int radPerTickOffset = 34;
   final int maxPwdAllowedOffset = 36;
 
+  final int topicsOffset = 38;
+
   static String connectHost = "192.168.2.114";
   static int connectPort = 11511;
 
@@ -53,6 +56,8 @@ class SocketData extends ChangeNotifier {
   static String maxAngVelocity = "";
   static String maxPwdAllowed = "";
   static String radPerTick = "";
+
+  static String cmdVelTopic = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
@@ -118,7 +123,9 @@ class SocketData extends ChangeNotifier {
         DecimalInput.stringToBytes(maxLinVelocity, 3) +
         DecimalInput.stringToBytes(maxAngVelocity, 3) +
         DecimalInput.stringToBytes(radPerTick, 5) +
-        NumericInput.stringToBytes(maxPwdAllowed);
+        NumericInput.stringToBytes(maxPwdAllowed) +
+        TopicNameInput.stringToBytes(cmdVelTopic);
+
   }
 
   void parseIntoVariables(Uint8List data) {
@@ -158,6 +165,13 @@ class SocketData extends ChangeNotifier {
           data.sublist(radPerTickOffset, radPerTickOffset + numSize), 5);
       maxPwdAllowed = NumericInput.bytesToString(
           data.sublist(maxPwdAllowedOffset, maxPwdAllowedOffset + numSize));
+
+      int strSize = NumericInput.bytesToInt(data.sublist(topicsOffset, topicsOffset + numSize));
+      if (strSize < 1 ){
+        return;
+      }
+      int curOffset = topicsOffset + numSize;
+      cmdVelTopic = TopicNameInput.bytesToString(data.sublist(curOffset, curOffset + strSize));
     }
   }
 }

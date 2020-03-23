@@ -34,10 +34,25 @@ class NumericInput extends StatefulWidget {
     }
     return ret;
   }
+  static Uint8List intToBytes(int num){
+    Uint8List ret = Uint8List.fromList([0, 0]);
+    if (num ~/ 256 < 256){
+      ret = Uint8List.fromList([ num % 256, num ~/256]);
+    }
+    return ret;
+  }
   static String bytesToString(Uint8List data){
     String ret = "";
     if(data.length == 2) {
       ret = '${data[1] * 256 + data[0]}';
+    }
+    return ret;
+  }
+
+  static int bytesToInt(Uint8List data){
+    int ret = 0;
+    if(data.length == 2) {
+      ret = data[1] * 256 + data[0];
     }
     return ret;
   }
