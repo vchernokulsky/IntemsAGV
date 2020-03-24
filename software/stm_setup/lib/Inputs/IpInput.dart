@@ -36,7 +36,6 @@ class IpInput extends StatefulWidget {
     if (retStr.length == 4){
       ret = retStr.map(int.parse).toList();
     }
-    ret.forEach((i) => print("ip $i")) ;
     return ret;
   }
   static String bytesToString(Uint8List data){

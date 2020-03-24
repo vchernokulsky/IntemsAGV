@@ -95,7 +95,6 @@ class SocketData extends ChangeNotifier {
         await Socket.connect(connectHost, connectPort, timeout: timeout);
     client.add(createMsg());
     client.listen((Uint8List data) {
-      data.forEach((i) => print("got $i"));
       if (data[0] == 7 && data[1] == 7 && data[2] == 7) {
         showGoodToast("Settings saved to robot");
       } else {
@@ -139,7 +138,6 @@ class SocketData extends ChangeNotifier {
   }
 
   void parseIntoVariables(Uint8List data) {
-    data.forEach((i) => print("got $i"));
     if (data.length != msgSize) {
       return;
     }
