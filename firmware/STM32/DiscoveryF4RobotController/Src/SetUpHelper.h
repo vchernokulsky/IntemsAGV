@@ -11,8 +11,8 @@
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
 #define MAX_STR_LEN 255
-#define MIN_SETIING_SIZE 50
-#define MAX_SETTING_SIZE 1070
+#define MIN_SETIING_SIZE 45
+#define MAX_SETTING_SIZE 1065
 
 #define SET_STR "set"
 

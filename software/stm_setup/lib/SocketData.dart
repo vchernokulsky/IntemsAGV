@@ -15,8 +15,8 @@ import 'ShowToast.dart';
 class SocketData extends ChangeNotifier {
   final int headerSize = 6;
   final int chkSumSize = 1;
-  final int minMsgSize = 50;
-  final int maxMsgSize = 1070;
+  final int minMsgSize = 45;
+  final int maxMsgSize = 1065;
 
   final int setFlagSize = 3;
   final int ipSize = 4;
