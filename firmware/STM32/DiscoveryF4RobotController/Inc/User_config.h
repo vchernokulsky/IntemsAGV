@@ -45,9 +45,9 @@
 
 /***************ROBOT***************************/
 #define DEFAULT_CMDVEL_TOPIC "/cmd_vel"
-#define ODOMETRY_TOPIC "/odom"
-#define BASE_FRAME "base_link"
-#define ODOMETRY_FRAME "odom"
+#define DEFAULT_ODOMETRY_TOPIC "/odom"
+#define DEFAULT_BASE_FRAME "base_link"
+#define DEFAULT_ODOMETRY_FRAME "odom"
 
 #define DEFAULT_MAX_PWD_ALLOWED 255
 #define DEFAULT_RAD_PER_TICK 0.0174533

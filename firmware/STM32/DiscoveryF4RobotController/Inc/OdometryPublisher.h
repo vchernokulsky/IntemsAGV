@@ -37,14 +37,15 @@ private:
 	float theta;
 
 public:
-	OdometryPublisher():pub(ODOMETRY_TOPIC,&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
+	OdometryPublisher():pub("",&odom),sub("/initialpose",&OdometryPublisher::on_initial_pose, this){
 
 	}
 
 
-	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel){
+	void init(ros::NodeHandle* n, WheelPublisher *leftWheel, WheelPublisher *rightWheel,  char *topic_name,  char *base_frame,  char *odom_frame){
 		    OdometryPublisher::pose_set  = xSemaphoreCreateMutex();
 			nh = n;
+			pub.topic_ = topic_name;
 			(*nh).advertise(pub);
 			nh->subscribe(sub);
 
@@ -56,12 +57,12 @@ public:
 
 			theta = 0;
 
-			odom.header.frame_id = ODOMETRY_FRAME;
-			odom.child_frame_id = BASE_FRAME;
+			odom.header.frame_id = odom_frame;
+			odom.child_frame_id = base_frame;
 
 			tf_broadcaster.init(*nh);
-			transform.header.frame_id =ODOMETRY_FRAME ;
-			transform.child_frame_id = BASE_FRAME;
+			transform.header.frame_id =odom_frame ;
+			transform.child_frame_id = base_frame;
 		}
 	void set_robot_params(float radius, float separation){
 		wheel_radius = radius;

@@ -11,7 +11,7 @@
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
 #define MAX_STR_LEN 255
-#define SETTING_SIZE 48
+#define SETTING_SIZE 72
 
 
 #define SET_STR "set"
@@ -73,6 +73,9 @@ public:
 	float RAD_PER_TICK;
 
 	char CMD_VEL_TOPIC[MAX_STR_LEN];
+	char ODOM_TOPIC[MAX_STR_LEN];
+	char BASE_FRAME[MAX_STR_LEN];
+	char ODOM_FRAME[MAX_STR_LEN];
 
 	SetUpHelper();
 	virtual ~SetUpHelper();
