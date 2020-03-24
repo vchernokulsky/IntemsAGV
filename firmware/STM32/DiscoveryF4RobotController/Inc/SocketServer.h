@@ -16,9 +16,6 @@
 #include "lwip/inet.h"
 #include "lwip/sockets.h"
 
-
-
-#define BUFFER_SIZE 48
 #define STAUS_SIZE 3
 
 class SocketServer {
@@ -33,8 +30,8 @@ private:
 	int recv_data;
 	int send_data;
 
-	uint8_t send_buffer[BUFFER_SIZE];
-	uint8_t recv_buffer[BUFFER_SIZE];
+	uint8_t send_buffer[MAX_SETTING_SIZE];
+	uint8_t recv_buffer[MAX_SETTING_SIZE];
 
 
 	struct sockaddr_in localhost, remotehost;

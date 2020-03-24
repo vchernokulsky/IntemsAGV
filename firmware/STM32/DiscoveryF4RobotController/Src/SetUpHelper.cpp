@@ -43,7 +43,7 @@ void SetUpHelper::wait_for_readiness()
 
 void SetUpHelper::set_default_network()
 {
-	int offset = LOCAL_IP_OFFSET;
+	uint16_t offset = LOCAL_IP_OFFSET;
 	uint8_t ip[] = WIZNET_IP_ADRESS;
 	memcpy(message_out + offset, ip, IP_SIZE);
 
@@ -77,7 +77,7 @@ void SetUpHelper::set_default_network()
 
 void SetUpHelper::set_default_robot_geometry()
 {
-	int offset = WHEEL_RADIUS_OFFSET;
+	uint16_t offset = WHEEL_RADIUS_OFFSET;
 	uint16_t radius = std::round(DEFAULT_RADIUS * 1000.0);
 	message_out[offset] = radius & 0xFF;
 	message_out[offset+1] = radius >> 8;
@@ -111,7 +111,7 @@ void SetUpHelper::set_default_robot_geometry()
 
 void SetUpHelper::set_default_topics_name()
 {
-	uint8_t offset = TOPICS_OFFSET;
+	uint16_t offset = TOPICS_OFFSET;
 
 	char cmd_vel[] = DEFAULT_CMDVEL_TOPIC;
 	uint16_t topic_size = strlen(cmd_vel);
@@ -144,13 +144,70 @@ void SetUpHelper::set_default_topics_name()
 	offset += PORT_SIZE;
 	memcpy(message_out + offset, odom_frame, topic_size);
 	offset += topic_size;
+
+	 msg_length = offset + 1;
+}
+
+void SetUpHelper::calc_checksum() {
+  uint16_t c = 0;
+  for(uint16_t i = 0; i < (msg_length - 1); i++) {
+    c += message_out[i];
+    c %= 256;
+  }
+  message_out[msg_length - 1] = 255 - c;
+}
+bool SetUpHelper::check_checksum(uint8_t *buff, uint16_t size) {
+  uint16_t c = 0;
+  for(uint16_t i = 0; i < size; i++) {
+    c += buff[i];
+    c %= 256;
+  }
+  return (c == 255);
+}
+
+void SetUpHelper::memory_write()
+{
+	HAL_StatusTypeDef status;
+	uint16_t offset = 0;
+	uint16_t bytes_left = msg_length - offset;
+	uint8_t size = 0;
+	while(bytes_left > 0)
+	{
+		size = (bytes_left > 64)? 64 : bytes_left;
+		status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + offset, I2C_MEMADD_SIZE_16BIT, message_out + offset, size, HAL_MAX_DELAY);
+		osDelay(1);
+		wait_for_readiness();
+		offset += size;
+		bytes_left -= size;
+
+	}
+}
+
+HAL_StatusTypeDef SetUpHelper::memory_read(uint16_t read_size)
+{
+	HAL_StatusTypeDef status;
+	uint16_t offset = 0;
+	uint16_t bytes_left = read_size - offset;
+	uint8_t size = 0;
+	while(bytes_left > 0)
+	{
+		size = (bytes_left > 64)? 64 : bytes_left;
+		wait_for_readiness();
+		status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + offset, I2C_MEMADD_SIZE_16BIT, message_out + offset, size, HAL_MAX_DELAY);
+		if (status != HAL_OK){
+			return status;
+		}
+		offset += size;
+		bytes_left -= size;
+	}
+	return HAL_OK;
 }
 
 void SetUpHelper::set_default(bool force)
 {
 	if(force || !is_set())
 	{
-		int offset = SET_FLAG_OFFSET;
+		uint16_t offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
@@ -158,10 +215,11 @@ void SetUpHelper::set_default(bool force)
 		set_default_robot_geometry();
 		set_default_topics_name();
 
-		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
-		 wait_for_readiness();
-		status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, SETTING_SIZE - 64, HAL_MAX_DELAY);
-		osDelay(1);
+		message_out[MSG_SIZE_OFFSET] = msg_length & 0xFF;
+		message_out[MSG_SIZE_OFFSET + 1] = msg_length >> 8;
+
+		calc_checksum();
+		memory_write();
 	}
 }
 
@@ -174,12 +232,22 @@ bool SetUpHelper::is_set()
 	return memcmp(rmsg, set_flag, sizeof(rmsg)) == 0;
 }
 
+uint16_t SetUpHelper::read_mem_size()
+{
+	uint8_t rmsg[PORT_SIZE];
+	wait_for_readiness();
+	HAL_I2C_Mem_Read(SetUpHelper::mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + MSG_SIZE_OFFSET, I2C_MEMADD_SIZE_16BIT, rmsg, sizeof(rmsg), HAL_MAX_DELAY);
+	return (rmsg[1] << 8) | rmsg[0];
+}
+
 void SetUpHelper::read_all()
 {
-	 wait_for_readiness();
-	 HAL_StatusTypeDef status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
-	 wait_for_readiness();
-	 status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, 8, HAL_MAX_DELAY);
+	if(!is_set())
+	{
+		return;
+	}
+	uint16_t mem_size = read_mem_size();
+	 HAL_StatusTypeDef status = memory_read(mem_size);
 	 if (status == HAL_OK){
 		 extract_variables();
 	 }
@@ -187,6 +255,14 @@ void SetUpHelper::read_all()
 
 void SetUpHelper::extract_variables()
 {
+	uint16_t offset = MSG_SIZE_OFFSET;
+	uint16_t msg_size =  (message_out[offset + 1] << 8) | message_out[offset];
+	if(msg_size < MIN_SETIING_SIZE || msg_size > MAX_SETTING_SIZE || !check_checksum(message_out, msg_size))
+	{
+		return;
+	}
+	msg_length = msg_size;
+
 	memcpy(LOCAL_IP_ADDRESS, message_out + LOCAL_IP_OFFSET, IP_SIZE);
 	memcpy(NETWORK_MASK, message_out + NETWORK_MASK_OFFSET, IP_SIZE);
 	memcpy(GATEAWAY, message_out + GATEAWAY_OFFSET, IP_SIZE);
@@ -214,7 +290,7 @@ void SetUpHelper::extract_variables()
 
 	MAX_PWD_ALLOWED = (message_out[MAX_PWD_ALLOWED_OFFSET + 1] << 8) | message_out[MAX_PWD_ALLOWED_OFFSET];
 
-	uint16_t offset = TOPICS_OFFSET;
+	offset = TOPICS_OFFSET;
 	char null_char[]  = {'\0'};
 
 	uint16_t topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
@@ -245,7 +321,7 @@ void SetUpHelper::extract_variables()
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
 {
-	memcpy(buff, message_out, SETTING_SIZE);
+	memcpy(buff, message_out, msg_length);
 }
 
 bool SetUpHelper::set(uint8_t *buff){
@@ -253,36 +329,16 @@ bool SetUpHelper::set(uint8_t *buff){
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
-//		offset = LOCAL_IP_OFFSET;
 		offset = sizeof(set_flag);
-		memcpy(message_out + offset, buff + offset, SETTING_SIZE - offset);
+		uint16_t buff_size =  (buff[offset + 1] << 8) | buff[offset];
+		if(buff_size < MIN_SETIING_SIZE || buff_size > MAX_SETTING_SIZE || !check_checksum(buff, buff_size))
+		{
+			return false;
+		}
+		memcpy(message_out + offset, buff + offset, buff_size - offset);
 
-//		offset = LOCAL_IP_OFFSET;
-//		memcpy(message_out + offset, buff + offset, IP_SIZE);
-//
-//		offset = NETWORK_MASK_OFFSET;
-//		memcpy(message_out + offset, buff + offset, IP_SIZE);
-//
-//		offset = GATEAWAY_OFFSET;
-//		memcpy(message_out + offset, buff + offset, IP_SIZE);
-//
-//		offset = ROS_CLIENT_PORT_OFFSET;
-//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
-//
-//		offset = SET_UP_SERVER_PORT_OFFSET;
-//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
-//
-//		offset = SERIALNODE_IP_OFFSET;
-//		memcpy(message_out + offset, buff + offset, IP_SIZE);
-//
-//		offset = SERIALNODE_PORT_OFFSET;
-//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
-
-		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
-		 wait_for_readiness();
-		status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, SETTING_SIZE - 64, HAL_MAX_DELAY);
-		osDelay(1);
-		return status == HAL_OK;
+		memory_write();
+		return true;
 
 }
 

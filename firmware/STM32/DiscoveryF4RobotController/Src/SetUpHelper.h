@@ -11,28 +11,33 @@
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
 #define MAX_STR_LEN 255
-#define SETTING_SIZE 72
-
+#define MIN_SETIING_SIZE 50
+#define MAX_SETTING_SIZE 1070
 
 #define SET_STR "set"
 
 #define SET_FLAG_OFFSET 0
-#define LOCAL_IP_OFFSET 4
-#define NETWORK_MASK_OFFSET 8
-#define GATEAWAY_OFFSET 12
-#define ROS_CLIENT_PORT_OFFSET 16
-#define SET_UP_SERVER_PORT_OFFSET 18
-#define SERIALNODE_IP_OFFSET 20
-#define SERIALNODE_PORT_OFFSET 24
+#define MSG_SIZE_OFFSET 4
+#define NETWORK_OFFSET 6
+#define ROBOT_GEOMETRY_OFFSET 28
+#define TOPICS_OFFSET 40
 
-#define WHEEL_RADIUS_OFFSET 26
-#define WHEEL_SEPARATION_OFFSET 28
-#define MAX_LIN_VEL_OFFSET 30
-#define MAX_ANG_VEL_OFFSET 32
-#define RAD_PER_TICK_OFFSET 34
-#define MAX_PWD_ALLOWED_OFFSET 36
+#define LOCAL_IP_OFFSET 6
+#define NETWORK_MASK_OFFSET 10
+#define GATEAWAY_OFFSET 14
+#define ROS_CLIENT_PORT_OFFSET 18
+#define SET_UP_SERVER_PORT_OFFSET 20
+#define SERIALNODE_IP_OFFSET 22
+#define SERIALNODE_PORT_OFFSET 26
 
-#define TOPICS_OFFSET 38
+#define WHEEL_RADIUS_OFFSET 28
+#define WHEEL_SEPARATION_OFFSET 30
+#define MAX_LIN_VEL_OFFSET 32
+#define MAX_ANG_VEL_OFFSET 34
+#define RAD_PER_TICK_OFFSET 36
+#define MAX_PWD_ALLOWED_OFFSET 38
+
+
 
 #include <cmath>
 #include "stm32f4xx_hal.h"
@@ -46,17 +51,25 @@
 class SetUpHelper {
 private:
 	static I2C_HandleTypeDef *mem_out;
-	uint8_t message_out[SETTING_SIZE];
+	uint8_t message_out[MAX_SETTING_SIZE];
+
 
 	void wait_for_readiness();
+	void memory_write();
+	HAL_StatusTypeDef memory_read(uint16_t read_size);
 	void set_default_network();
 	void set_default_robot_geometry();
 	void set_default_topics_name();
+	void calc_checksum();
+	bool check_checksum(uint8_t *buff, uint16_t size);
 	void set_default(bool force);
 	bool is_set();
+	uint16_t read_mem_size();
 	void read_all();
 	void extract_variables();
 public:
+	uint16_t msg_length;
+
 	uint8_t LOCAL_IP_ADDRESS[IP_SIZE];
 	uint8_t NETWORK_MASK[IP_SIZE];
 	uint8_t GATEAWAY[IP_SIZE];

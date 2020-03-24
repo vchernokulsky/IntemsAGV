@@ -71,11 +71,11 @@ void SocketServer::SocketServerTask()
 			remote_sock = accept(local_sock, (struct sockaddr *)&remotehost, (socklen_t *)&sockaddrsize);
 			if(remote_sock >= 0)
 			{
-				socket_receive(recv_buffer, BUFFER_SIZE,&rdmaInd);
+				socket_receive(recv_buffer, MAX_SETTING_SIZE,&rdmaInd);
 				if(recv_buffer[0] == 255 && recv_buffer[1] == 255)
 				{
 					settings->get_curr_memory(send_buffer);
-					socket_send(send_buffer, SETTING_SIZE);
+					socket_send(send_buffer, settings->msg_length);
 				} else
 				{
 					if(recv_buffer[0] == 255 && recv_buffer[1] == 254)
