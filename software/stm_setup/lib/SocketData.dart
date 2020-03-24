@@ -17,6 +17,7 @@ class SocketData extends ChangeNotifier {
   final int setFlagSize = 3;
   final int ipSize = 4;
   final int numSize = 2;
+  final Duration timeout = Duration(seconds: 1);
 
   final int setFlagOffset = 0;
 
@@ -65,7 +66,8 @@ class SocketData extends ChangeNotifier {
   void getInfo({bool force = false}) async {
     if (force || !getData) {
       try {
-        final Socket client = await Socket.connect(connectHost, connectPort);
+        final Socket client =
+            await Socket.connect(connectHost, connectPort, timeout: timeout);
         client.add(Uint8List.fromList([255, 255]));
         client.listen((Uint8List data) {
           parseIntoVariables(data);
@@ -89,7 +91,8 @@ class SocketData extends ChangeNotifier {
   }
 
   void sendInfo() async {
-    final Socket client = await Socket.connect(connectHost, connectPort);
+    final Socket client =
+        await Socket.connect(connectHost, connectPort, timeout: timeout);
     client.add(createMsg());
     client.listen((Uint8List data) {
       data.forEach((i) => print("got $i"));
@@ -185,8 +188,8 @@ class SocketData extends ChangeNotifier {
       curOffset += strSize;
 
       //*********** odometry topic ************************************
-      strSize = NumericInput.bytesToInt(
-          data.sublist(curOffset, curOffset + numSize));
+      strSize =
+          NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
       if (strSize < 1) {
         return;
       }
@@ -196,8 +199,8 @@ class SocketData extends ChangeNotifier {
       curOffset += strSize;
 
       //*********** base frame ************************************
-      strSize = NumericInput.bytesToInt(
-          data.sublist(curOffset, curOffset + numSize));
+      strSize =
+          NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
       if (strSize < 1) {
         return;
       }
@@ -207,8 +210,8 @@ class SocketData extends ChangeNotifier {
       curOffset += strSize;
 
       //*********** odometry frame ************************************
-      strSize = NumericInput.bytesToInt(
-          data.sublist(curOffset, curOffset + numSize));
+      strSize =
+          NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
       if (strSize < 1) {
         return;
       }
