@@ -13,7 +13,7 @@ import 'Inputs/IpInput.dart';
 import 'ShowToast.dart';
 
 class SocketData extends ChangeNotifier {
-  final int msgSize = 48;
+  final int msgSize = 72;
   final int setFlagSize = 3;
   final int ipSize = 4;
   final int numSize = 2;
@@ -58,6 +58,9 @@ class SocketData extends ChangeNotifier {
   static String radPerTick = "";
 
   static String cmdVelTopic = "";
+  static String odomTopic = "";
+  static String baseFrame = "";
+  static String odomFrame = "";
 
   void getInfo({bool force = false}) async {
     if (force || !getData) {
@@ -124,7 +127,10 @@ class SocketData extends ChangeNotifier {
         DecimalInput.stringToBytes(maxAngVelocity, 3) +
         DecimalInput.stringToBytes(radPerTick, 5) +
         NumericInput.stringToBytes(maxPwdAllowed) +
-        TopicNameInput.stringToBytes(cmdVelTopic);
+        TopicNameInput.stringToBytes(cmdVelTopic) +
+        TopicNameInput.stringToBytes(odomTopic) +
+        TopicNameInput.stringToBytes(baseFrame) +
+        TopicNameInput.stringToBytes(odomFrame);
     Uint8List ret = Uint8List.fromList(byteList);
     return ret;
   }
@@ -167,6 +173,7 @@ class SocketData extends ChangeNotifier {
       maxPwdAllowed = NumericInput.bytesToString(
           data.sublist(maxPwdAllowedOffset, maxPwdAllowedOffset + numSize));
 
+      //*********** cmd_vel topic ************************************
       int strSize = NumericInput.bytesToInt(
           data.sublist(topicsOffset, topicsOffset + numSize));
       if (strSize < 1) {
@@ -175,6 +182,40 @@ class SocketData extends ChangeNotifier {
       int curOffset = topicsOffset + numSize;
       cmdVelTopic = TopicNameInput.bytesToString(
           data.sublist(curOffset, curOffset + strSize));
+      curOffset += strSize;
+
+      //*********** odometry topic ************************************
+      strSize = NumericInput.bytesToInt(
+          data.sublist(curOffset, curOffset + numSize));
+      if (strSize < 1) {
+        return;
+      }
+      curOffset += numSize;
+      odomTopic = TopicNameInput.bytesToString(
+          data.sublist(curOffset, curOffset + strSize));
+      curOffset += strSize;
+
+      //*********** base frame ************************************
+      strSize = NumericInput.bytesToInt(
+          data.sublist(curOffset, curOffset + numSize));
+      if (strSize < 1) {
+        return;
+      }
+      curOffset += numSize;
+      baseFrame = TopicNameInput.bytesToString(
+          data.sublist(curOffset, curOffset + strSize));
+      curOffset += strSize;
+
+      //*********** odometry frame ************************************
+      strSize = NumericInput.bytesToInt(
+          data.sublist(curOffset, curOffset + numSize));
+      if (strSize < 1) {
+        return;
+      }
+      curOffset += numSize;
+      odomFrame = TopicNameInput.bytesToString(
+          data.sublist(curOffset, curOffset + strSize));
+      curOffset += strSize;
     }
   }
 }

@@ -16,13 +16,19 @@ class RosTopic extends StatefulWidget {
 class _RosTopic extends State<RosTopic> {
   IpInput rosSerialNodeIpInput;
   NumericInput rosSerialNodePortInput;
-  TopicNameInput cmdVelInput;
+  TopicNameInput cmdVelTopicInput;
+  TopicNameInput odomTopicInput;
+  TopicNameInput baseFrameInput;
+  TopicNameInput odomFrameInput;
 
   _RosTopic() {
     rosSerialNodeIpInput = IpInput(title: "Ros SerialNode IP");
     rosSerialNodePortInput = NumericInput(
         title: "Ros SerialNode PORT", minValue: 0, maxValue: 65555);
-    cmdVelInput = TopicNameInput(title: "cmd_vel topic");
+    cmdVelTopicInput = TopicNameInput(title: "cmd_vel topic");
+    odomTopicInput = TopicNameInput(title: "odometry topic");
+    baseFrameInput = TopicNameInput(title: "base frame");
+    odomFrameInput = TopicNameInput(title: "odometry frame");
   }
 
   void initState() {
@@ -44,30 +50,48 @@ class _RosTopic extends State<RosTopic> {
       showBadToast("Can not save: Wrong ROS SerialNode port");
       return;
     }
-    if (!cmdVelInput.isCorrect()) {
+    if (!cmdVelTopicInput.isCorrect()) {
       showBadToast("Can not save: Wrong cmd_vel topic name");
+      return;
+    }
+    if (!odomTopicInput.isCorrect()) {
+      showBadToast("Can not save: Wrong odometry topic name");
+      return;
+    }
+    if (!baseFrameInput.isCorrect()) {
+      showBadToast("Can not save: Wrong base frame name");
+      return;
+    }
+    if (!odomTopicInput.isCorrect()) {
+      showBadToast("Can not save: Wrong odometry frame name");
       return;
     }
     SocketData.serialNodeIp = rosSerialNodeIpInput.controller.text;
     SocketData.serialNodePort = rosSerialNodePortInput.controller.text;
-    SocketData.cmdVelTopic = cmdVelInput.controller.text;
+    SocketData.cmdVelTopic = cmdVelTopicInput.controller.text;
+    SocketData.odomTopic = odomTopicInput.controller.text;
+    SocketData.baseFrame = baseFrameInput.controller.text;
+    SocketData.odomFrame = odomFrameInput.controller.text;
     showGoodToast("Data saved");
   }
 
   @override
   Widget build(BuildContext context) {
     rosSerialNodeIpInput.controller.text = SocketData.serialNodeIp;
-    rosSerialNodePortInput.controller.text =  SocketData.serialNodePort;
-    cmdVelInput.controller.text = SocketData.cmdVelTopic;
+    rosSerialNodePortInput.controller.text = SocketData.serialNodePort;
+    cmdVelTopicInput.controller.text = SocketData.cmdVelTopic;
+    odomTopicInput.controller.text = SocketData.odomTopic;
+    baseFrameInput.controller.text = SocketData.baseFrame;
+    odomFrameInput.controller.text = SocketData.odomFrame;
 
     return Column(
       children: <Widget>[
         rosSerialNodeIpInput,
         rosSerialNodePortInput,
-        cmdVelInput,
-        TopicNameInput(title: "odometry topic"),
-        TopicNameInput(title: "base frame"),
-        TopicNameInput(title: "odometry frame"),
+        cmdVelTopicInput,
+        odomTopicInput,
+        baseFrameInput,
+        odomFrameInput,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
