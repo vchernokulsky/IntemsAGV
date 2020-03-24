@@ -335,7 +335,9 @@ bool SetUpHelper::set(uint8_t *buff){
 		{
 			return false;
 		}
+		msg_length = buff_size;
 		memcpy(message_out + offset, buff + offset, buff_size - offset);
+		calc_checksum();
 
 		memory_write();
 		return true;
