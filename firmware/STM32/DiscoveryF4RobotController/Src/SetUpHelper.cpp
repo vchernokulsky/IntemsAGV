@@ -158,7 +158,9 @@ void SetUpHelper::set_default(bool force)
 		set_default_robot_geometry();
 		set_default_topics_name();
 
-		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
+		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
+		 wait_for_readiness();
+		status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, SETTING_SIZE - 64, HAL_MAX_DELAY);
 		osDelay(1);
 	}
 }
@@ -175,7 +177,9 @@ bool SetUpHelper::is_set()
 void SetUpHelper::read_all()
 {
 	 wait_for_readiness();
-	 HAL_StatusTypeDef status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
+	 HAL_StatusTypeDef status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
+	 wait_for_readiness();
+	 status = HAL_I2C_Mem_Read(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, 8, HAL_MAX_DELAY);
 	 if (status == HAL_OK){
 		 extract_variables();
 	 }
@@ -274,7 +278,9 @@ bool SetUpHelper::set(uint8_t *buff){
 //		offset = SERIALNODE_PORT_OFFSET;
 //		memcpy(message_out + offset, buff + offset, PORT_SIZE);
 
-		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
+		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, 64, HAL_MAX_DELAY);
+		 wait_for_readiness();
+		status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + 64, I2C_MEMADD_SIZE_16BIT, message_out + 64, SETTING_SIZE - 64, HAL_MAX_DELAY);
 		osDelay(1);
 		return status == HAL_OK;
 
