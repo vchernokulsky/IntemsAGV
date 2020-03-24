@@ -103,12 +103,13 @@ public:
 		}
 
 	}
-	CmdVelSubscriber():sub(CMDVEL_TOPIC,&CmdVelSubscriber::cmdvel_callback, this){
+	CmdVelSubscriber():sub("",&CmdVelSubscriber::cmdvel_callback, this){
 
 	}
 
 
-	void init(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2){
+	void init(ros::NodeHandle* nh, WheelSubscriber *wheel, WheelSubscriber *wheel2, char *topic_name){
+		sub.topic_ = topic_name;
 		(*nh).subscribe(sub);
 		left_wheel = wheel;
 		right_wheel = wheel2;

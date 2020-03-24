@@ -15,7 +15,7 @@
 /************************************************/
 
 /********************SERVER************************/
-#define SERVER_IP_ADRESS {192, 168, 2, 150}
+#define SERVER_IP_ADRESS {192, 168, 2, 102}
 #define SERVER_PORT 11411
 /************************************************/
 
@@ -44,7 +44,7 @@
 /************************************************/
 
 /***************ROBOT***************************/
-#define CMDVEL_TOPIC "/cmd_vel"
+#define DEFAULT_CMDVEL_TOPIC "/cmd_vel"
 #define ODOMETRY_TOPIC "/odom"
 #define BASE_FRAME "base_link"
 #define ODOMETRY_FRAME "odom"

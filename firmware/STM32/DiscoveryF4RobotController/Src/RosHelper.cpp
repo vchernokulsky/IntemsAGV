@@ -46,7 +46,7 @@ void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_
 	encoder2.init(encoder_htim2);
 	encoder2.set_robot_params(settings->WHEEL_RADIUS, settings->MAX_LIN_SPEED, settings->RAD_PER_TICK);
 
-	cmd_vel.init(&nh, &wheel2, &wheel);
+	cmd_vel.init(&nh, &wheel2, &wheel, settings->CMD_VEL_TOPIC);
 	cmd_vel.set_robot_params(settings->WHEEL_SEPARATION, settings->MAX_LIN_SPEED, settings->MAX_ANG_VEL);
 
 	odom.init(&nh, &encoder2, &encoder);

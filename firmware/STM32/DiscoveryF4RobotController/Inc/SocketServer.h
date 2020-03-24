@@ -18,7 +18,7 @@
 
 
 
-#define BUFFER_SIZE 30
+#define BUFFER_SIZE 48
 #define STAUS_SIZE 3
 
 class SocketServer {

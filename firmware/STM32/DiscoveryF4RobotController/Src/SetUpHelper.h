@@ -10,7 +10,9 @@
 
 #define DEVICE_ADDRESS 0x50 << 1
 #define DEFAULT_ADDRESS 0x0100
-#define SETTING_SIZE 38
+#define MAX_STR_LEN 255
+#define SETTING_SIZE 48
+
 
 #define SET_STR "set"
 
@@ -30,6 +32,8 @@
 #define RAD_PER_TICK_OFFSET 34
 #define MAX_PWD_ALLOWED_OFFSET 36
 
+#define TOPICS_OFFSET 38
+
 #include <cmath>
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
@@ -47,6 +51,7 @@ private:
 	void wait_for_readiness();
 	void set_default_network();
 	void set_default_robot_geometry();
+	void set_default_topics_name();
 	void set_default(bool force);
 	bool is_set();
 	void read_all();
@@ -66,6 +71,8 @@ public:
 	float MAX_ANG_VEL;
 	uint8_t MAX_PWD_ALLOWED;
 	float RAD_PER_TICK;
+
+	char CMD_VEL_TOPIC[MAX_STR_LEN];
 
 	SetUpHelper();
 	virtual ~SetUpHelper();

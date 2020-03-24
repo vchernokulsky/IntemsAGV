@@ -91,8 +91,6 @@ uint8_t* get_gateaway_ptr()
 	return settings.GATEAWAY;
 }
 
-
-
 void StartSocetClientTask(void *arg)
 {
 	socket_client.SocketClientTask();

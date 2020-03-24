@@ -109,6 +109,18 @@ void SetUpHelper::set_default_robot_geometry()
 
 }
 
+void SetUpHelper::set_default_topics_name()
+{
+	uint8_t offset = TOPICS_OFFSET;
+
+	char cmd_vel[] = DEFAULT_CMDVEL_TOPIC;
+	uint16_t topic_size = strlen(cmd_vel);
+	message_out[offset] = topic_size & 0xFF;
+	message_out[offset+1] = topic_size >> 8;
+	offset += PORT_SIZE;
+	memcpy(message_out + offset, cmd_vel, topic_size);
+}
+
 void SetUpHelper::set_default(bool force)
 {
 	if(force || !is_set())
@@ -119,6 +131,7 @@ void SetUpHelper::set_default(bool force)
 
 		set_default_network();
 		set_default_robot_geometry();
+		set_default_topics_name();
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
@@ -172,6 +185,13 @@ void SetUpHelper::extract_variables()
 
 	MAX_PWD_ALLOWED = (message_out[MAX_PWD_ALLOWED_OFFSET + 1] << 8) | message_out[MAX_PWD_ALLOWED_OFFSET];
 
+	uint16_t offset = TOPICS_OFFSET;
+	char null_char[]  = {'\0'};
+	uint16_t topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
+	offset += PORT_SIZE;
+	memcpy(CMD_VEL_TOPIC, message_out + offset, topic_size);
+	memcpy(CMD_VEL_TOPIC + topic_size, null_char, sizeof(null_char));
+
 }
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
@@ -180,33 +200,34 @@ void SetUpHelper::get_curr_memory(uint8_t *buff)
 }
 
 bool SetUpHelper::set(uint8_t *buff){
-		int offset = SET_FLAG_OFFSET;
+		uint16_t offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
-		offset = LOCAL_IP_OFFSET;
+//		offset = LOCAL_IP_OFFSET;
+		offset = sizeof(set_flag);
 		memcpy(message_out + offset, buff + offset, SETTING_SIZE - offset);
 
-		offset = LOCAL_IP_OFFSET;
-		memcpy(message_out + offset, buff + offset, IP_SIZE);
-
-		offset = NETWORK_MASK_OFFSET;
-		memcpy(message_out + offset, buff + offset, IP_SIZE);
-
-		offset = GATEAWAY_OFFSET;
-		memcpy(message_out + offset, buff + offset, IP_SIZE);
-
-		offset = ROS_CLIENT_PORT_OFFSET;
-		memcpy(message_out + offset, buff + offset, PORT_SIZE);
-
-		offset = SET_UP_SERVER_PORT_OFFSET;
-		memcpy(message_out + offset, buff + offset, PORT_SIZE);
-
-		offset = SERIALNODE_IP_OFFSET;
-		memcpy(message_out + offset, buff + offset, IP_SIZE);
-
-		offset = SERIALNODE_PORT_OFFSET;
-		memcpy(message_out + offset, buff + offset, PORT_SIZE);
+//		offset = LOCAL_IP_OFFSET;
+//		memcpy(message_out + offset, buff + offset, IP_SIZE);
+//
+//		offset = NETWORK_MASK_OFFSET;
+//		memcpy(message_out + offset, buff + offset, IP_SIZE);
+//
+//		offset = GATEAWAY_OFFSET;
+//		memcpy(message_out + offset, buff + offset, IP_SIZE);
+//
+//		offset = ROS_CLIENT_PORT_OFFSET;
+//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
+//
+//		offset = SET_UP_SERVER_PORT_OFFSET;
+//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
+//
+//		offset = SERIALNODE_IP_OFFSET;
+//		memcpy(message_out + offset, buff + offset, IP_SIZE);
+//
+//		offset = SERIALNODE_PORT_OFFSET;
+//		memcpy(message_out + offset, buff + offset, PORT_SIZE);
 
 		HAL_StatusTypeDef status = HAL_I2C_Mem_Write(mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS, I2C_MEMADD_SIZE_16BIT, message_out, SETTING_SIZE, HAL_MAX_DELAY);
 		osDelay(1);
