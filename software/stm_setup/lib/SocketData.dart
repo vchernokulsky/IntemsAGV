@@ -206,45 +206,41 @@ class SocketData extends ChangeNotifier {
         data.sublist(maxPwdAllowedOffset, maxPwdAllowedOffset + numSize));
 
     //*********** cmd_vel topic ************************************
-    int strSize = NumericInput.bytesToInt(
-        data.sublist(topicsOffset, topicsOffset + numSize));
-    if (strSize < 1) {
+    int strSize = data.elementAt(topicsOffset) ;
+    if (strSize < 1 || strSize > 255) {
       return;
     }
-    int curOffset = topicsOffset + numSize;
+    int curOffset = topicsOffset + 1;
     cmdVelTopic = TopicNameInput.bytesToString(
         data.sublist(curOffset, curOffset + strSize));
     curOffset += strSize;
 
     //*********** odometry topic ************************************
-    strSize =
-        NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
-    if (strSize < 1) {
+    strSize = data.elementAt(curOffset) ;
+    if (strSize < 1 || strSize > 255) {
       return;
     }
-    curOffset += numSize;
+    curOffset += 1;
     odomTopic = TopicNameInput.bytesToString(
         data.sublist(curOffset, curOffset + strSize));
     curOffset += strSize;
 
     //*********** base frame ************************************
-    strSize =
-        NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
-    if (strSize < 1) {
+    strSize = data.elementAt(curOffset) ;
+    if (strSize < 1 || strSize > 255) {
       return;
     }
-    curOffset += numSize;
+    curOffset += 1;
     baseFrame = TopicNameInput.bytesToString(
         data.sublist(curOffset, curOffset + strSize));
     curOffset += strSize;
 
     //*********** odometry frame ************************************
-    strSize =
-        NumericInput.bytesToInt(data.sublist(curOffset, curOffset + numSize));
-    if (strSize < 1) {
+    strSize = data.elementAt(curOffset) ;
+    if (strSize < 1 || strSize > 255) {
       return;
     }
-    curOffset += numSize;
+    curOffset += 1;
     odomFrame = TopicNameInput.bytesToString(
         data.sublist(curOffset, curOffset + strSize));
     curOffset += strSize;

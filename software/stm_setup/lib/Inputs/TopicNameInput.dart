@@ -25,12 +25,11 @@ class TopicNameInput extends StatefulWidget {
   }
 
   static List<int>  stringToBytes(String string){
-    List<int> ret = [0, 0];
+    List<int> ret = [0];
     int num = string.length;
-    if ( (num > 0) && (num ~/ 256 < 256)){
+    if ( (num > 0) && (num < 256)){
       List<int> list = string.codeUnits;
-      List<int> len = [ num % 256, num ~/256];
-      ret = len + list;
+      ret = [num] + list;
     }
     return ret;
   }
