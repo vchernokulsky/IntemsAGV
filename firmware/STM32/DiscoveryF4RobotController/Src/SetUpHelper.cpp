@@ -114,34 +114,30 @@ void SetUpHelper::set_default_topics_name()
 	uint16_t offset = TOPICS_OFFSET;
 
 	char cmd_vel[] = DEFAULT_CMDVEL_TOPIC;
-	uint16_t topic_size = strlen(cmd_vel);
-	message_out[offset] = topic_size & 0xFF;
-	message_out[offset+1] = topic_size >> 8;
-	offset += PORT_SIZE;
+	uint8_t topic_size = strlen(cmd_vel);
+	message_out[offset] = topic_size;
+	offset += 1;
 	memcpy(message_out + offset, cmd_vel, topic_size);
 	offset += topic_size;
 
 	char odom[] = DEFAULT_ODOMETRY_TOPIC;
 	topic_size = strlen(odom);
-	message_out[offset] = topic_size & 0xFF;
-	message_out[offset+1] = topic_size >> 8;
-	offset += PORT_SIZE;
+	message_out[offset] = topic_size;
+	offset += 1;
 	memcpy(message_out + offset, odom, topic_size);
 	offset += topic_size;
 
 	char base_frame[] = DEFAULT_BASE_FRAME;
 	topic_size = strlen(base_frame);
-	message_out[offset] = topic_size & 0xFF;
-	message_out[offset+1] = topic_size >> 8;
-	offset += PORT_SIZE;
+	message_out[offset] = topic_size;
+	offset += 1;
 	memcpy(message_out + offset, base_frame, topic_size);
 	offset += topic_size;
 
 	char odom_frame[] = DEFAULT_ODOMETRY_FRAME;
 	topic_size = strlen(odom_frame);
-	message_out[offset] = topic_size & 0xFF;
-	message_out[offset+1] = topic_size >> 8;
-	offset += PORT_SIZE;
+	message_out[offset] = topic_size;
+	offset += 1;
 	memcpy(message_out + offset, odom_frame, topic_size);
 	offset += topic_size;
 
@@ -293,26 +289,26 @@ void SetUpHelper::extract_variables()
 	offset = TOPICS_OFFSET;
 	char null_char[]  = {'\0'};
 
-	uint16_t topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
-	offset += PORT_SIZE;
+	uint8_t topic_size = message_out[offset];
+	offset += 1;
 	memcpy(CMD_VEL_TOPIC, message_out + offset, topic_size);
 	memcpy(CMD_VEL_TOPIC + topic_size, null_char, sizeof(null_char));
 	offset += topic_size;
 
-	topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
-	offset += PORT_SIZE;
+	topic_size = message_out[offset];
+	offset += 1;
 	memcpy(ODOM_TOPIC, message_out + offset, topic_size);
 	memcpy(ODOM_TOPIC + topic_size, null_char, sizeof(null_char));
 	offset += topic_size;
 
-	topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
-	offset += PORT_SIZE;
+	topic_size = message_out[offset];
+	offset += 1;
 	memcpy(BASE_FRAME, message_out + offset, topic_size);
 	memcpy(BASE_FRAME + topic_size, null_char, sizeof(null_char));
 	offset += topic_size;
 
-	topic_size =  (message_out[offset + 1] << 8) | message_out[offset];
-	offset += PORT_SIZE;
+	topic_size = message_out[offset];
+	offset += 1;
 	memcpy(ODOM_FRAME, message_out + offset, topic_size);
 	memcpy(ODOM_FRAME + topic_size, null_char, sizeof(null_char));
 	offset += topic_size;
