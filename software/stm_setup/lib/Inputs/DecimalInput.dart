@@ -121,8 +121,8 @@ class _DecimalInput extends State<DecimalInput> {
             child: Text(
               "$errorMsg",
               style: TextStyle(
-                  color: Colors.red.withOpacity(1.0),
-                  fontWeight: FontWeight.bold),
+                  color: Theme.of(context).errorColor,
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ],

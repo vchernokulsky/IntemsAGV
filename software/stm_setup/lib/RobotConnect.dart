@@ -12,7 +12,6 @@ class RobotConnect extends StatefulWidget {
 }
 
 class _RobotConnect extends State<RobotConnect> {
-
   NumericInput portInput;
   IpInput ipInput;
 
@@ -67,7 +66,11 @@ class _RobotConnect extends State<RobotConnect> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      RaisedButton(child: Text("Connect"), onPressed: connect),
+                      Expanded(
+                        child: RaisedButton(
+                            child: Text("Connect"), onPressed: connect,
+                          padding: EdgeInsets.symmetric(vertical: 15),),
+                      )
                     ],
                   ),
                 ],

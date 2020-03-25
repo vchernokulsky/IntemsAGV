@@ -85,10 +85,26 @@ class _Wiznet extends State<Wiznet> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            RaisedButton(child: Text("Reset"), onPressed: reset),
-            RaisedButton(child: Text("Save"), onPressed: save),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal:2.0),
+                child: RaisedButton(
+                  child: Text("Reset"), onPressed: reset,
+                  padding: EdgeInsets.symmetric(vertical: 15),),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal:2.0),
+                child: RaisedButton(
+                  child: Text("Save"), onPressed: save,
+                  padding: EdgeInsets.symmetric(vertical: 15),),
+              ),
+            ),
+//            RaisedButton(child: Text("Reset"), onPressed: reset),
+//            RaisedButton(child: Text("Save"), onPressed: save),
           ],
-        ),
+        )
       ],
     );
   }
