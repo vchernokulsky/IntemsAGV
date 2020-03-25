@@ -52,31 +52,50 @@ class _RobotConnect extends State<RobotConnect> {
     portInput.controller.text = '${SocketData.connectPort}';
 
     return Scaffold(
-      appBar: AppBar(title: Text("Set up connection to robot")),
+      appBar: AppBar(title: Text("Connect to robot"),  leading: new Container(),),
+      resizeToAvoidBottomInset : false,
       body: Scrollbar(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Column(
+        child:
+    Stack(
+          children: <Widget>[
+            ConstrainedBox (
+              constraints: const BoxConstraints(minWidth: double.infinity,minHeight: double.infinity),
+              child: Opacity(
+                opacity: 0.11,
+                child: Image.asset(
+                  'images/back3.png',
+                  fit: BoxFit.none,
+                  repeat: ImageRepeat.repeat,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+              child: ListView(
+                shrinkWrap: true,
                 children: <Widget>[
-                  ipInput,
-                  portInput,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Column(
                     children: <Widget>[
-                      Expanded(
-                        child: RaisedButton(
-                            child: Text("Connect"), onPressed: connect,
-                          padding: EdgeInsets.symmetric(vertical: 15),),
-                      )
+                      ipInput,
+                      portInput,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Expanded(
+                            child: RaisedButton(
+                              child: Text("Connect"),
+                              onPressed: connect,
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -11,8 +11,9 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xff5f86c4),
           accentColor: Color(0xff3f3f3f),
           accentColorBrightness: Brightness.dark,
-          scaffoldBackgroundColor: Color(0xfff7f7f7),
-          canvasColor: Color(0xfff7f7f7),
+          scaffoldBackgroundColor: Color(0xffffffff),
+
+          canvasColor: Theme.of(context).primaryColorLight,
           cursorColor: Color(0xff5f86c4),
           buttonTheme: ButtonThemeData(
               buttonColor: Color(0xff3f3f3f),
