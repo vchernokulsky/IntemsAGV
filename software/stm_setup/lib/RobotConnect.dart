@@ -33,7 +33,7 @@ class _RobotConnect extends State<RobotConnect> {
       if (portInput.isCorrect()) {
         SocketData.connectHost = ipInput.controller.text;
         SocketData.connectPort = int.parse(portInput.controller.text);
-        showGoodToast("Data saved");
+        showGoodToast("Trying to connect...");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => RobotSetUp()),

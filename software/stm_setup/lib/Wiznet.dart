@@ -20,13 +20,13 @@ class _Wiznet extends State<Wiznet> {
   NumericInput setUpServerPort;
 
   _Wiznet() {
-    ipInput = IpInput(title: "STM IP address");
+    ipInput = IpInput(title: "Robot IP");
     networkMaskInput = IpInput(title: "network mask");
     gateAwayInput = IpInput(title: "gate away");
     localRosPort = NumericInput(
-        title: "STM ros client port", minValue: 0, maxValue: 65555);
+        title: "Roboto ROS client port", minValue: 0, maxValue: 65555);
     setUpServerPort =
-        NumericInput(title: "set up server port", minValue: 0, maxValue: 65555);
+        NumericInput(title: "Robot SetUpServer port", minValue: 0, maxValue: 65555);
   }
 
   void initState() {
@@ -78,10 +78,10 @@ class _Wiznet extends State<Wiznet> {
     return Column(
       children: <Widget>[
         ipInput,
-        networkMaskInput,
-        gateAwayInput,
         localRosPort,
         setUpServerPort,
+        networkMaskInput,
+        gateAwayInput,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

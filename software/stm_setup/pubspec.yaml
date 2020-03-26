@@ -28,6 +28,7 @@ dependencies:
   ping_discover_network: ^0.2.0+1
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.4"
   flutter_test:
     sdk: flutter
 
@@ -49,7 +50,15 @@ flutter:
     - images/network.png
     - images/Vector.png
     - images/back3.png
-
+    - images/LogoIcon.png
+flutter_icons:
+  ios: true
+  android: "launcher_icon"
+  image_path: "images/LogoIcon.png"
+#  image_path_ios: "images/LogoIcon.png"
+#  image_path_android: "images/LogoIcon.png"
+#  adaptive_icon_background: "images/LogoIcon.png"
+#  adaptive_icon_foreground: "images/LogoIcon.png"
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
