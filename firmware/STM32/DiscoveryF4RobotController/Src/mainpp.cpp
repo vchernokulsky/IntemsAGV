@@ -21,6 +21,7 @@ void StartEncoderTask(void *arg);
 void StartEncoderTask2(void *arg);
 void StartCmdvelTimeoutRask(void *arg);
 void StartHardFaultHanlerTaskRask(void *arg);
+void StartSetDefaultListenerRask(void *arg);
 
 SocketClient socket_client;
 SocketServer socket_server;
@@ -72,11 +73,17 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 	sys_thread_new("encoder1_thread", StartEncoderTask, 0, 256, osPriorityNormal);
 	sys_thread_new("encoder2_thread", StartEncoderTask2, 0, 256, osPriorityNormal);
 	sys_thread_new("cmdvel_timeout_thread", StartCmdvelTimeoutRask, 0, 128, osPriorityNormal);
+	sys_thread_new("set_default_listener", StartSetDefaultListenerRask, 0, 128, osPriorityNormal);
 	sys_thread_new("hard_fault_handle", StartHardFaultHanlerTaskRask, 0, 128, osPriorityNormal);
-
 }
 /***************************************************************************/
 
+/********** BTN NTERRUPT CALLBACK *******************************************/
+void set_default()
+{
+	settings.reset_config = true;
+}
+/***************************************************************************/
 
 uint8_t* get_local_ip_ptr()
 {
@@ -138,5 +145,10 @@ void StartHardFaultHanlerTaskRask(void *arg)
 			 HAL_GPIO_TogglePin(GPIO_HARDFAULT_LED, PIN_HARDFAULT_LED);
 			 osDelay(750);
 	}
+}
+
+void StartSetDefaultListenerRask(void *arg)
+{
+	settings.set_default_task();
 }
 

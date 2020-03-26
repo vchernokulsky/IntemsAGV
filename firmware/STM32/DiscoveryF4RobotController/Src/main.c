@@ -632,10 +632,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 
  if(GPIO_Pin == BLUE_BTN_Pin) {
-
-////   HAL_GPIO_WritePin(GPIOD, USR_LED_Pin, GPIO_PIN_RESET);
-//	 HAL_GPIO_TogglePin(GPIOD, USR_LED_Pin);
-
+	 	 set_default();
  } else{
 
    __NOP();

@@ -7,11 +7,10 @@
 
 #include "SetUpHelper.h"
 
-
 I2C_HandleTypeDef *SetUpHelper::mem_out = nullptr;
 SemaphoreHandle_t SetUpHelper::semaphore;
 bool SetUpHelper::is_default = false;
-
+bool SetUpHelper::reset_config = false;
 SetUpHelper::SetUpHelper() {
 	// TODO Auto-generated constructor stub
 
@@ -27,6 +26,7 @@ void SetUpHelper::memory_init(I2C_HandleTypeDef *main_hi2c1)
 	SetUpHelper::semaphore = xSemaphoreCreateMutex();
 	set_default(false);
 	osDelay(100);
+
 	read_all();
 	osDelay(100);
 }
@@ -204,9 +204,12 @@ HAL_StatusTypeDef SetUpHelper::memory_read(uint16_t read_size)
 
 void SetUpHelper::set_default(bool force)
 {
+	if(!SetUpHelper::mem_out){
+		return;
+	}
 	if( xSemaphoreTake( SetUpHelper::semaphore, portMAX_DELAY) == pdTRUE )
 	{
-		if(force || !is_set())
+		if((force || !is_set())&&!is_default)
 		{
 			uint16_t offset = SET_FLAG_OFFSET;
 			const char set_flag[] = "set";
@@ -221,6 +224,7 @@ void SetUpHelper::set_default(bool force)
 
 			calc_checksum();
 			memory_write();
+			is_default = true;
 		}
 		xSemaphoreGive( SetUpHelper::semaphore );
 	}
@@ -351,13 +355,25 @@ bool SetUpHelper::set(uint8_t *buff){
 			memcpy(message_out + offset, buff + offset, buff_size - offset);
 			calc_checksum();
 			memory_write();
+			is_default = false;
 			ret = true;
 		}
 
 		xSemaphoreGive( SetUpHelper::semaphore );
 	}
 	return ret;
+}
 
-
+void SetUpHelper::set_default_task()
+{
+	for(;;)
+	{
+		if(reset_config)
+		{
+			set_default(true);
+			reset_config = false;
+		}
+		osDelay(500);
+	}
 }
 

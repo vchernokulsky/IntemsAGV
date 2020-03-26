@@ -53,7 +53,6 @@ private:
 	static I2C_HandleTypeDef *mem_out;
 	uint8_t message_out[MAX_SETTING_SIZE];
 
-
 	void wait_for_readiness();
 	void memory_write();
 	HAL_StatusTypeDef memory_read(uint16_t read_size);
@@ -62,7 +61,7 @@ private:
 	void set_default_topics_name();
 	void calc_checksum();
 	bool check_checksum(uint8_t *buff, uint16_t size);
-	void set_default(bool force);
+
 	bool is_set();
 	uint16_t read_mem_size();
 	void read_all();
@@ -70,7 +69,8 @@ private:
 public:
 	static SemaphoreHandle_t semaphore;
 	static bool is_default;
-
+	static bool reset_config;
+	void set_default(bool force);
 	uint16_t msg_length;
 
 	uint8_t LOCAL_IP_ADDRESS[IP_SIZE];
@@ -98,6 +98,7 @@ public:
 	void memory_init(I2C_HandleTypeDef *main_hi2c1);
 	void get_curr_memory(uint8_t *buff);
 	bool set(uint8_t *buff);
+	void set_default_task();
 };
 
 #endif /* SETUPHELPER_H_ */

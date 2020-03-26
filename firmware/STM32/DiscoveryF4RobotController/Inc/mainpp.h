@@ -17,6 +17,7 @@
 void memory_setup();
 void external_memory_init(I2C_HandleTypeDef *main_hi2c1);
 void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2);
+void set_default();
 
 uint8_t* get_local_ip_ptr();
 uint8_t* get_network_mask_ptr();
