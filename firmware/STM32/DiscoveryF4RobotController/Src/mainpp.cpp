@@ -20,6 +20,7 @@ void StartSetSpeedTask2(void *arg);
 void StartEncoderTask(void *arg);
 void StartEncoderTask2(void *arg);
 void StartCmdvelTimeoutRask(void *arg);
+void StartHardFaultHanlerTaskRask(void *arg);
 
 SocketClient socket_client;
 SocketServer socket_server;
@@ -71,6 +72,7 @@ void threds_setup(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, 
 	sys_thread_new("encoder1_thread", StartEncoderTask, 0, 256, osPriorityNormal);
 	sys_thread_new("encoder2_thread", StartEncoderTask2, 0, 256, osPriorityNormal);
 	sys_thread_new("cmdvel_timeout_thread", StartCmdvelTimeoutRask, 0, 128, osPriorityNormal);
+	sys_thread_new("hard_fault_handle", StartHardFaultHanlerTaskRask, 0, 128, osPriorityNormal);
 
 }
 /***************************************************************************/
@@ -130,4 +132,11 @@ void StartCmdvelTimeoutRask(void *arg)
 	ros_helper.cmdvelTimeoutTask();
 }
 
+void StartHardFaultHanlerTaskRask(void *arg)
+{
+	for(;;){
+			 HAL_GPIO_TogglePin(GPIO_HARDFAULT_LED, PIN_HARDFAULT_LED);
+			 osDelay(750);
+	}
+}
 

@@ -68,8 +68,13 @@ void Error_Handler(void);
 #define PH1_OSC_OUT_GPIO_Port GPIOH
 #define OTG_FS_PowerSwitchOn_Pin GPIO_PIN_0
 #define OTG_FS_PowerSwitchOn_GPIO_Port GPIOC
+#define BLUE_BTN_Pin GPIO_PIN_0
+#define BLUE_BTN_GPIO_Port GPIOA
+#define BLUE_BTN_EXTI_IRQn EXTI0_IRQn
 #define BOOT1_Pin GPIO_PIN_2
 #define BOOT1_GPIO_Port GPIOB
+#define USR_LED_Pin GPIO_PIN_15
+#define USR_LED_GPIO_Port GPIOD
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14

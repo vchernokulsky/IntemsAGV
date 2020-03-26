@@ -31,3 +31,9 @@
 #define CHANNEL2 TIM_CHANNEL_2
 #define CHANNEL_REV2 TIM_CHANNEL_3
 /**********************************************/
+
+/********************LED************************/
+#define GPIO_HARDFAULT_LED GPIOD
+#define PIN_HARDFAULT_LED USR_LED_Pin
+/************************************************/
+
