@@ -13,61 +13,25 @@ bool SocketClient::is_connected = false;
 SocketClient::SocketClient( )
 {
 	// TODO Auto-generated constructor stub
-
 }
 
-SocketClient::SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
-{
-	// TODO Auto-generated constructor stub
-
-	memset(&localhost, 0, sizeof(struct sockaddr_in));
-	localhost.sin_family = AF_INET;
-	localhost.sin_port = htons(local_port);
-	localhost.sin_addr.s_addr = INADDR_ANY;
-
-	memset(&remotehost, 0, sizeof(struct sockaddr_in));
-	remotehost.sin_family = AF_INET;
-	remotehost.sin_port = htons(remote_port);
-	ip4addr_aton(remote_ip,(ip4_addr_t*)&remotehost.sin_addr);
-}
-
-void SocketClient::init( )
+void SocketClient::init(uint16_t ros_local_port, uint8_t *remote_ip, uint16_t ros_serialnode_port)
 {
 	// TODO Auto-generated constructor stub
 
 	SocketClient::error_semaphore = xSemaphoreCreateMutex();
-	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
+//	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
 
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
 	localhost.sin_family = AF_INET;
-	localhost.sin_port = htons(WIZNET_PORT);
+	localhost.sin_port = htons(ros_local_port);
 	localhost.sin_addr.s_addr = INADDR_ANY;
 
 	memset(&remotehost, 0, sizeof(struct sockaddr_in));
 	remotehost.sin_family = AF_INET;
-	remotehost.sin_port = htons(SERVER_PORT);
+	remotehost.sin_port = htons(ros_serialnode_port);
 	ip4_addr_set_u32((ip4_addr_t*)&remotehost.sin_addr, remote_ip[0] | (remote_ip[1] << 8) | (remote_ip[2] << 16) | (remote_ip[3] << 24));
-//	remotehost.sin_addr = (in_addr)(remote_ip[0] | (remote_ip[1] << 8) | (remote_ip[2] << 16) | (remote_ip[3] << 24));
-
 }
-
-void SocketClient::init(uint16_t local_port, const char *remote_ip,  uint16_t remote_port )
-{
-	// TODO Auto-generated constructor stub
-	SocketClient::error_semaphore = xSemaphoreCreateMutex();
-	memset(&localhost, 0, sizeof(struct sockaddr_in));
-	localhost.sin_family = AF_INET;
-	localhost.sin_port = htons(local_port);
-	localhost.sin_addr.s_addr = INADDR_ANY;
-
-	memset(&remotehost, 0, sizeof(struct sockaddr_in));
-	remotehost.sin_family = AF_INET;
-	remotehost.sin_port = htons(remote_port);
-	ip4addr_aton(remote_ip,(ip4_addr_t*)&remotehost.sin_addr);
-
-
-}
-
 
 SocketClient::~SocketClient() {
 	// TODO Auto-generated destructor stub

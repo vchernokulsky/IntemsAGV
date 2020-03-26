@@ -3,11 +3,13 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include <std_msgs/Float32.h>
-#include "User_config.h"
 
 class WheelPublisher
 {
 private:
+	float wheel_radius;
+	float max_lin_speed;
+	float rad_per_tick;
 	SemaphoreHandle_t semaphore;
 	TIM_HandleTypeDef *encoder_htim = nullptr;
 
@@ -28,30 +30,10 @@ public:
 	WheelPublisher(){
 	}
 
-	WheelPublisher(TIM_HandleTypeDef *htim){
-
-
-		prev_tick = 0;
-		cur_tick = 0;
-		delta_tick = 0;
-
-		prev_time = 0;
-		cur_time = 0;
-		delta_time = 0;
-		prev_distance_time = 0;
-
-		cur_speed = 0.0;
-		distance_tick = 0;
-
-		encoder_htim = htim;
-		HAL_TIM_Encoder_Start(encoder_htim, TIM_CHANNEL_ALL);
-	}
-
 	void init(TIM_HandleTypeDef *htim){
 		WheelPublisher::semaphore = xSemaphoreCreateMutex();
 
 		prev_tick = 0;
-
 		delta_tick = 0;
 
 		prev_time = 0;
@@ -68,6 +50,12 @@ public:
 		prev_tick = cur_tick;
 	}
 
+	void set_robot_params(float radius, float lin_speed, float rad){
+		wheel_radius = radius;
+		max_lin_speed = lin_speed;
+		rad_per_tick = rad;
+	}
+
 	void tick_calculate(){
 			cur_tick = __HAL_TIM_GET_COUNTER(encoder_htim);
 			cur_time = HAL_GetTick();
@@ -78,7 +66,7 @@ public:
 				tick_per_sek = ((float)delta_tick / 4.0)  /  ((float)delta_time / 1000.0);
 				if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
 					{
-					cur_speed = ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+					cur_speed = ((float)delta_tick / 4.0) * (rad_per_tick * wheel_radius)  /  ((float)delta_time / 1000.0);
 						xSemaphoreGive( semaphore );
 					}
 
@@ -88,7 +76,7 @@ public:
 				tick_per_sek = (-1) * ((float)delta_tick / 4.0)   /  ((float)delta_time / 1000.0);
 				if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
 					{
-					cur_speed = (-1) * ((float)delta_tick / 4.0) * (RAD_PER_TICK * RADIUS)  /  ((float)delta_time / 1000.0);
+					cur_speed = (-1) * ((float)delta_tick / 4.0) * (rad_per_tick * wheel_radius)  /  ((float)delta_time / 1000.0);
 						xSemaphoreGive( semaphore );
 					}
 
@@ -104,7 +92,7 @@ public:
 		int16_t ret = 0;
 		if( xSemaphoreTake( semaphore, portMAX_DELAY) == pdTRUE )
 		{
-			ret = std::round(cur_speed / MAX_LIN_SPEED * MAX_PWD);
+			ret = std::round(cur_speed / max_lin_speed * MAX_PWD);
 			xSemaphoreGive( semaphore );
 		}
 		return ret;
@@ -120,7 +108,7 @@ public:
 		// distance in rad
 		int32_t ret_dist = distance_tick;
 		distance_tick = 0;
-		return (float)ret_dist * RAD_PER_TICK / 4.0;
+		return (float)ret_dist * rad_per_tick / 4.0;
 	}
 
 	double  get_distance_time(){

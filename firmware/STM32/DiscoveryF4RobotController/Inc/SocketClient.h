@@ -49,10 +49,8 @@ public:
 	static SemaphoreHandle_t error_semaphore;
 	static bool is_connected;
 	SocketClient();
-	SocketClient(uint16_t local_port, const char *remote_ip,  uint16_t remote_port);
 	virtual ~SocketClient();
-	void init();
-	void init(uint16_t local_port, const char *remote_ip,  uint16_t remote_port);
+	void init(uint16_t ros_local_port, uint8_t *remote_ip, uint16_t ros_serialnode_port);
 	void socket_receive(uint8_t *pData, uint16_t size, uint32_t* rdmaInd);
 	void socket_send(uint8_t *pData, uint16_t len);
 	void SocketClientTask();

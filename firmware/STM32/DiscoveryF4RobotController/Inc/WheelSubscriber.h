@@ -9,6 +9,8 @@
 class WheelSubscriber
 {
 private:
+	float max_lin_speed;
+	uint8_t max_pwd_allowed;
 
 	TIM_HandleTypeDef *htim;
 	uint32_t Channel;
@@ -32,7 +34,7 @@ private:
 public:
 
 	void wheel_callback(float data){
-		target_vel = std::round(data / MAX_LIN_SPEED * MAX_PWD);
+		target_vel = std::round(data / max_lin_speed * MAX_PWD);
 		fit_limits(&target_vel);
 	}
 
@@ -118,13 +120,19 @@ public:
 		HAL_TIM_PWM_Start(htim, Channel_rev);
 	}
 
+	void set_robot_params(float max_lin, uint8_t pwd)
+	{
+		max_lin_speed = max_lin;
+		max_pwd_allowed = pwd;
+	}
+
 	void fit_limits(int16_t *val)
 	{
-		if(*val > MAX_PWD_ALLOWED){
-			*val = MAX_PWD_ALLOWED;
+		if(*val > max_pwd_allowed){
+			*val = max_pwd_allowed;
 		}
-		if(*val < -MAX_PWD_ALLOWED){
-			*val = -MAX_PWD_ALLOWED;
+		if(*val < -max_pwd_allowed){
+			*val = -max_pwd_allowed;
 		}
 	}
 
