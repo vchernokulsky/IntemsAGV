@@ -9,6 +9,8 @@
 
 
 I2C_HandleTypeDef *SetUpHelper::mem_out = nullptr;
+SemaphoreHandle_t SetUpHelper::semaphore;
+bool SetUpHelper::is_default = false;
 
 SetUpHelper::SetUpHelper() {
 	// TODO Auto-generated constructor stub
@@ -22,7 +24,8 @@ SetUpHelper::~SetUpHelper() {
 void SetUpHelper::memory_init(I2C_HandleTypeDef *main_hi2c1)
 {
 	SetUpHelper::mem_out = main_hi2c1;
-	set_default(true);
+	SetUpHelper::semaphore = xSemaphoreCreateMutex();
+	set_default(false);
 	osDelay(100);
 	read_all();
 	osDelay(100);
@@ -201,22 +204,27 @@ HAL_StatusTypeDef SetUpHelper::memory_read(uint16_t read_size)
 
 void SetUpHelper::set_default(bool force)
 {
-	if(force || !is_set())
+	if( xSemaphoreTake( SetUpHelper::semaphore, portMAX_DELAY) == pdTRUE )
 	{
-		uint16_t offset = SET_FLAG_OFFSET;
-		const char set_flag[] = "set";
-		memcpy(message_out + offset, set_flag, sizeof(set_flag));
+		if(force || !is_set())
+		{
+			uint16_t offset = SET_FLAG_OFFSET;
+			const char set_flag[] = "set";
+			memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
-		set_default_network();
-		set_default_robot_geometry();
-		set_default_topics_name();
+			set_default_network();
+			set_default_robot_geometry();
+			set_default_topics_name();
 
-		message_out[MSG_SIZE_OFFSET] = msg_length & 0xFF;
-		message_out[MSG_SIZE_OFFSET + 1] = msg_length >> 8;
+			message_out[MSG_SIZE_OFFSET] = msg_length & 0xFF;
+			message_out[MSG_SIZE_OFFSET + 1] = msg_length >> 8;
 
-		calc_checksum();
-		memory_write();
+			calc_checksum();
+			memory_write();
+		}
+		xSemaphoreGive( SetUpHelper::semaphore );
 	}
+
 }
 
 bool SetUpHelper::is_set()
@@ -238,15 +246,18 @@ uint16_t SetUpHelper::read_mem_size()
 
 void SetUpHelper::read_all()
 {
-	if(!is_set())
+	if( xSemaphoreTake( SetUpHelper::semaphore, portMAX_DELAY) == pdTRUE )
 	{
-		return;
+		if(is_set())
+		{
+			uint16_t mem_size = read_mem_size();
+			HAL_StatusTypeDef status = memory_read(mem_size);
+			if (status == HAL_OK){
+				extract_variables();
+			}
+		}
+		xSemaphoreGive( SetUpHelper::semaphore );
 	}
-	uint16_t mem_size = read_mem_size();
-	 HAL_StatusTypeDef status = memory_read(mem_size);
-	 if (status == HAL_OK){
-		 extract_variables();
-	 }
 }
 
 void SetUpHelper::extract_variables()
@@ -317,26 +328,36 @@ void SetUpHelper::extract_variables()
 
 void SetUpHelper::get_curr_memory(uint8_t *buff)
 {
-	memcpy(buff, message_out, msg_length);
+	if( xSemaphoreTake( SetUpHelper::semaphore, portMAX_DELAY) == pdTRUE )
+		{
+			memcpy(buff, message_out, msg_length);
+			xSemaphoreGive( SetUpHelper::semaphore );
+		}
 }
 
 bool SetUpHelper::set(uint8_t *buff){
+	bool ret = false;
+	if( xSemaphoreTake( SetUpHelper::semaphore, portMAX_DELAY) == pdTRUE )
+	{
 		uint16_t offset = SET_FLAG_OFFSET;
 		const char set_flag[] = "set";
 		memcpy(message_out + offset, set_flag, sizeof(set_flag));
 
 		offset = sizeof(set_flag);
 		uint16_t buff_size =  (buff[offset + 1] << 8) | buff[offset];
-		if(buff_size < MIN_SETIING_SIZE || buff_size > MAX_SETTING_SIZE || !check_checksum(buff, buff_size))
+		if(buff_size >= MIN_SETIING_SIZE && buff_size <= MAX_SETTING_SIZE & check_checksum(buff, buff_size))
 		{
-			return false;
+			msg_length = buff_size;
+			memcpy(message_out + offset, buff + offset, buff_size - offset);
+			calc_checksum();
+			memory_write();
+			ret = true;
 		}
-		msg_length = buff_size;
-		memcpy(message_out + offset, buff + offset, buff_size - offset);
-		calc_checksum();
 
-		memory_write();
-		return true;
+		xSemaphoreGive( SetUpHelper::semaphore );
+	}
+	return ret;
+
 
 }
 

@@ -68,6 +68,9 @@ private:
 	void read_all();
 	void extract_variables();
 public:
+	static SemaphoreHandle_t semaphore;
+	static bool is_default;
+
 	uint16_t msg_length;
 
 	uint8_t LOCAL_IP_ADDRESS[IP_SIZE];
