@@ -39,8 +39,13 @@ void SetUpHelper::wait_for_readiness()
 		status = HAL_I2C_IsDeviceReady(SetUpHelper::mem_out, DEVICE_ADDRESS, 1, HAL_MAX_DELAY);
 		if(status == HAL_OK)
 		{
+			HAL_GPIO_WritePin(GPIO_EEPROM_LED, PIN_EEPROM_LED, GPIO_PIN_SET);
 			break;
+		} else
+		{
+			HAL_GPIO_WritePin(GPIO_EEPROM_LED, PIN_EEPROM_LED, GPIO_PIN_RESET);
 		}
+		osDelay(10);
 	}
 }
 
@@ -349,7 +354,7 @@ bool SetUpHelper::set(uint8_t *buff){
 
 		offset = sizeof(set_flag);
 		uint16_t buff_size =  (buff[offset + 1] << 8) | buff[offset];
-		if(buff_size >= MIN_SETIING_SIZE && buff_size <= MAX_SETTING_SIZE & check_checksum(buff, buff_size))
+		if((buff_size >= MIN_SETIING_SIZE) && (buff_size <= MAX_SETTING_SIZE) && check_checksum(buff, buff_size))
 		{
 			msg_length = buff_size;
 			memcpy(message_out + offset, buff + offset, buff_size - offset);

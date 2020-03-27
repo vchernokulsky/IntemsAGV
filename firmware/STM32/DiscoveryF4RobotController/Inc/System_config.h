@@ -33,7 +33,14 @@
 /**********************************************/
 
 /********************LED************************/
+/* HardFault LED blinks while everything is ok
+ *  and stops when hardFault happens.
+ * Run as last Task */
 #define GPIO_HARDFAULT_LED GPIOD
 #define PIN_HARDFAULT_LED USR_LED_Pin
+
+/* EEPROM LED turns off when the status is not HAL_OK  */
+#define GPIO_EEPROM_LED GPIOD
+#define PIN_EEPROM_LED GPIO_PIN_10
 /************************************************/
 
