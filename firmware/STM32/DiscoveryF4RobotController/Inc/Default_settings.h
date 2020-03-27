@@ -9,7 +9,7 @@
 /************************************************/
 
 /********************SERVER************************/
-#define DEFAULT_ROS_SERIALNODE_IP_ADRESS {192, 168, 2, 102}
+#define DEFAULT_ROS_SERIALNODE_IP_ADRESS {192, 168, 2, 150}
 #define DEFAULT_ROS_SERIALNODE_PORT 11411
 /************************************************/
 
