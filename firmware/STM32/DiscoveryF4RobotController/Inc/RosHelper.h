@@ -23,9 +23,7 @@ private:
 	static SetUpHelper *settings;
 	ros::NodeHandle nh;
 	std_msgs::String str_msg;
-	std_msgs::Int16 cur_speed_msg;
 	ros::Publisher chatter;
-	ros::Publisher speed_pub;
 	WheelSubscriber wheel;
 	WheelSubscriber wheel2;
 	WheelPublisher encoder;

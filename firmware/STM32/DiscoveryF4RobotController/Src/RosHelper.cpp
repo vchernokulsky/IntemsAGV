@@ -10,7 +10,7 @@
 static const char test_string[] = "Hello world";
 SetUpHelper *RosHelper::settings = nullptr;
 
-RosHelper::RosHelper():chatter("chatter",&str_msg), speed_pub("wheel_cur_speed", &cur_speed_msg), wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
+RosHelper::RosHelper():chatter("chatter",&str_msg), wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
 	// TODO Auto-generated constructor stub
 
 }
@@ -24,7 +24,6 @@ void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_
 {
 	nh.initNode();
 	nh.advertise(chatter);
-	nh.advertise(speed_pub);
 
 	settings = main_settings;
 
@@ -84,12 +83,7 @@ void RosHelper::setSpeedTask(void)
 {
 	for(;;)
 	{
-	    cur_speed_msg.data = encoder.get_speed();
-		 if (PID_SETUP)
-		 {
-			speed_pub.publish(&cur_speed_msg);
-		}
-		wheel.set_speed(cur_speed_msg.data);
+		wheel.set_speed(encoder.get_speed());
 		osDelay(SET_SPEED_DELAY);
 	}
 }
