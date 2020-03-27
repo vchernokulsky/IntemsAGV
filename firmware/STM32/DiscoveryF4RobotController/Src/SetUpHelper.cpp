@@ -52,19 +52,19 @@ void SetUpHelper::wait_for_readiness()
 void SetUpHelper::set_default_network()
 {
 	uint16_t offset = LOCAL_IP_OFFSET;
-	uint8_t ip[] = WIZNET_IP_ADRESS;
+	uint8_t ip[] = DEFAULT_ROBOT_IP_ADRESS;
 	memcpy(message_out + offset, ip, IP_SIZE);
 
 	offset = NETWORK_MASK_OFFSET;
-	uint8_t mask[] = WIZNET_MASK;
+	uint8_t mask[] = DEFAULT_NETWORK_MASK;
 	memcpy(message_out + offset, mask, IP_SIZE);
 
 	offset = GATEAWAY_OFFSET;
-	uint8_t gw[] = WIZNET_GATEAWAY;
+	uint8_t gw[] = DEFAULT_GATEAWAY;
 	memcpy(message_out + offset, gw, IP_SIZE);
 
 	offset = ROS_CLIENT_PORT_OFFSET;
-	uint16_t port = WIZNET_PORT;
+	uint16_t port = DEFAULT_ROS_CLIENT_PORT;
 	message_out[offset] = port & 0xFF;
 	message_out[offset+1] = port >> 8;
 
@@ -74,11 +74,11 @@ void SetUpHelper::set_default_network()
 	message_out[offset+1] = port >> 8;
 
 	offset = SERIALNODE_IP_OFFSET;
-	uint8_t sn_ip[] = SERVER_IP_ADRESS;
+	uint8_t sn_ip[] = DEFAULT_ROS_SERIALNODE_IP_ADRESS;
 	memcpy(message_out + offset, sn_ip, IP_SIZE);
 
 	offset = SERIALNODE_PORT_OFFSET;
-	port = SERVER_PORT;
+	port = DEFAULT_ROS_SERIALNODE_PORT;
 	message_out[offset] = port & 0xFF;
 	message_out[offset+1] = port >> 8;
 }

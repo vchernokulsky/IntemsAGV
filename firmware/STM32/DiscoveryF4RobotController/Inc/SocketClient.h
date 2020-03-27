@@ -13,7 +13,7 @@
 #include "lwip/inet.h"
 #include "lwip/sockets.h"
 
-#include "User_config.h"
+#include "Default_settings.h"
 #include "System_config.h"
 
 

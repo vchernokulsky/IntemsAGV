@@ -32,6 +32,30 @@
 #define CHANNEL_REV2 TIM_CHANNEL_3
 /**********************************************/
 
+/*******************CONTROL****************/
+#define ROS_SPINONCE_DELAY 40
+#define SET_SPEED_DELAY 100
+#define GET_TICK_DELAY 100
+#define CMDVEL_TIMEOUT 5000
+#define CMDVEL_TIMEOUT_DELAY 100
+
+#define KP_DEFAULT 1.0
+#define KI_DEAFAULT 0.0
+#define KD_DEFAULT 0.0
+
+#define MAX_PWD 255
+
+
+#define PWD_STEP_L 10
+#define SPEED_DELTA_L 40
+
+#define PWD_STEP_M 5
+#define SPEED_DELTA_M 13
+
+#define PWD_STEP_S 1
+#define SPEED_DELTA_S 2
+/************************************************/
+
 /********************LED************************/
 /* HardFault LED blinks while everything is ok
  *  and stops when hardFault happens.
