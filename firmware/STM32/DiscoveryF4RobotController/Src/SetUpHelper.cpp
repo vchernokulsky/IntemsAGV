@@ -7,6 +7,30 @@
 
 #include "SetUpHelper.h"
 
+#define PUT_IP(offset, val) \
+	memcpy(message_out + (offset), (val), IP_SIZE);
+
+#define PUT_NUM(offset, val) \
+	message_out[(offset)] = (val) & 0xFF; \
+	message_out[(offset)+1] = (val) >> 8;
+
+#define PUT_TOPIC(offset, str, size) \
+		message_out[(offset)] = (size); \
+		(offset) += 1; \
+		memcpy(message_out + (offset), (str), (size)); \
+		(offset) += (size);
+
+#define GET_IP(offset, ip) \
+	memcpy((ip), message_out + (offset), IP_SIZE);
+
+#define GET_NUM(offset) \
+	(message_out[offset + 1] << 8) | message_out[offset]
+
+#define GET_TOPIC(offset, topic, null_char ) \
+	memcpy((topic), message_out + (offset) + 1, message_out[(offset)]); \
+	memcpy((topic) + message_out[(offset)], (null_char), sizeof((null_char))); \
+	(offset) = (offset) + message_out[(offset)] + 1;
+
 I2C_HandleTypeDef *SetUpHelper::mem_out = nullptr;
 SemaphoreHandle_t SetUpHelper::semaphore;
 bool SetUpHelper::is_default = false;
@@ -51,70 +75,35 @@ void SetUpHelper::wait_for_readiness()
 
 void SetUpHelper::set_default_network()
 {
-	uint16_t offset = LOCAL_IP_OFFSET;
 	uint8_t ip[] = DEFAULT_ROBOT_IP_ADRESS;
-	memcpy(message_out + offset, ip, IP_SIZE);
-
-	offset = NETWORK_MASK_OFFSET;
 	uint8_t mask[] = DEFAULT_NETWORK_MASK;
-	memcpy(message_out + offset, mask, IP_SIZE);
-
-	offset = GATEAWAY_OFFSET;
 	uint8_t gw[] = DEFAULT_GATEAWAY;
-	memcpy(message_out + offset, gw, IP_SIZE);
-
-	offset = ROS_CLIENT_PORT_OFFSET;
-	uint16_t port = DEFAULT_ROS_CLIENT_PORT;
-	message_out[offset] = port & 0xFF;
-	message_out[offset+1] = port >> 8;
-
-	offset = SET_UP_SERVER_PORT_OFFSET;
-	port = DEFAULT_SETUP_SERVER_PORT;
-	message_out[offset] = port & 0xFF;
-	message_out[offset+1] = port >> 8;
-
-	offset = SERIALNODE_IP_OFFSET;
 	uint8_t sn_ip[] = DEFAULT_ROS_SERIALNODE_IP_ADRESS;
-	memcpy(message_out + offset, sn_ip, IP_SIZE);
 
-	offset = SERIALNODE_PORT_OFFSET;
-	port = DEFAULT_ROS_SERIALNODE_PORT;
-	message_out[offset] = port & 0xFF;
-	message_out[offset+1] = port >> 8;
+	PUT_IP(LOCAL_IP_OFFSET, ip);
+	PUT_IP(NETWORK_MASK_OFFSET, mask);
+	PUT_IP(GATEAWAY_OFFSET, gw);
+	PUT_NUM(ROS_CLIENT_PORT_OFFSET, DEFAULT_ROS_CLIENT_PORT);
+	PUT_NUM(SET_UP_SERVER_PORT_OFFSET, DEFAULT_SETUP_SERVER_PORT);
+	PUT_IP(SERIALNODE_IP_OFFSET, sn_ip);
+	PUT_NUM(SERIALNODE_PORT_OFFSET, DEFAULT_ROS_SERIALNODE_PORT);
 }
 
 void SetUpHelper::set_default_robot_geometry()
 {
-	uint16_t offset = WHEEL_RADIUS_OFFSET;
 	uint16_t radius = std::round(DEFAULT_RADIUS * 1000.0);
-	message_out[offset] = radius & 0xFF;
-	message_out[offset+1] = radius >> 8;
-
-	offset = WHEEL_SEPARATION_OFFSET;
 	uint16_t separation = std::round(DEFAULT_WHEEL_SEPARATION * 1000.0);
-	message_out[offset] = separation & 0xFF;
-	message_out[offset+1] = separation >> 8;
-
-	offset = MAX_LIN_VEL_OFFSET;
 	uint16_t vel = std::round(DEFAULT_MAX_LIN_SPEED * 1000.0);
-	message_out[offset] = vel & 0xFF;
-	message_out[offset+1] = vel >> 8;
-
-	offset = MAX_ANG_VEL_OFFSET;
-	vel = std::round(DEFAULT_ANG_VEL_MAX * 1000.0);
-	message_out[offset] = vel & 0xFF;
-	message_out[offset+1] = vel >> 8;
-
-	offset = RAD_PER_TICK_OFFSET;
+	uint16_t max_ang_vel = std::round(DEFAULT_ANG_VEL_MAX * 1000.0);
 	uint16_t rad = std::round(DEFAULT_RAD_PER_TICK * 100000.0);
-	message_out[offset] = rad & 0xFF;
-	message_out[offset+1] = rad >> 8;
-
-	offset = MAX_PWD_ALLOWED_OFFSET;
 	uint16_t pwd = DEFAULT_MAX_PWD_ALLOWED;
-	message_out[offset] = pwd & 0xFF;
-	message_out[offset+1] = pwd >> 8;
 
+	PUT_NUM(WHEEL_RADIUS_OFFSET, radius);
+	PUT_NUM(WHEEL_SEPARATION_OFFSET, separation);
+	PUT_NUM(MAX_LIN_VEL_OFFSET, vel);
+	PUT_NUM(MAX_ANG_VEL_OFFSET, max_ang_vel);
+	PUT_NUM(RAD_PER_TICK_OFFSET, rad);
+	PUT_NUM(MAX_PWD_ALLOWED_OFFSET, pwd);
 }
 
 void SetUpHelper::set_default_topics_name()
@@ -122,32 +111,21 @@ void SetUpHelper::set_default_topics_name()
 	uint16_t offset = TOPICS_OFFSET;
 
 	char cmd_vel[] = DEFAULT_CMDVEL_TOPIC;
-	uint8_t topic_size = strlen(cmd_vel);
-	message_out[offset] = topic_size;
-	offset += 1;
-	memcpy(message_out + offset, cmd_vel, topic_size);
-	offset += topic_size;
-
 	char odom[] = DEFAULT_ODOMETRY_TOPIC;
-	topic_size = strlen(odom);
-	message_out[offset] = topic_size;
-	offset += 1;
-	memcpy(message_out + offset, odom, topic_size);
-	offset += topic_size;
-
 	char base_frame[] = DEFAULT_BASE_FRAME;
-	topic_size = strlen(base_frame);
-	message_out[offset] = topic_size;
-	offset += 1;
-	memcpy(message_out + offset, base_frame, topic_size);
-	offset += topic_size;
-
 	char odom_frame[] = DEFAULT_ODOMETRY_FRAME;
+
+	uint8_t topic_size = strlen(cmd_vel);
+	PUT_TOPIC(offset, cmd_vel, topic_size);
+
+	topic_size = strlen(odom);
+	PUT_TOPIC(offset, odom, topic_size);
+
+	topic_size = strlen(base_frame);
+	PUT_TOPIC(offset, base_frame, topic_size);
+
 	topic_size = strlen(odom_frame);
-	message_out[offset] = topic_size;
-	offset += 1;
-	memcpy(message_out + offset, odom_frame, topic_size);
-	offset += topic_size;
+	PUT_TOPIC(offset, odom_frame, topic_size);
 
 	 msg_length = offset + 1;
 }
@@ -224,8 +202,7 @@ void SetUpHelper::set_default(bool force)
 			set_default_robot_geometry();
 			set_default_topics_name();
 
-			message_out[MSG_SIZE_OFFSET] = msg_length & 0xFF;
-			message_out[MSG_SIZE_OFFSET + 1] = msg_length >> 8;
+			PUT_NUM(MSG_SIZE_OFFSET, msg_length);
 
 			calc_checksum();
 			memory_write();
@@ -247,7 +224,7 @@ bool SetUpHelper::is_set()
 
 uint16_t SetUpHelper::read_mem_size()
 {
-	uint8_t rmsg[PORT_SIZE];
+	uint8_t rmsg[NUM_SIZE];
 	wait_for_readiness();
 	HAL_I2C_Mem_Read(SetUpHelper::mem_out, DEVICE_ADDRESS, DEFAULT_ADDRESS + MSG_SIZE_OFFSET, I2C_MEMADD_SIZE_16BIT, rmsg, sizeof(rmsg), HAL_MAX_DELAY);
 	return (rmsg[1] << 8) | rmsg[0];
@@ -279,59 +256,39 @@ void SetUpHelper::extract_variables()
 	}
 	msg_length = msg_size;
 
-	memcpy(LOCAL_IP_ADDRESS, message_out + LOCAL_IP_OFFSET, IP_SIZE);
-	memcpy(NETWORK_MASK, message_out + NETWORK_MASK_OFFSET, IP_SIZE);
-	memcpy(GATEAWAY, message_out + GATEAWAY_OFFSET, IP_SIZE);
+	GET_IP(LOCAL_IP_OFFSET, LOCAL_IP_ADDRESS);
+	GET_IP(NETWORK_MASK_OFFSET, NETWORK_MASK);
+	GET_IP(GATEAWAY_OFFSET, GATEAWAY);
+	ROS_CLIENT_PORT = GET_NUM(ROS_CLIENT_PORT_OFFSET);
+	SET_UP_SERVER_PORT = GET_NUM(SET_UP_SERVER_PORT_OFFSET);
 
-	ROS_CLIENT_PORT = (message_out[ROS_CLIENT_PORT_OFFSET + 1] << 8) | message_out[ROS_CLIENT_PORT_OFFSET];
-	SET_UP_SERVER_PORT = (message_out[SET_UP_SERVER_PORT_OFFSET + 1] << 8) | message_out[SET_UP_SERVER_PORT_OFFSET];
+	GET_IP(SERIALNODE_IP_OFFSET, SERIALNODE_IP);
+	SERIALNODE_PORT = GET_NUM(SERIALNODE_PORT_OFFSET);
 
-	memcpy(SERIALNODE_IP, message_out + SERIALNODE_IP_OFFSET, IP_SIZE);
-	SERIALNODE_PORT = (message_out[SERIALNODE_PORT_OFFSET + 1] << 8) | message_out[SERIALNODE_PORT_OFFSET];
-
-	uint16_t radius_mm =  (message_out[WHEEL_RADIUS_OFFSET + 1] << 8) | message_out[WHEEL_RADIUS_OFFSET];
+	uint16_t radius_mm =  GET_NUM(WHEEL_RADIUS_OFFSET);
 	WHEEL_RADIUS = (float)radius_mm / 1000.0f;
 
-	uint16_t separation_mm =  (message_out[WHEEL_SEPARATION_OFFSET + 1] << 8) | message_out[WHEEL_SEPARATION_OFFSET];
+	uint16_t separation_mm =  GET_NUM(WHEEL_SEPARATION_OFFSET);
 	WHEEL_SEPARATION = (float)separation_mm / 1000.0f;
 
-	uint16_t lin_vel_mm =  (message_out[MAX_LIN_VEL_OFFSET + 1] << 8) | message_out[MAX_LIN_VEL_OFFSET];
+	uint16_t lin_vel_mm =  GET_NUM(MAX_LIN_VEL_OFFSET);
 	MAX_LIN_SPEED = (float)lin_vel_mm / 1000.0f;
 
-	uint16_t ang_vel_mr =  (message_out[MAX_ANG_VEL_OFFSET + 1] << 8) | message_out[MAX_ANG_VEL_OFFSET];
+	uint16_t ang_vel_mr =  GET_NUM(MAX_ANG_VEL_OFFSET);
 	MAX_ANG_VEL = (float)ang_vel_mr / 1000.0f;
 
-	uint16_t rad_int =  (message_out[RAD_PER_TICK_OFFSET + 1] << 8) | message_out[RAD_PER_TICK_OFFSET];
+	uint16_t rad_int = GET_NUM(RAD_PER_TICK_OFFSET);
 	RAD_PER_TICK = (float)rad_int / 100000.0f;
 
-	MAX_PWD_ALLOWED = (message_out[MAX_PWD_ALLOWED_OFFSET + 1] << 8) | message_out[MAX_PWD_ALLOWED_OFFSET];
+	MAX_PWD_ALLOWED = GET_NUM(MAX_PWD_ALLOWED_OFFSET);
 
 	offset = TOPICS_OFFSET;
 	char null_char[]  = {'\0'};
 
-	uint8_t topic_size = message_out[offset];
-	offset += 1;
-	memcpy(CMD_VEL_TOPIC, message_out + offset, topic_size);
-	memcpy(CMD_VEL_TOPIC + topic_size, null_char, sizeof(null_char));
-	offset += topic_size;
-
-	topic_size = message_out[offset];
-	offset += 1;
-	memcpy(ODOM_TOPIC, message_out + offset, topic_size);
-	memcpy(ODOM_TOPIC + topic_size, null_char, sizeof(null_char));
-	offset += topic_size;
-
-	topic_size = message_out[offset];
-	offset += 1;
-	memcpy(BASE_FRAME, message_out + offset, topic_size);
-	memcpy(BASE_FRAME + topic_size, null_char, sizeof(null_char));
-	offset += topic_size;
-
-	topic_size = message_out[offset];
-	offset += 1;
-	memcpy(ODOM_FRAME, message_out + offset, topic_size);
-	memcpy(ODOM_FRAME + topic_size, null_char, sizeof(null_char));
-	offset += topic_size;
+	GET_TOPIC(offset, CMD_VEL_TOPIC, null_char );
+	GET_TOPIC(offset, ODOM_TOPIC, null_char );
+	GET_TOPIC(offset, BASE_FRAME, null_char );
+	GET_TOPIC(offset, ODOM_FRAME, null_char );
 
 }
 

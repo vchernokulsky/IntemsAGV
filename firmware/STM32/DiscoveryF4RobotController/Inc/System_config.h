@@ -1,7 +1,7 @@
 #pragma once
 
 #define IP_SIZE 4
-#define PORT_SIZE 2
+#define NUM_SIZE 2
 
 /********************UART************************/
 #define UART_BUF_SIZE 30
