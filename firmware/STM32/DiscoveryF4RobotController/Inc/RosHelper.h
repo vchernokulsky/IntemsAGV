@@ -22,8 +22,8 @@ class RosHelper {
 private:
 	static SetUpHelper *settings;
 	ros::NodeHandle nh;
-	std_msgs::String str_msg;
-	ros::Publisher chatter;
+//	std_msgs::String str_msg;
+//	ros::Publisher chatter;
 	WheelSubscriber wheel;
 	WheelSubscriber wheel2;
 	WheelPublisher encoder;

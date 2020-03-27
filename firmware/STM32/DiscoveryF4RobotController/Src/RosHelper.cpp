@@ -7,10 +7,9 @@
 #include "SetUpHelper.h"
 #include "RosHelper.h"
 
-static const char test_string[] = "Hello world";
 SetUpHelper *RosHelper::settings = nullptr;
 
-RosHelper::RosHelper():chatter("chatter",&str_msg), wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
+RosHelper::RosHelper(): wheel(), wheel2() , encoder(), encoder2(), cmd_vel(), odom(){
 	// TODO Auto-generated constructor stub
 
 }
@@ -23,8 +22,6 @@ RosHelper::~RosHelper() {
 void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_htim2, TIM_HandleTypeDef *encoder_htim, TIM_HandleTypeDef *encoder_htim2, SetUpHelper *main_settings)
 {
 	nh.initNode();
-	nh.advertise(chatter);
-
 	settings = main_settings;
 
 	//===Right wheel===
@@ -54,8 +51,6 @@ void RosHelper::setupRos(TIM_HandleTypeDef *main_htim,  TIM_HandleTypeDef *main_
 
 void RosHelper::rosLoop(void)
 {
-	str_msg.data = test_string;
-//	chatter.publish(&str_msg);
 	if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 	{
 		if (SocketClient::is_connected)
