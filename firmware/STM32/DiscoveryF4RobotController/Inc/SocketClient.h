@@ -14,7 +14,7 @@
 #include "lwip/sockets.h"
 
 #include "User_config.h"
-
+#include "System_config.h"
 
 
 #ifndef SOCKETCLIENT_H_

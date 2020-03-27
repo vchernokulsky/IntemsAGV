@@ -73,6 +73,8 @@ void Error_Handler(void);
 #define BLUE_BTN_EXTI_IRQn EXTI0_IRQn
 #define BOOT1_Pin GPIO_PIN_2
 #define BOOT1_GPIO_Port GPIOB
+#define LWIP_LED_Pin GPIO_PIN_9
+#define LWIP_LED_GPIO_Port GPIOD
 #define EEPROM_LED_Pin GPIO_PIN_10
 #define EEPROM_LED_GPIO_Port GPIOD
 #define USR_LED_Pin GPIO_PIN_15

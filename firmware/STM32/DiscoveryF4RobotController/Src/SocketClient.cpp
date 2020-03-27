@@ -17,10 +17,7 @@ SocketClient::SocketClient( )
 
 void SocketClient::init(uint16_t ros_local_port, uint8_t *remote_ip, uint16_t ros_serialnode_port)
 {
-	// TODO Auto-generated constructor stub
-
 	SocketClient::error_semaphore = xSemaphoreCreateMutex();
-//	uint8_t remote_ip[4] = SERVER_IP_ADRESS;
 
 	memset(&localhost, 0, sizeof(struct sockaddr_in));
 	localhost.sin_family = AF_INET;
@@ -107,12 +104,16 @@ void SocketClient::SocketClientTask()
 				osDelay(100);
 				for(;;){
 					if(err_count > MAX_ERROR_COUNT){
+						HAL_GPIO_WritePin(GPIO_LWIP_LED, PIN_LWIP_LED, GPIO_PIN_RESET);
 						if( xSemaphoreTake( SocketClient::error_semaphore, portMAX_DELAY) == pdTRUE )
 						{
 							SocketClient::is_connected = false;
 							xSemaphoreGive( SocketClient::error_semaphore );
 						}
 						break;
+					} else
+					{
+						HAL_GPIO_WritePin(GPIO_LWIP_LED, PIN_LWIP_LED, GPIO_PIN_SET);
 					}
 					osDelay(10);
 				}
@@ -135,14 +136,12 @@ uint8_t SocketClient::check_errno(int bytes){
 }
 uint8_t SocketClient::check_errno()
 {
-
 	if(errno == EINPROGRESS || errno == 0)
 	{
 		return OK_STATUS;
 	}
 	if(errno == EAGAIN)
 	{
-//		osDelay(50);
 		return WARNING_STATUS;
 	}
 	if(errno == ECONNRESET || errno == EHOSTUNREACH)
@@ -151,25 +150,3 @@ uint8_t SocketClient::check_errno()
 	}
 	return UNKNOWN_STATUS;
 }
-
-//uint8_t SocketClient::check_errno(int bytes)
-//{
-//
-//	if(bytes>=0 || errno == EINPROGRESS || errno == 0)
-//	{
-//		return OK_STATUS;
-//	}
-//	if(errno == EAGAIN)
-//	{
-////		osDelay(50);
-//		return WARNING_STATUS;
-//	}
-//	if(bytes<0 || errno == ECONNRESET || errno == EHOSTUNREACH)
-//	{
-//		return ERROR_STATUS;
-//	}
-//	return UNKNOWN_STATUS;
-//}
-
-
-

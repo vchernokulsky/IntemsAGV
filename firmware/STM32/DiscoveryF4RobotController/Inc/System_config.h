@@ -42,5 +42,11 @@
 /* EEPROM LED turns off when the status is not HAL_OK  */
 #define GPIO_EEPROM_LED GPIOD
 #define PIN_EEPROM_LED GPIO_PIN_10
+
+/* LWIP LED turns on when the connection is successful
+ * otherwise it blinks (turns off when the number of errors
+ * exceeds the specified threshold)	  */
+#define GPIO_LWIP_LED GPIOD
+#define PIN_LWIP_LED GPIO_PIN_9
 /************************************************/
 
