@@ -1865,7 +1865,7 @@ MonoBehaviour:
   JointStateReaders:
   - {fileID: 1295615861}
   - {fileID: 866947365}
-  FrameId: Unity
+  FrameId: map
 --- !u!114 &873216571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1923,7 +1923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /scan
   laserScanReader: {fileID: 2033708452}
-  FrameId: Unity
+  FrameId: map
 --- !u!1 &918895329
 GameObject:
   m_ObjectHideFlags: 8
