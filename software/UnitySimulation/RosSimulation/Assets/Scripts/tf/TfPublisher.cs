@@ -34,7 +34,7 @@ namespace RosSharp.RosBridgeClient
             }
         }
 
-        public void SedTransform(TransformStamped tf_msg)
+        public void SendTransform(TransformStamped tf_msg)
         {
            msgQueue.Enqueue(tf_msg);
         }

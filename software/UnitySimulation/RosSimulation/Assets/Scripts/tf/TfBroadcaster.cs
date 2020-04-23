@@ -13,18 +13,17 @@ using Vector3 = RosSharp.RosBridgeClient.MessageTypes.Geometry.Vector3;
 namespace RosSharp.RosBridgeClient
 {
     [RequireComponent(typeof(TfPublisher))]
-    public class TfBroadcaster : MonoBehaviour
+    abstract public class TfBroadcaster : MonoBehaviour
     {
         public string frameId = "base_link";
-        public Transform publishedTransform;
         public float rate = 10.0f;
         
         private float time_pass;
         private TfPublisher tf;
-        private TransformStamped msg;
+        protected TransformStamped msg;
 
         // Start is called before the first frame update
-        void Start()
+        protected void Start()
         {
             tf = GetComponent<TfPublisher>();
             time_pass = 0.0f;
@@ -32,15 +31,13 @@ namespace RosSharp.RosBridgeClient
         }
 
         // Update is called once per frame
-        void FixedUpdate()
+        protected void FixedUpdate()
         {
-            Debug.Log("send TF");
             time_pass += UnityEngine.Time.deltaTime;
             if (time_pass >= (1.0f / rate))
             {
                 UpdateMsg(); 
-                
-               tf.SedTransform(msg);
+                tf.SendTransform(msg);
                time_pass = 0.0f;
             }
         }
@@ -50,18 +47,19 @@ namespace RosSharp.RosBridgeClient
             msg = new TransformStamped();
             msg.header = new Header();
             msg.header.frame_id = frameId;
-            msg.child_frame_id = publishedTransform.name;
-
         }
+
+        abstract protected void SetChildFrame();
+        abstract protected void SetTransform();
 
         private void UpdateMsg()
         {
             msg.header.Update();
-            msg.transform.translation = GetTranslation(publishedTransform.position.Unity2Ros());
-            msg.transform.rotation = GetRotation(publishedTransform.rotation.Unity2Ros());
+            SetChildFrame();
+            SetTransform();
         }
 
-        private Vector3 GetTranslation(UnityEngine.Vector3 _vector)
+        protected Vector3 GetTranslation(UnityEngine.Vector3 _vector)
         {
             Vector3 trans = new Vector3();
             trans.x = _vector.x;
@@ -71,7 +69,7 @@ namespace RosSharp.RosBridgeClient
             return trans;
         }
         
-        private Quaternion GetRotation(UnityEngine.Quaternion q)
+        protected Quaternion GetRotation(UnityEngine.Quaternion q)
         {
             Quaternion quat = new Quaternion();
             quat.w = q.w;
