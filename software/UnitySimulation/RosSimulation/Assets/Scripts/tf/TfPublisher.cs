@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
 {
-    public class tf_broadcaster : UnityPublisher<MessageTypes.Geometry.TransformStamped>
+    public class TfPublisher : UnityPublisher<MessageTypes.Geometry.TransformStamped>
     {
         private TransformStamped msg;
 
