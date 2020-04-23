@@ -28,15 +28,18 @@ namespace RosSharp.RosBridgeClient
         {
             tf = GetComponent<TfPublisher>();
             time_pass = 0.0f;
+            InitializeMessage();
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
+            Debug.Log("send TF");
             time_pass += UnityEngine.Time.deltaTime;
             if (time_pass >= (1.0f / rate))
             {
-                UpdateMsg();
+                UpdateMsg(); 
+                
                tf.SedTransform(msg);
                time_pass = 0.0f;
             }

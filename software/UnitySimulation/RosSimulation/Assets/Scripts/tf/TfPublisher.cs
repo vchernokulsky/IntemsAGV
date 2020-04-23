@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using RosSharp.RosBridgeClient.MessageTypes.Geometry;
 using RosSharp.RosBridgeClient.MessageTypes.Rosapi;
+using RosSharp.RosBridgeClient.MessageTypes.Tf2;
 using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
 {
-    public class TfPublisher : UnityPublisher<MessageTypes.Geometry.TransformStamped>
+    public class TfPublisher : UnityPublisher<TFMessage>
     {
-        private TransformStamped msg;
+        private TFMessage msg;
 
         private Queue<TransformStamped> msgQueue;
         
@@ -17,15 +18,18 @@ namespace RosSharp.RosBridgeClient
         {
             Topic = "/tf";
             msgQueue = new Queue<TransformStamped>();
+            msg = new TFMessage();
+            msg.transforms = new TransformStamped[1];
             base.Start();
+            
         }
 
         // Update is called once per frame
-        protected void FixUpdate()
+        protected void FixedUpdate()
         {
             if (msgQueue.Count > 0)
             {
-                msg = msgQueue.Dequeue();
+                msg.transforms[0] = msgQueue.Dequeue();
                 Publish(msg);
             }
         }
