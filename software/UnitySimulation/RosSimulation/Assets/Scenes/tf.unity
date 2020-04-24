@@ -1776,8 +1776,10 @@ GameObject:
   - component: {fileID: 873216568}
   - component: {fileID: 873216569}
   - component: {fileID: 873216574}
-  - component: {fileID: 873216575}
   - component: {fileID: 873216576}
+  - component: {fileID: 873216575}
+  - component: {fileID: 873216578}
+  - component: {fileID: 873216577}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -1819,13 +1821,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /odom
-  rate: 10
+  rate: 20
   FrameId: odom
   ChildId: base_link
   leftWheel: {fileID: 1295615859}
   rightWheel: {fileID: 866947363}
   wheelRadius: 0.035
   wheelSeparation: 0.23
+  tfBroadcasting: 1
   base_link: {fileID: 406168113}
 --- !u!114 &873216569
 MonoBehaviour:
@@ -1841,12 +1844,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /odom2
   rate: 10
-  FrameId: odom
+  FrameId: odom2
   ChildId: base_link
   leftWheel: {fileID: 1295615859}
   rightWheel: {fileID: 866947363}
   wheelRadius: 0.035
   wheelSeparation: 0.23
+  tfBroadcasting: 0
   start_x: 0
   start_y: 0.102
   start_z: 0
@@ -1935,10 +1939,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 873216566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a51a40adeb13648c9dec51c95056557, type: 3}
+  m_Script: {fileID: 11500000, guid: bebfc802eb4aa5f73ade87328104f83e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /tf
+  frameId: base_footprint
+  rate: 10
 --- !u!114 &873216576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,12 +1953,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 873216566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d112780862c8db2bc7a238d62f158e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a51a40adeb13648c9dec51c95056557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /tf
+--- !u!114 &873216577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameId: base_link
-  publishedTransform: {fileID: 1295615859}
   rate: 10
+  publishedTransform: {fileID: 866947363}
+--- !u!114 &873216578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameId: base_link
+  rate: 10
+  publishedTransform: {fileID: 1295615859}
 --- !u!1 &918895329
 GameObject:
   m_ObjectHideFlags: 8
@@ -3848,7 +3881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516098552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -1}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.96}
   m_LocalScale: {x: 4, y: 1, z: 0.05}
   m_Children: []
   m_Father: {fileID: 0}

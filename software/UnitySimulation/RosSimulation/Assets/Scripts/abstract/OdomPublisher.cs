@@ -15,11 +15,15 @@ namespace RosSharp.RosBridgeClient
 
         public float wheelRadius = 0.035f;
         public float wheelSeparation = 0.23f;
+        
+        public bool tfBroadcasting = true;
 
         private MessageTypes.Nav.Odometry odom;
         protected HingeJoint leftJoint;
         protected HingeJoint rightJoint;
         private float time_pass;
+
+        private TfOdomBroadcaster tfBroadcaster;
 
         // Start is called before the first frame update
         protected override void Start()
@@ -28,6 +32,7 @@ namespace RosSharp.RosBridgeClient
             GetJoints();
             InitializeMessage();
             time_pass = 0.0f;
+            tfBroadcaster = GetComponent<TfOdomBroadcaster>();
         }
 
         private void FixedUpdate()
@@ -73,6 +78,10 @@ namespace RosSharp.RosBridgeClient
             if (time_pass >= (1.0f / rate))
             {
                 Publish(odom);
+                if (tfBroadcasting && tfBroadcaster != null && !tfBroadcaster.Equals(null))
+                {
+                    tfBroadcaster.Write(odom);
+                }
                 time_pass = 0.0f;
             }
         }

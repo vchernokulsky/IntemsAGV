@@ -5,6 +5,7 @@ using RosSharp.RosBridgeClient.MessageTypes.Geometry;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
 using RosSharp.Urdf;
 using UnityEngine;
+using Pose = RosSharp.RosBridgeClient.MessageTypes.Geometry.Pose;
 using Quaternion = RosSharp.RosBridgeClient.MessageTypes.Geometry.Quaternion;
 using Transform = UnityEngine.Transform;
 using Vector3 = RosSharp.RosBridgeClient.MessageTypes.Geometry.Vector3;
@@ -36,10 +37,15 @@ namespace RosSharp.RosBridgeClient
             time_pass += UnityEngine.Time.deltaTime;
             if (time_pass >= (1.0f / rate))
             {
-                UpdateMsg(); 
-                tf.SendTransform(msg);
+                SendTransform(); 
                time_pass = 0.0f;
             }
+        }
+
+        protected void SendTransform()
+        {
+            UpdateMsg(); 
+            tf.SendTransform(msg);
         }
         
         private void InitializeMessage()
@@ -69,6 +75,15 @@ namespace RosSharp.RosBridgeClient
             return trans;
         }
         
+        protected Vector3 GetTranslation(Point _point)
+        {
+            Vector3 trans = new Vector3();
+            trans.x = _point.x;
+            trans.y = _point.y;
+            trans.z = _point.z;
+            return trans;
+        }
+        
         protected Quaternion GetRotation(UnityEngine.Quaternion q)
         {
             Quaternion quat = new Quaternion();
@@ -77,6 +92,17 @@ namespace RosSharp.RosBridgeClient
             quat.y = q.y;
             quat.z = q.z;
             return quat;
+        }
+        
+        protected Quaternion GetRotation(Quaternion q)
+        {
+            UnityEngine.Quaternion quat = new UnityEngine.Quaternion();
+            quat.w = (float)q.w;
+            quat.x = (float)q.x;
+            quat.y = (float)q.y;
+            quat.z = (float)q.z;
+            
+            return GetRotation(UnityEngine.Quaternion.Normalize(quat));
         }
     }
 }
