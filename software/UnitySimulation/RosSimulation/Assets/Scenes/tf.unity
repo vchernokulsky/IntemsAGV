@@ -1774,12 +1774,16 @@ GameObject:
   - component: {fileID: 873216570}
   - component: {fileID: 873216567}
   - component: {fileID: 873216568}
-  - component: {fileID: 873216569}
   - component: {fileID: 873216574}
   - component: {fileID: 873216576}
   - component: {fileID: 873216575}
+  - component: {fileID: 873216569}
   - component: {fileID: 873216578}
   - component: {fileID: 873216577}
+  - component: {fileID: 873216579}
+  - component: {fileID: 873216582}
+  - component: {fileID: 873216581}
+  - component: {fileID: 873216580}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -1823,7 +1827,7 @@ MonoBehaviour:
   Topic: /odom
   rate: 20
   FrameId: odom
-  ChildId: base_link
+  ChildId: base_footprint
   leftWheel: {fileID: 1295615859}
   rightWheel: {fileID: 866947363}
   wheelRadius: 0.035
@@ -1839,22 +1843,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 873216566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbda8921eda6db1579881d0fc975e0d4, type: 3}
+  m_Script: {fileID: 11500000, guid: c729ffd456b0a66c090b5cabd3089fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /odom2
+  frameId: base_footprint
   rate: 10
-  FrameId: odom2
-  ChildId: base_link
-  leftWheel: {fileID: 1295615859}
-  rightWheel: {fileID: 866947363}
-  wheelRadius: 0.035
-  wheelSeparation: 0.23
-  tfBroadcasting: 0
-  start_x: 0
-  start_y: 0.102
-  start_z: 0
-  y_ang: 0
+  publishedTransform: {fileID: 406168113}
 --- !u!114 &873216570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1929,7 +1923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /scan
   laserScanReader: {fileID: 2033708452}
-  FrameId: map
+  FrameId: lidar
 --- !u!114 &873216575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1943,7 +1937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameId: base_footprint
-  rate: 10
+  rate: 20
 --- !u!114 &873216576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1971,7 +1965,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameId: base_link
   rate: 10
-  publishedTransform: {fileID: 866947363}
+  publishedTransform: {fileID: 1295615859}
 --- !u!114 &873216578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1986,7 +1980,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameId: base_link
   rate: 10
-  publishedTransform: {fileID: 1295615859}
+  publishedTransform: {fileID: 866947363}
+--- !u!114 &873216579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameId: base_link
+  rate: 10
+  publishedTransform: {fileID: 2033708458}
+--- !u!114 &873216580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameId: base_link
+  rate: 1
+  publishedTransform: {fileID: 1985076893}
+--- !u!114 &873216581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameId: base_link
+  rate: 1
+  publishedTransform: {fileID: 1398602388}
+--- !u!114 &873216582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873216566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ddb972698cf33a17bda6de7561d0eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameId: base_link
+  rate: 1
+  publishedTransform: {fileID: 1243999968}
 --- !u!1 &918895329
 GameObject:
   m_ObjectHideFlags: 8

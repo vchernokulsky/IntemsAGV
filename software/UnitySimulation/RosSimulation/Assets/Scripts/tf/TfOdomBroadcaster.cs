@@ -39,9 +39,5 @@ public class TfOdomBroadcaster : TfBroadcaster
     {
         msg.transform.translation = GetTranslation(curOdom.pose.pose.position);
         msg.transform.rotation = GetRotation(curOdom.pose.pose.orientation);
-
     }
-    
-
-    
 }

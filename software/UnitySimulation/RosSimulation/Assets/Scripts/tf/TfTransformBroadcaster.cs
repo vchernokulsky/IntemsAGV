@@ -19,8 +19,8 @@ using Transform = UnityEngine.Transform;
 
         protected override void SetTransform()
         {
-            msg.transform.translation = GetTranslation(publishedTransform.position.Unity2Ros());
-            msg.transform.rotation = GetRotation(publishedTransform.rotation.Unity2Ros());
+            msg.transform.translation = GetTranslation(publishedTransform.localPosition.Unity2Ros());
+            msg.transform.rotation = GetRotation(publishedTransform.localRotation.Unity2Ros());
         }
         
     
