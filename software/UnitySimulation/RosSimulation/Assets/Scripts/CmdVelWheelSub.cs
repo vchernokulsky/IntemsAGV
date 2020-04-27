@@ -18,8 +18,8 @@ public class CmdVelWheelSub : CmdVelSubscriber
     protected override void MakeStep()
     {
         calculate_lin_speeds();
-        rightWheel.WriteRad( -magikCoeff * rigthLin / radius);
-        leftWheel.WriteRad( -magikCoeff * leftLin / radius);
+        rightWheel.WriteRad( -rigthLin / radius);
+        leftWheel.WriteRad( -leftLin / radius);
     }
     void adjust_speeds()
     {

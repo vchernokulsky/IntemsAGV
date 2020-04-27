@@ -26,7 +26,7 @@ namespace RosSharp.RosBridgeClient
         {
             if (baseLink != null && !baseLink.Equals(null))
             {
-                baseLink.Rotate(Vector3.up, angularVelocity * Time.deltaTime);
+                baseLink.Rotate(Vector3.up, angularVelocity * Mathf.Rad2Deg * Time.deltaTime);
                 baseLink.Translate(Vector3.forward * linearVelocity * Time.deltaTime);
                 Debug.Log("LIN " + linearVelocity);
                 Debug.Log("ANG " + angularVelocity);

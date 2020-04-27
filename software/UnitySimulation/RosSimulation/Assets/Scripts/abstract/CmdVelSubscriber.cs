@@ -42,11 +42,11 @@ namespace RosSharp.RosBridgeClient
         protected override void ReceiveMessage(MessageTypes.Geometry.Twist message)
         {
             linearVelocity = Mathf.Clamp((float)message.linear.x, -maxLinVel, maxLinVel);
-            angularVelocity = Mathf.Clamp((float)message.angular.z, -maxAngVel, maxAngVel);
+            angularVelocity = -Mathf.Clamp((float)message.angular.z, -maxAngVel, maxAngVel);
             hasMsg = true;
         }
         
-        private void Update()
+        private void FixedUpdate()
         {
             CheckTime();
             MakeStep();
