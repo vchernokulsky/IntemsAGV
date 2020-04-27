@@ -14,6 +14,7 @@ namespace RosSharp.RosBridgeClient
         protected override void setPose(MessageTypes.Geometry.PoseWithCovariance pose)
         {
             GetGeometryPoint(base_link.position.Unity2Ros(), pose.pose.position);
+            pose.pose.position.z = 0.0;
             GetGeometryQuaternion(base_link.rotation.Unity2Ros(), pose.pose.orientation);
         }
 

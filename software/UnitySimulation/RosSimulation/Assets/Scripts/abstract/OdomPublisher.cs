@@ -8,7 +8,7 @@ namespace RosSharp.RosBridgeClient
     {
         public float rate = 10.0f;
         public string FrameId = "odom";
-        public string ChildId = "base_link";
+        public string ChildId = "base_footprint";
         
         public Transform leftWheel;
         public Transform rightWheel;
@@ -90,7 +90,7 @@ namespace RosSharp.RosBridgeClient
 
         private void setTwist(MessageTypes.Geometry.TwistWithCovariance twist)
         {
-            twist.twist.linear.x = (leftJoint.velocity + rightJoint.velocity) * Mathf.Deg2Rad * wheelRadius / 2.0f;
+            twist.twist.linear.x = -(leftJoint.velocity + rightJoint.velocity) * Mathf.Deg2Rad * wheelRadius / 2.0f;
             twist.twist.angular.z = (leftJoint.velocity - rightJoint.velocity) * Mathf.Deg2Rad * wheelRadius / wheelSeparation;
         }
         
@@ -103,10 +103,11 @@ namespace RosSharp.RosBridgeClient
 
         protected void GetGeometryQuaternion(UnityEngine.Quaternion quaternion, MessageTypes.Geometry.Quaternion geometryQuaternion)
         {
-            geometryQuaternion.x = quaternion.x * Mathf.Deg2Rad;
-            geometryQuaternion.y = quaternion.y * Mathf.Deg2Rad;
-            geometryQuaternion.z = quaternion.z * Mathf.Deg2Rad;
-            geometryQuaternion.w = - quaternion.w * Mathf.Deg2Rad;
+            UnityEngine.Quaternion _norm = UnityEngine.Quaternion.Normalize(quaternion);
+            geometryQuaternion.x = _norm.x;
+            geometryQuaternion.y = _norm.y;
+            geometryQuaternion.z = _norm.z;
+            geometryQuaternion.w = _norm.w;
         }
     }
 }
