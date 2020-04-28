@@ -51,7 +51,16 @@ function nextState() {
   //{'L': -1.0, 'R': 1.0}
   var beginIdx = BUFFER.indexOf('OK+');
   if(beginIdx > -1) {
-    CMD = CONNECTED;
+    var idx1 = BUFFER.indexOf('OK+CONN');
+    var idx2 = BUFFER.indexOf('OK+LOST');
+    if(idx1 > -1) {
+      CMD = CONNECTED;
+      BUFFER = "";
+    }
+    else if(idx2 > -1) {
+      CMD = DISCONNECTED;
+      BUFFER = "";
+    }
   }
 }
 
@@ -75,16 +84,31 @@ function loop() {
   // FSM MAIN LOOP
   if(STATE == WAIT) {
     if(CMD == CONNECTED) {
-      state = RUN;
+      STATE = RUN;
       digitalWrite(RED_LED, false);
       digitalWrite(GREEN_LED, true);
     }
   }
   else if(STATE == RUN) {
+    if(CMD == DISCONNECTED) {
+      STATE = WAIT;
+      digitalWrite(RED_LED, true);
+      digitalWrite(GREEN_LED, false);
+    }
   }
   else if(STATE == WALK) {
+    if(CMD == DISCONNECTED) {
+      STATE = WAIT;
+      digitalWrite(RED_LED, true);
+      digitalWrite(GREEN_LED, false);
+    }
   }
   else if(STATE == STOP) {
+    if(CMD == DISCONNECTED) {
+      STATE = WAIT;
+      digitalWrite(RED_LED, true);
+      digitalWrite(GREEN_LED, false);
+    }
   }
   else {
     digitalWrite(RED_LED, false);
