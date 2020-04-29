@@ -46,6 +46,7 @@ namespace RosSharp.RosBridgeClient
             jointMotor.targetVelocity = targetVelocity;
             _hingeJoint.motor = jointMotor;
             isMessageReceived = false;
+            Debug.Log("cur_vel: " + _hingeJoint.velocity + "tar vel: "+ targetVelocity);
         }
         
         // percent from MaxVelocity
