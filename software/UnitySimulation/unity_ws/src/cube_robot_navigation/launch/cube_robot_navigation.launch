@@ -6,7 +6,7 @@
   <arg name="move_forward_only" default="false"/>
 
   <!-- Turtlebot3 -->
-  <include file="$(find  cube_robot_description)/launch/cube_robot_remote.launch"/>
+  <include file="$(find cube_robot_meshes_description)/launch/cube_robot_remote.launch"/>
 
 
   <!-- Map server -->
