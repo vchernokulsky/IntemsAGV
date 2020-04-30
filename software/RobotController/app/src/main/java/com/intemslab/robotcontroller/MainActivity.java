@@ -50,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        Button ble_button = (Button) findViewById(R.id.ble);
+        ble_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("click");
+                Intent intent = new Intent(context, BleControllerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
