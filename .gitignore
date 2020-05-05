@@ -7,6 +7,8 @@ firmware/STM32/TCPClientF7/Debug/
 firmware/STM32/DiscoveryTest/Debug/
 firmware/STM32/DiscoveryF4RobotController/Debug/
 
+hardware/PowerSupply/
+
 software/catkin_ws/build/
 software/catkin_ws/devel/
 software/catkin_ws/.catkin_workspace
