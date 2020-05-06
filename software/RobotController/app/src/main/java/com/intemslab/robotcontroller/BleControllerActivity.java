@@ -1,33 +1,93 @@
 package com.intemslab.robotcontroller;
 
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.intemslab.protocolview.ProtractorView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class BleControllerActivity extends AppCompatActivity {
-
-    private volatile boolean publishLinVelocity;
-    private volatile boolean publishAngVelocity;
+    private final static String TAG = BleControllerActivity.class.getSimpleName();
 
     TextView txtLinearSpeed;
     TextView txtAngularSpeed;
 
+    Button btnConnect;
+
     SeekBar seekLinearSpeed;
     ProtractorView seekAngularSpeed;
 
+    BluetoothLeService bluetoothService;
 
+    // GUI behavior variables
+    private volatile boolean publishLinVelocity;
+    private volatile boolean publishAngVelocity;
+    private volatile boolean isConnected;
+
+
+    // data model variables
     double twistLinear;
     double twistAngular;
-
     int min = 0, max = 100, current = 0;
+
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            BluetoothLeService.LocalBinder aService = (BluetoothLeService.LocalBinder) service;
+            bluetoothService = aService.getService();
+            if (!bluetoothService.initialize()) {
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            bluetoothService.connect(BluetoothConstants.DEVICE_ADDRESS);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            bluetoothService = null;
+        }
+    };
+
+    private final BroadcastReceiver gattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                isConnected = true;
+                //updateConnectionState(R.string.connected);
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                isConnected = false;
+                //updateConnectionState(R.string.disconnected);
+                invalidateOptionsMenu();
+                //clearUI();
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                //displayGattServices(mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +98,7 @@ public class BleControllerActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("BLE robot control");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +110,8 @@ public class BleControllerActivity extends AppCompatActivity {
         seekLinearSpeed.setProgress(max - min);
         seekLinearSpeed.setProgress(current - min);
 
+        btnConnect = findViewById(R.id.btnConnect);
+
         txtLinearSpeed = findViewById(R.id.textView);
         txtLinearSpeed.setText("" + current);
 
@@ -57,6 +119,18 @@ public class BleControllerActivity extends AppCompatActivity {
 
         txtAngularSpeed = findViewById(R.id.textView2);
         txtAngularSpeed.setText("" + 0);
+
+        // Setup GATT service
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, serviceConnection, BIND_AUTO_CREATE);
+
+        // Activity widgets event listeners
+        btnConnect.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //boolean isConn = bluetoothService.connect("");
+            }
+        });
 
         seekLinearSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -102,24 +176,45 @@ public class BleControllerActivity extends AppCompatActivity {
         startPub();
     }
 
+    // Private behavior methods
     public void setTwist() {
         //sending message to device
+        if(bluetoothService != null) {
+            JSONObject o = new JSONObject();
+            try {
+                o.put("L", twistLinear);
+                o.put("R", twistLinear);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            bluetoothService.sendMessage(o.toString());
+        }
         System.out.println("Linear: " + twistLinear + "; Angular: " + twistAngular);
-
     }
 
     public void startPub() {
-
         Timer publisherTimer = new Timer();
         publisherTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (publishLinVelocity || publishAngVelocity) {
-                    setTwist(  );
+                    setTwist();
                 }
             }
         }, 0, 80);
     }
 
+    // Base class overrides
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(gattUpdateReceiver);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+        bluetoothService = null;
+    }
 }
