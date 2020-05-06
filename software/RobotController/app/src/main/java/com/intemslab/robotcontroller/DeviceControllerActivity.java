@@ -35,13 +35,13 @@ public class DeviceControllerActivity extends AppCompatActivity {
 
     private TextView mConnectionState;
     private TextView mDataField;
+
     private final String mDeviceName = "HMSoft";
     private final String mDeviceAddress = "D4:36:39:BC:4B:4E";
     private BluetoothLeService mBluetoothLeService;
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
-            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-    private boolean mConnected = false;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    private boolean mConnected = false;
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
@@ -51,7 +51,6 @@ public class DeviceControllerActivity extends AppCompatActivity {
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();

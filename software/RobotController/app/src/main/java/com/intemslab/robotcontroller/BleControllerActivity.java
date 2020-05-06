@@ -17,11 +17,12 @@ public class BleControllerActivity extends AppCompatActivity {
     private volatile boolean publishLinVelocity;
     private volatile boolean publishAngVelocity;
 
-    SeekBar seekBar;
-    TextView textView;
+    TextView txtLinearSpeed;
+    TextView txtAngularSpeed;
 
-    ProtractorView protractorView;
-    TextView textView2;
+    SeekBar seekLinearSpeed;
+    ProtractorView seekAngularSpeed;
+
 
     double twistLinear;
     double twistAngular;
@@ -35,7 +36,7 @@ public class BleControllerActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("BLE Controller");
+        getSupportActionBar().setTitle("BLE robot control");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -45,22 +46,23 @@ public class BleControllerActivity extends AppCompatActivity {
             }
         });
 
-        textView = findViewById(R.id.textView);
-        seekBar = findViewById(R.id.seekBar);
-        seekBar.setProgress(max - min);
-        seekBar.setProgress(current - min);
-        textView.setText("" + current);
+        seekLinearSpeed = findViewById(R.id.seekBar);
+        seekLinearSpeed.setProgress(max - min);
+        seekLinearSpeed.setProgress(current - min);
 
+        txtLinearSpeed = findViewById(R.id.textView);
+        txtLinearSpeed.setText("" + current);
 
-        textView2 = findViewById(R.id.textView2);
-        textView2.setText("" + 0);
-        protractorView = findViewById(R.id.protractor_view);
+        seekAngularSpeed = findViewById(R.id.protractor_view);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        txtAngularSpeed = findViewById(R.id.textView2);
+        txtAngularSpeed.setText("" + 0);
+
+        seekLinearSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 twistLinear = (double) progress / 100.0;
-                textView.setText("" + progress);
+                txtLinearSpeed.setText("" + progress);
             }
 
             @Override
@@ -70,18 +72,18 @@ public class BleControllerActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar sBar) {
-                seekBar.setProgress(0);
+                seekLinearSpeed.setProgress(0);
                 twistLinear = 0;
                 setTwist();
                 publishLinVelocity = false;
             }
         });
 
-        protractorView.setOnProtractorViewChangeListener(new ProtractorView.OnProtractorViewChangeListener() {
+        seekAngularSpeed.setOnProtractorViewChangeListener(new ProtractorView.OnProtractorViewChangeListener() {
             @Override
             public void onProgressChanged(ProtractorView protractorView, int progress, boolean fromUser) {
                 twistAngular = (double) (progress - 90) / 90.0;
-                textView2.setText("" + Math.round((progress - 90) / 0.9));
+                txtAngularSpeed.setText("" + Math.round((progress - 90) / 0.9));
             }
 
             @Override
