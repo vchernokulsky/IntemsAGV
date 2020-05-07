@@ -1,6 +1,5 @@
 package com.intemslab.robotcontroller;
 
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,26 +10,24 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.intemslab.protocolview.ProtractorView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class BleControllerActivity extends AppCompatActivity {
     private final static String TAG = BleControllerActivity.class.getSimpleName();
 
+    private final Object locker = new Object();
+
     TextView txtLinearSpeed;
     TextView txtAngularSpeed;
-
-    Button btnConnect;
 
     SeekBar seekLinearSpeed;
     ProtractorView seekAngularSpeed;
@@ -110,8 +107,6 @@ public class BleControllerActivity extends AppCompatActivity {
         seekLinearSpeed.setProgress(max - min);
         seekLinearSpeed.setProgress(current - min);
 
-        btnConnect = findViewById(R.id.btnConnect);
-
         txtLinearSpeed = findViewById(R.id.textView);
         txtLinearSpeed.setText("" + current);
 
@@ -123,14 +118,6 @@ public class BleControllerActivity extends AppCompatActivity {
         // Setup GATT service
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, serviceConnection, BIND_AUTO_CREATE);
-
-        // Activity widgets event listeners
-        btnConnect.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //boolean isConn = bluetoothService.connect("");
-            }
-        });
 
         seekLinearSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -176,15 +163,70 @@ public class BleControllerActivity extends AppCompatActivity {
         startPub();
     }
 
-    private final Object locker = new Object();
+//    void adjust_speeds()
+//    {
+//        if ((left_linear > max_lin_speed)or(right_linear > max_lin_speed)){
+//        float factor = max_lin_speed / max(left_linear, right_linear);
+//        left_linear *= factor;
+//        right_linear *= factor;
+//    }
+//        if ((left_linear < -max_lin_speed)or(right_linear < -max_lin_speed)){
+//        float factor = max_lin_speed / min(left_linear, right_linear);
+//        left_linear *= factor;
+//        right_linear *= factor;
+//    }
+//    }
+//    void calculate_speeds(){
+//        left_linear = (2 * linear + wheel_separation * angular) / 2;
+//        right_linear = (2 * linear - wheel_separation * angular) / 2;
+//        adjust_speeds();
+//    }
+
+
     // Private behavior methods
+    private Pair<Integer, Integer> calculateWheelSpeed(int linear, int angular) {
+        double leftWheel  = (2*linear + 0.45*angular)/2;
+        double rightWheel = (2*linear - 0.45*angular)/2;
+        //adjust wheel speed
+        if((leftWheel > 70)||(rightWheel>70)) {
+            double factor = 70/Math.max(leftWheel, rightWheel);
+            leftWheel *= factor;
+            rightWheel *= factor;
+        }
+        if((leftWheel < -70)||(rightWheel  < -70)) {
+            double factor = 70/Math.min(leftWheel, rightWheel);
+            leftWheel *= factor;
+            rightWheel *= factor;
+        }
+        int iLeftWheel = 0, iRightWheel = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            iLeftWheel = Math.toIntExact(Math.round(leftWheel));
+            iRightWheel = Math.toIntExact(Math.round(rightWheel));
+        }
+        return new Pair<>(iLeftWheel, iRightWheel);
+    }
+
+    private java.util.Date lastTime = new Date();
+    private int lastTwist;
+    private int lastLeftSpeed, lastRightSpeed;
     public void setTwist() {
         //sending message to device
         if(bluetoothService != null) {
             synchronized (locker) {
-                int twist = (int)Math.round(twistLinear * 100);
-                String chunk0 = "*" + twist + ":" + twist + "#";
-                bluetoothService.sendMessage(chunk0);
+                long delta = (new Date()).getTime() - lastTime.getTime();
+
+                int linear = (int)Math.round(twistLinear * 100);
+                int angular = (int)Math.round(twistAngular * 100);
+                Pair<Integer, Integer> speedPair = calculateWheelSpeed(linear, angular);
+
+                if((lastLeftSpeed != speedPair.first)
+                        || (lastRightSpeed != speedPair.second) || (delta >= 500)) {
+                    String msg = "*" + speedPair.first + ":" + speedPair.second + "#";
+                    bluetoothService.sendMessage(msg);
+                    lastLeftSpeed = speedPair.first;
+                    lastRightSpeed = speedPair.second;
+                    lastTime = new Date();
+                }
             }
         }
         System.out.println("Linear: " + twistLinear + "; Angular: " + twistAngular);
@@ -205,14 +247,22 @@ public class BleControllerActivity extends AppCompatActivity {
     // Base class overrides
     @Override
     protected void onPause() {
+        //TODO: fix work with bluetooth env
         super.onPause();
-        unregisterReceiver(gattUpdateReceiver);
+        if(bluetoothService != null) {
+            bluetoothService.disconnect();
+        }
+        //unregisterReceiver(gattUpdateReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serviceConnection);
-        bluetoothService = null;
+        if(bluetoothService != null) {
+            //TODO: fix work with bluetooth env
+            bluetoothService.disconnect();
+            bluetoothService = null;
+            //unbindService(serviceConnection);
+        }
     }
 }
