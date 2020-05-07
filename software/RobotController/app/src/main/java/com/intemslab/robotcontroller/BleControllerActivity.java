@@ -176,18 +176,16 @@ public class BleControllerActivity extends AppCompatActivity {
         startPub();
     }
 
+    private final Object locker = new Object();
     // Private behavior methods
     public void setTwist() {
         //sending message to device
         if(bluetoothService != null) {
-            JSONObject o = new JSONObject();
-            try {
-                o.put("L", twistLinear);
-                o.put("R", twistLinear);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            synchronized (locker) {
+                int twist = (int)Math.round(twistLinear * 100);
+                String chunk0 = "*" + twist + ":" + twist + "#";
+                bluetoothService.sendMessage(chunk0);
             }
-            bluetoothService.sendMessage(o.toString());
         }
         System.out.println("Linear: " + twistLinear + "; Angular: " + twistAngular);
     }

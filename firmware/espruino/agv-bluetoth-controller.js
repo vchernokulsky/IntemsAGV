@@ -51,6 +51,7 @@ function stopBlink(interval, led) {
 function listen() {
   Serial3.on('data', function(ch){
     BUFFER += ch;
+//    nextState();
   });
 }
 
@@ -76,33 +77,36 @@ function nextState() {
     if(idx1 > -1) {
       CMD = CONNECTED;
       BUFFER = "";
+      loop();
     }
     else if(idx2 > -1) {
       CMD = DISCONNECTED;
       BUFFER = "";
+      loop();
     }
   }
   // check for speed command
-  beginIdx = BUFFER.indexOf('{');
-  var endIdx = BUFFER.indexOf('}');
+  beginIdx = BUFFER.indexOf('*');
+  var endIdx = BUFFER.indexOf('#');
   if(beginIdx>-1 && endIdx > beginIdx) {
     var obj = 'undefined';
     var cmd = BUFFER.substr(beginIdx, endIdx - beginIdx + 1);
+    console.log('CMD: ' + cmd);
 
-    obj = JSON.parse(cmd);
-    if(obj != 'undefined') {
-      if(Math.abs(obj.L)>0 || Math.abs(obj.R)>0) {
-        CMD = WALK;
-      }
-      else if(obj.L == 0 || obj.R == 0) {
-        CMD = STOP;
-      }
+    values = cmd.substr(beginIdx + 1, endIdx).split(':');
+    speedL = parseInt(values[0], 10);
+    speedR = parseInt(values[1], 10);
+    if(Math.abs(speedL)>0 || Math.abs(speedR)>0) {
+      CMD = WALK;
     }
-    else {
-      //TODO: process incorrect command
+    else if(speedL == 0 && speedR == 0) {
+      CMD = STOP;
     }
+
+    // Trim buffer head
     if(endIdx+1 < BUFFER.length)
       BUFFER = BUFFER.substr(endIdx+1, BUFFER.length - endIdx);
+    console.log(BUFFER);
   }
 }
 
@@ -149,39 +153,42 @@ function loop() {
     }
   }
   else {
-    digitalWrite(RED_LED, false);
-    console.log('UNEXPECTED STATE');
+    setWheelSpeed({'L':0.0, 'R':0.0});
+    stopBlink(blinkInt, GREEN_LED);
+    startBlink(RED_LED);
   }
-
   nextState();
 }
 
 function initialize(begin_fn, end_fn) {
-    Serial3.write('AT');
-    setTimeout(function(){
-      data = Serial3.read(2);
-      if(data == 'OK') {
-        STATE = WAIT;
-        digitalWrite(RED_LED, true);
-        begin_fn();
-      }
-      else {
-        startBlink(RED_LED);
-        end_fn();
-      }
-    }, 200);
+  Serial3.setup(9600);
+  Serial3.write('AT');
+  console.log('Check bluetooth module');
+  setTimeout(function(){
+    data = Serial3.read(2);
+    if(data == 'OK') {
+      STATE = WAIT;
+      digitalWrite(RED_LED, true);
+      console.log(data);
+      begin_fn();
+    }
+    else {
+      startBlink(RED_LED);
+      console.log('Bluetooth init error');
+      end_fn();
+    }
+  }, 500);
 }
 
 function main() {
   listen();
   setInterval(function(){
     loop();
-  }, 50);
+  }, 100);
 }
 
 function error() {
 }
 
 
-Serial3.setup(9600);
 initialize(main, error);
