@@ -51,22 +51,24 @@ function stopBlink(interval, led) {
 function listen() {
   Serial3.on('data', function(ch){
     BUFFER += ch;
-//    nextState();
   });
 }
 
-function setWheelSpeed(obj) {
-  if(obj.L < 0) {
+function setWheelSpeed(left, right) {
+  // left wheel control
+  if(left < 0) {
   }
-  else if(obj.L >= 0) {
+  else if(left >= 0) {
   }
-
-  if(obj.R < 0) {
+  // right wheel control
+  if(right < 0) {
   }
-  else if(obj.R >= 0) {
+  else if(right >= 0) {
   }
 }
 
+var leftWhSpeed  = 0;
+var rightWhSpeed = 0;
 function nextState() {
   //{'L': -1.0, 'R': 1.0}
   // check for bluetooth disconnect
@@ -77,12 +79,10 @@ function nextState() {
     if(idx1 > -1) {
       CMD = CONNECTED;
       BUFFER = "";
-      loop();
     }
     else if(idx2 > -1) {
       CMD = DISCONNECTED;
       BUFFER = "";
-      loop();
     }
   }
   // check for speed command
@@ -94,12 +94,12 @@ function nextState() {
     console.log('CMD: ' + cmd);
 
     values = cmd.substr(beginIdx + 1, endIdx).split(':');
-    speedL = parseInt(values[0], 10);
-    speedR = parseInt(values[1], 10);
-    if(Math.abs(speedL)>0 || Math.abs(speedR)>0) {
+    leftWhSpeed  = parseInt(values[0], 10);
+    rightWhSpeed = parseInt(values[1], 10);
+    if(Math.abs(leftWhSpeed)>0 || Math.abs(rightWhSpeed)>0) {
       CMD = WALK;
     }
-    else if(speedL == 0 && speedR == 0) {
+    else if(leftWhSpeed == 0 && rightWhSpeed == 0) {
       CMD = STOP;
     }
 
@@ -128,19 +128,20 @@ function loop() {
     }
     else if(CMD == WALK) {
       STATE = WALK;
+      setWheelSpeed(leftWhSpeed, rightWhSpeed);
       blinkInt = startBlink(GREEN_LED);
     }
   }
   else if(STATE == WALK) {
     if(CMD == DISCONNECTED) {
       STATE = WAIT;
-      setWheelSpeed({'L':0.0, 'R':0.0});
+      setWheelSpeed(0, 0);
       stopBlink(blinkInt, GREEN_LED);
       digitalWrite(RED_LED, true);
     }
     else if(CMD == STOP) {
       STATE = RUN;
-      setWheelSpeed({'L':0.0, 'R':0.0});
+      setWheelSpeed(0, 0);
       stopBlink(blinkInt, GREEN_LED);
       digitalWrite(GREEN_LED, true);
     }
@@ -153,7 +154,7 @@ function loop() {
     }
   }
   else {
-    setWheelSpeed({'L':0.0, 'R':0.0});
+    setWheelSpeed(0, 0);
     stopBlink(blinkInt, GREEN_LED);
     startBlink(RED_LED);
   }
