@@ -55,12 +55,14 @@ function listen() {
 }
 
 function setWheelSpeed(left, right) {
+  //console.log('SPEED L' + left + ' R' + right + '');
+
   // left wheel control
   digitalWrite(LW_REN, true);
   digitalWrite(LW_LEN, true);
   if(left < 0) {
     //backward move
-    analogWrite(LW_RPWM, left/100.0);
+    analogWrite(LW_RPWM, Math.abs(left)/100.0);
     analogWrite(LW_LPWM, 0);
   }
   else if(left >= 0) {
@@ -73,7 +75,7 @@ function setWheelSpeed(left, right) {
   digitalWrite(RW_REN, true);
   digitalWrite(RW_LEN, true);
   if(right < 0) {
-    analogWrite(RW_RPWM, right/100.0);
+    analogWrite(RW_RPWM, Math.abs(right)/100.0);
     analogWrite(RW_LPWM, 0);
   }
   else if(right >= 0) {
@@ -106,22 +108,24 @@ function nextState() {
   if(beginIdx>-1 && endIdx > beginIdx) {
     var obj = 'undefined';
     var cmd = BUFFER.substr(beginIdx, endIdx - beginIdx + 1);
-    console.log('CMD: ' + cmd);
+    //console.log('CMD: ' + cmd);
 
     values = cmd.substr(beginIdx + 1, endIdx).split(':');
     leftWhSpeed  = parseInt(values[0], 10);
     rightWhSpeed = parseInt(values[1], 10);
     if(Math.abs(leftWhSpeed)>0 || Math.abs(rightWhSpeed)>0) {
       CMD = WALK;
+      //console.log('WALK');
     }
     else if(leftWhSpeed == 0 && rightWhSpeed == 0) {
       CMD = STOP;
+      //console.log('STOP');
     }
 
     // Trim buffer head
     if(endIdx+1 < BUFFER.length)
       BUFFER = BUFFER.substr(endIdx+1, BUFFER.length - endIdx);
-    console.log(BUFFER);
+      //console.log(BUFFER);
   }
 }
 
@@ -159,6 +163,9 @@ function loop() {
       setWheelSpeed(0, 0);
       stopBlink(blinkInt, GREEN_LED);
       digitalWrite(GREEN_LED, true);
+    }
+    else {
+      setWheelSpeed(leftWhSpeed, rightWhSpeed);
     }
   }
   else if(STATE == STOP) {
@@ -218,6 +225,6 @@ function check_motor() {
   //analogWrite(LW_LPWM, 0);
 }
 
-check_motor();
+//check_motor();
 
-//initialize(main, error);
+initialize(main, error);
