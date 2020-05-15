@@ -14,14 +14,14 @@
  * the License.
  */
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.14.1"
-}
+//task wrapper(type: Wrapper) {
+//    gradleVersion = "2.14.1"
+//}
 
 buildscript {
     apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
     repositories {
         jcenter()
