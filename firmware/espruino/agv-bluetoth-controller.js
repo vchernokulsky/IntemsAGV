@@ -205,7 +205,7 @@ function initialize(begin_fn, end_fn) {
 
 function main() {
   listen();
-  setInterval(function(){
+  setInterval(function() {
     loop();
   }, 100);
 }
@@ -213,18 +213,6 @@ function main() {
 function error() {
 }
 
-function check_motor() {
-  //digitalWrite(LW_REN, true);
-  //digitalWrite(LW_LEN, true);
-
-  //forward move
-  //analogWrite(LW_RPWM, 0);
-  //analogWrite(LW_LPWM, 0.3);
-  //backward move
-  //analogWrite(LW_RPWM, 0.3);
-  //analogWrite(LW_LPWM, 0);
-}
-
-//check_motor();
-
-initialize(main, error);
+E.on('init', function() {
+  initialize(main, error);
+});
