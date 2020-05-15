@@ -4,16 +4,16 @@ var GREEN_LED = A3;
 var RED_LED   = A4;
 
 // LEFT WHEEL
-var LW_RPWM;
-var LW_LPWM;
-var LW_REN;
-var LW_LEN;
+var LW_RPWM = P2;
+var LW_LPWM = P3;
+var LW_REN  = P4;
+var LW_LEN  = P5;
 
 // RIGHT WHEEL
-var RW_RPWM;
-var RW_LPWM;
-var RW_REN;
-var RW_LEN;
+var RW_RPWM = P12;
+var RW_LPWM = P11;
+var RW_REN  = P10;
+var RW_LEN  = P9;
 
 // ROBOT SPEED OBJECT
 var oSPEED = {'L':0.0, 'R':0.0};
@@ -56,14 +56,29 @@ function listen() {
 
 function setWheelSpeed(left, right) {
   // left wheel control
+  digitalWrite(LW_REN, true);
+  digitalWrite(LW_LEN, true);
   if(left < 0) {
+    //backward move
+    analogWrite(LW_RPWM, left/100.0);
+    analogWrite(LW_LPWM, 0);
   }
   else if(left >= 0) {
+    //forward move
+    analogWrite(LW_RPWM, 0);
+    analogWrite(LW_LPWM, left/100.0);
   }
+
   // right wheel control
+  digitalWrite(RW_REN, true);
+  digitalWrite(RW_LEN, true);
   if(right < 0) {
+    analogWrite(RW_RPWM, right/100.0);
+    analogWrite(RW_LPWM, 0);
   }
   else if(right >= 0) {
+    analogWrite(RW_RPWM, 0);
+    analogWrite(RW_LPWM, right/100.0);
   }
 }
 
@@ -191,5 +206,18 @@ function main() {
 function error() {
 }
 
+function check_motor() {
+  //digitalWrite(LW_REN, true);
+  //digitalWrite(LW_LEN, true);
 
-initialize(main, error);
+  //forward move
+  //analogWrite(LW_RPWM, 0);
+  //analogWrite(LW_LPWM, 0.3);
+  //backward move
+  //analogWrite(LW_RPWM, 0.3);
+  //analogWrite(LW_LPWM, 0);
+}
+
+check_motor();
+
+//initialize(main, error);
