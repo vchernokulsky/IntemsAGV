@@ -16,6 +16,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -220,6 +221,26 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt = null;
     }
 
+    public void sendMessage(String message) {
+        if(mBluetoothAdapter == null || mBluetoothGatt == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+
+        try {
+            //Read characteristics
+            //0000FFE1-0000-1000-8000-00805F9B34FB
+            byte[] messageBytes = message.getBytes("UTF-8");
+            BluetoothGattService service = mBluetoothGatt.getService(BluetoothConstants.SERVICE_UUID);
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(BluetoothConstants.CHARACTERISTIC_UUID);
+            characteristic.setValue(messageBytes);
+            boolean success = mBluetoothGatt.writeCharacteristic(characteristic);
+            Log.w(TAG, "SENT: " + success);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Request a read on a given {@code BluetoothGattCharacteristic}. The read result is reported
      * asynchronously through the {@code BluetoothGattCallback#onCharacteristicRead(android.bluetooth.BluetoothGatt, android.bluetooth.BluetoothGattCharacteristic, int)}
@@ -248,8 +269,6 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
-
-
     }
 
     /**
