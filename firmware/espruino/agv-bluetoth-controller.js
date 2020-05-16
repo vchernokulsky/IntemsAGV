@@ -111,8 +111,8 @@ function nextState() {
     //console.log('CMD: ' + cmd);
 
     values = cmd.substr(beginIdx + 1, endIdx).split(':');
-    leftWhSpeed  = parseInt(values[0], 10);
-    rightWhSpeed = parseInt(values[1], 10);
+    rightWhSpeed = parseInt(values[0], 10);
+    leftWhSpeed  = parseInt(values[1], 10);
     if(Math.abs(leftWhSpeed)>0 || Math.abs(rightWhSpeed)>0) {
       CMD = WALK;
       //console.log('WALK');
@@ -184,10 +184,9 @@ function loop() {
 }
 
 function initialize(begin_fn, end_fn) {
-  Serial3.setup(9600);
   Serial3.write('AT');
   console.log('Check bluetooth module');
-  setTimeout(function(){
+  setTimeout(function() {
     data = Serial3.read(2);
     if(data == 'OK') {
       STATE = WAIT;
@@ -214,5 +213,20 @@ function error() {
 }
 
 E.on('init', function() {
-  initialize(main, error);
+  process.on('uncaughtException', function() {
+    console.log('Uncaught Exception!!!');
+    reset();
+    load();
+  });
+
+  setTimeout(function() {
+    Serial3.setup(9600);
+    //read trash from port
+    var cnt = Serial3.available();
+    if(cnt > 0) {
+      var tmp = Serial3.read(cnt);
+    }
+    //initialize controller
+    initialize(main, error);
+  }, 250);
 });
