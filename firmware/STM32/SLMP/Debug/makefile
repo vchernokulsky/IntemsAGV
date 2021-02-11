@@ -1,0 +1,98 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+-include ../makefile.init
+
+RM := rm -rf
+
+# All of the sources participating in the build are defined here
+-include sources.mk
+-include Startup/subdir.mk
+-include Src/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
+-include Lib/udpClient/subdir.mk
+-include Lib/uart_helper/subdir.mk
+-include Lib/overrided/subdir.mk
+-include Lib/ioLibrary_Driver/Internet/DNS/subdir.mk
+-include Lib/ioLibrary_Driver/Internet/DHCP/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/W5500/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/W5300/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/W5200/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/W5100S/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/W5100/subdir.mk
+-include Lib/ioLibrary_Driver/Ethernet/subdir.mk
+-include Lib/display/subdir.mk
+-include Lib/chips/subdir.mk
+-include Lib/SLMP/subdir.mk
+-include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
+-include subdir.mk
+-include objects.mk
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(strip $(CC_DEPS)),)
+-include $(CC_DEPS)
+endif
+ifneq ($(strip $(C++_DEPS)),)
+-include $(C++_DEPS)
+endif
+ifneq ($(strip $(C_UPPER_DEPS)),)
+-include $(C_UPPER_DEPS)
+endif
+ifneq ($(strip $(CXX_DEPS)),)
+-include $(CXX_DEPS)
+endif
+ifneq ($(strip $(C_DEPS)),)
+-include $(C_DEPS)
+endif
+ifneq ($(strip $(CPP_DEPS)),)
+-include $(CPP_DEPS)
+endif
+endif
+
+-include ../makefile.defs
+
+# Add inputs and outputs from these tool invocations to the build variables 
+EXECUTABLES += \
+SLMP.elf \
+
+SIZE_OUTPUT += \
+default.size.stdout \
+
+OBJDUMP_LIST += \
+SLMP.list \
+
+
+# All Target
+all: SLMP.elf secondary-outputs
+
+# Tool invocations
+SLMP.elf: $(OBJS) $(USER_OBJS) /home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld
+	arm-none-eabi-g++ -o "SLMP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/data-scientist/STM32CubeIDE/workspace_1.1.0/SLMP/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SLMP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	@echo 'Finished building target: $@'
+	@echo ' '
+
+default.size.stdout: $(EXECUTABLES)
+	arm-none-eabi-size  $(EXECUTABLES)
+	@echo 'Finished building: $@'
+	@echo ' '
+
+SLMP.list: $(EXECUTABLES)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "SLMP.list"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+# Other Targets
+clean:
+	-$(RM) *
+	-@echo ' '
+
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+
+.PHONY: all clean dependents
+.SECONDARY:
+
+-include ../makefile.targets

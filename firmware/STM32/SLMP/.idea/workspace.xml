@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="DCMAKE_TOOLCHAIN_FILE=STM32L1xx.cmake" GENERATION_DIR="build" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="506a8ca6-63fe-4de5-b074-53fe6e0e71b5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Lib/SLMP/SLMPPacket.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lib/SLMP/fields/PacketFields.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/PacketFields.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/SLMPPackets.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/DependInfo.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/cmake_clean.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/link.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/SLMP.dir/progress.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/SLMP" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/SLMP" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/SLMP.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/SLMP.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/Lib/SLMP/constants.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lib/SLMP/utilities.h" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Lib/SLMP" />
+  </component>
+  <component name="ProjectId" id="1XRGJHVu1yyjI9WQDwe4PeK5C0l" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/CLionProjects/SLMP" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="506a8ca6-63fe-4de5-b074-53fe6e0e71b5" name="Default Changelist" comment="" />
+      <created>1581001419660</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581001419660</updated>
+      <workItem from="1581001424035" duration="405000" />
+      <workItem from="1581001916307" duration="2104000" />
+      <workItem from="1581073961145" duration="806000" />
+      <workItem from="1581078496420" duration="48000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="780" y="297" width="424" height="482" key="FileChooserDialogImpl" timestamp="1581078544610">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="780" y="297" width="424" height="482" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1581078544610" />
+    <state x="486" y="174" key="SettingsEditor" timestamp="1581003863366">
+      <screen x="65" y="24" width="1855" height="1056" />
+    </state>
+    <state x="486" y="174" key="SettingsEditor/65.24.1855.1056@65.24.1855.1056" timestamp="1581003863366" />
+  </component>
+</project>

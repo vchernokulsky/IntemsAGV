@@ -1,0 +1,8 @@
+W5500_chip.cpp:3:1:W5500Chip::W5500Chip()	16	static
+W5500_chip.cpp:5:6:void W5500Chip::initChip()	48	static
+W5500_chip.cpp:20:6:static void W5500Chip::W5500_Select()	8	static
+W5500_chip.cpp:24:6:static void W5500Chip::W5500_Unselect()	8	static
+W5500_chip.cpp:28:6:static void W5500Chip::W5500_ReadBuff(uint8_t*, uint16_t)	24	static
+W5500_chip.cpp:37:6:static void W5500Chip::W5500_WriteBuff(uint8_t*, uint16_t)	24	static
+W5500_chip.cpp:46:9:static uint8_t W5500Chip::W5500_ReadByte()	16	static
+W5500_chip.cpp:52:6:static void W5500Chip::W5500_WriteByte(uint8_t)	16	static
